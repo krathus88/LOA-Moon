@@ -3,7 +3,7 @@ import "./RaidSummary.css";
 
 export function RaidSummaryContainer() {
     return (
-        <div className="container my-4" id="RaidSummaryContainer">
+        <div className="col" id="RaidSummaryContainer">
             <RaidSummary />
             <RaidSummary />
             <RaidSummary />

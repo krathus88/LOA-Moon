@@ -9,24 +9,22 @@ export function Layout() {
     return (
         <>
             <Header />
-            <div className="main-container">
-                <SideBar />
-                <Suspense
-                    fallback={
-                        <Box
-                            sx={{
-                                position: "fixed",
-                                top: 0,
-                                left: 0,
-                                right: 0,
-                                zIndex: 1000,
-                            }}>
-                            <LinearProgress sx={{ height: "3px" }} />
-                        </Box>
-                    }>
-                    <Outlet />
-                </Suspense>
-            </div>
+            <SideBar />
+            <Suspense
+                fallback={
+                    <Box
+                        sx={{
+                            position: "fixed",
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            zIndex: 1000,
+                        }}>
+                        <LinearProgress sx={{ height: "3px" }} />
+                    </Box>
+                }>
+                <Outlet />
+            </Suspense>
             <Footer />
         </>
     );

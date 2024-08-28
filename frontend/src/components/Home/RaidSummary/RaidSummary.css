@@ -1,10 +1,18 @@
 #RaidSummaryContainer {
-    min-width: 1000px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
 }
 
 #RaidSummaryContainer > .raid-summary {
-    height: 200px;
     display: flex;
+    flex-direction: row;
+    text-shadow: #000000 1px 1px 2px;
+    text-shadow: #000000 1px 1px 2px;
+    border-width: 2px !important;
+    max-width: 1200px;
+    width: 100%;
 }
 
 #RaidSummaryContainer > .raid-summary ul {
@@ -14,46 +22,135 @@
 }
 
 /* info */
-#RaidSummaryContainer > .raid-summary > .info {
-    flex: 0 1 auto;
-    margin-right: 2rem;
+#RaidSummaryContainer > .raid-summary .info {
+    min-width: 175px;
+    max-width: 225px;
+    flex-shrink: 1;
+    flex-grow: 1;
+    flex-basis: 20%;
+    display: flex;
+    flex-direction: column;
+    white-space: nowrap;
+    margin-top: 0.5rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+}
+
+#RaidSummaryContainer > .raid-summary .info > h5 {
+    margin-bottom: 0.25rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#RaidSummaryContainer > .raid-summary .info svg {
+    box-sizing: content-box;
+    display: inline-block;
+    vertical-align: -0.125em;
+}
+
+#RaidSummaryContainer > .raid-summary .info > div {
     display: flex;
     flex-direction: column;
 }
 
-#RaidSummaryContainer > .raid-summary > .info > h4 {
-    margin-bottom: 0.25rem;
-}
-
-#RaidSummaryContainer > .raid-summary > .info > ul > li > svg {
-    box-sizing: content-box;
-    display: inline-block;
-    height: 1em;
-    vertical-align: -0.125em;
-}
-
 /* player-data */
-#RaidSummaryContainer > .raid-summary > .player-data {
-    flex: 1 1 0%;
+#RaidSummaryContainer > .raid-summary .player-data {
+    flex-shrink: 1;
+    flex-grow: 1;
+    flex-basis: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    overflow: clip;
+    flex-wrap: nowrap;
+    gap: 0.5rem;
+}
+
+#RaidSummaryContainer > .raid-summary .player-data > .head {
+    background-color: #000;
+    border-top-right-radius: 0.5rem;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 1rem 100%);
+    padding-left: 5rem;
+    padding-right: 5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#RaidSummaryContainer > .raid-summary .player-data > .containers {
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-right: 0.5rem;
+    margin-left: 1rem;
 }
 
-#RaidSummaryContainer > .raid-summary > .player-data ul > li {
-    width: 300px;
+#RaidSummaryContainer > .raid-summary .player-data > .containers > ul {
+    min-width: 200px;
+    max-width: 500px;
+    flex: 1 1 auto;
+}
+
+#RaidSummaryContainer > .raid-summary .player-data .player-row {
+    height: 24px;
     display: flex;
     align-items: center;
     gap: 0.25rem;
     padding-left: 0.25rem;
     padding-right: 0.25rem;
     border: 1px solid;
+    white-space: nowrap;
 }
 
-#RaidSummaryContainer > .raid-summary > .player-data ul > li > p {
-    margin-bottom: 0;
+#RaidSummaryContainer > .raid-summary .player-data .player-row > img {
+    width: 22px;
+    height: 22px;
 }
 
-#RaidSummaryContainer > .raid-summary > .player-data ul > li > img {
-    width: 32px;
-    height: 32px;
+#RaidSummaryContainer > .raid-summary .player-data .player-row .name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#RaidSummaryContainer > .raid-summary .player-data .player-row .dps {
+    display: inline-block;
+    width: 50px;
+    text-align: center;
+}
+
+#RaidSummaryContainer > .raid-summary .player-data .player-row .dps-percentage {
+    display: inline-block;
+    width: 30px;
+    margin-left: 5px;
+    text-align: center;
+}
+
+@media (max-width: 1250px) {
+    #RaidSummaryContainer > .raid-summary .player-data > .containers > ul {
+        flex: 1 1 45%;
+    }
+}
+
+@media (max-width: 1000px) {
+    #RaidSummaryContainer > .raid-summary .player-data > .head {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+}
+@media (max-width: 682px) {
+    #RaidSummaryContainer > .raid-summary .player-data {
+        display: none !important;
+    }
+
+    #RaidSummaryContainer > .raid-summary .info {
+        max-width: none;
+    }
+
+    #RaidSummaryContainer > .raid-summary .info > div {
+        flex-direction: row-reverse;
+        justify-content: start;
+        align-items: end;
+        gap: 3rem;
+    }
 }

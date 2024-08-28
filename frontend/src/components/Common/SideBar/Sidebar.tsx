@@ -4,10 +4,7 @@ import { DiscordIcon } from "@components/Common/Icons/DiscordIcon";
 
 export function SideBar() {
     return (
-        <div
-            className="d-flex flex-column flex-shrink-0"
-            style={{ width: "5rem" }}
-            id="SideNavigationBar">
+        <div className="d-flex flex-column flex-shrink-0" id="SideNavigationBar">
             <ul className="nav nav-pills nav-flush flex-column mb-auto text-center">
                 <li>
                     <Link

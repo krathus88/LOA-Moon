@@ -1,0 +1,27 @@
+#RaidOverallContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+#RaidOverallContainer #FilterContainer {
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: clip;
+}
+
+@media (min-width: 1501px) {
+    #RaidOverallContainer #FilterContainer {
+        flex: 0 0 auto;
+        width: 16.66666667%;
+    }
+}
+
+@media (max-width: 1500px) {
+    #RaidOverallContainer {
+        flex-direction: column;
+    }
+
+    #RaidOverallContainer > #RaidSummaryContainer {
+        margin-top: 1rem;
+    }
+}

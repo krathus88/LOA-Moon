@@ -1,5 +1,6 @@
 :root {
     --bs-body-bg: #f0f1f1;
+    --side-navigation-width: 60px;
     /* --theme-background-color: #f0f1f1; */ /* Default light theme color */
 }
 
@@ -24,6 +25,10 @@ body {
     height: 100dvh;
 }
 
+main {
+    margin-left: var(--side-navigation-width);
+}
+
 .font-ita {
     font-style: italic;
 }
@@ -44,4 +49,26 @@ body {
 
 .no-link {
     text-decoration: none !important;
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+.hidden-i {
+    display: none !important;
+}
+
+.visible-i {
+    display: block !important;
+}
+
+@media (max-width: 767px) {
+    main {
+        margin-left: 0px;
+    }
 }
