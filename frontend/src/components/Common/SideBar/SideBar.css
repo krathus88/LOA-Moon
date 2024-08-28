@@ -12,4 +12,13 @@
 
 #SideNavigationBar {
     height: 80dvh;
+    position: fixed;
+    margin-top: 60px;
+    width: var(--side-navigation-width);
+}
+
+@media (max-width: 767px) {
+    #SideNavigationBar {
+        display: none !important;
+    }
 }

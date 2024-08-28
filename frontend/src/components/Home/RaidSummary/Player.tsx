@@ -24,19 +24,19 @@ export function Player({
 
     return (
         <li
-            className="mb-1 rounded-3 shadow-lg"
+            className="player-row mb-1 rounded-3 shadow-lg"
             style={{
                 borderColor: color,
                 backgroundImage: `linear-gradient(to right, ${color} ${dps_percentage}%,  transparent 0%`,
             }}>
             <img src={getIcon(iconId)} alt={`Icon ${iconId}`} />
-            <p>
-                {engraving}
-                <span className="fw-light"> | </span>
-                {name}
-            </p>
-            <p className="ms-auto">{dps}/s</p>
-            <p className="ms-2">{dps_percentage}%</p>
+            <small className="name fw-light">
+                {engraving} - {name}
+            </small>
+            <div className="ms-auto">
+                <small className="dps fw-light">{dps}/s</small>
+                <small className="dps-percentage fw-light">{dps_percentage}%</small>
+            </div>
         </li>
     );
 }
