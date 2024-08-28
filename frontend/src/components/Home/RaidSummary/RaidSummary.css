@@ -191,5 +191,12 @@
         right: 0;
         left: auto;
         clip-path: polygon(21% 0, 100% 0, 100% 100%, 0 100%);
+        width: 325px;
+    }
+}
+
+@media (max-width: 682px) {
+    #RaidSummaryContainer > .raid-summary .raid-summary-background {
+        width: 275px;
     }
 }
