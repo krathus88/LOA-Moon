@@ -1,0 +1,15 @@
+[data-bs-theme="dark"] {
+    #SideNavigationBar #SideBarContacts svg path {
+        fill: #ffffff;
+    }
+}
+
+[data-bs-theme="light"] {
+    #SideNavigationBar #SideBarContacts svg path {
+        fill: #000000;
+    }
+}
+
+#SideNavigationBar {
+    height: 80dvh;
+}
