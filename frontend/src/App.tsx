@@ -1,6 +1,7 @@
 import { lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Layout } from "@components/Common/Layout";
+import "./App.css";
 
 const HomePage = lazy(() =>
     import("@pages/HomePage").then((module) => ({

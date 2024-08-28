@@ -1,11 +1,10 @@
+import { RaidSummaryContainer } from "@components/Home/RaidSummary/RaidSummaryContainer";
 import "@components/Home/Home.css";
 
 export function Component() {
     return (
-        <main>
-            <div className="container my-5">
-                <p>Hello world</p>
-            </div>
+        <main className="mx-auto">
+            <RaidSummaryContainer />
         </main>
     );
 }

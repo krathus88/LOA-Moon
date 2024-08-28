@@ -1,0 +1,5 @@
+header > a {
+    margin-top: 5px;
+    flex: 1;
+    color: var(--bs-body-color);
+}

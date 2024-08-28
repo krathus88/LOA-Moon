@@ -1,0 +1,59 @@
+#RaidSummaryContainer {
+    min-width: 1000px;
+}
+
+#RaidSummaryContainer > .raid-summary {
+    height: 200px;
+    display: flex;
+}
+
+#RaidSummaryContainer > .raid-summary ul {
+    list-style-type: none;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+
+/* info */
+#RaidSummaryContainer > .raid-summary > .info {
+    flex: 0 1 auto;
+    margin-right: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#RaidSummaryContainer > .raid-summary > .info > h4 {
+    margin-bottom: 0.25rem;
+}
+
+#RaidSummaryContainer > .raid-summary > .info > ul > li > svg {
+    box-sizing: content-box;
+    display: inline-block;
+    height: 1em;
+    vertical-align: -0.125em;
+}
+
+/* player-data */
+#RaidSummaryContainer > .raid-summary > .player-data {
+    flex: 1 1 0%;
+    display: flex;
+    justify-content: space-around;
+}
+
+#RaidSummaryContainer > .raid-summary > .player-data ul > li {
+    width: 300px;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    border: 1px solid;
+}
+
+#RaidSummaryContainer > .raid-summary > .player-data ul > li > p {
+    margin-bottom: 0;
+}
+
+#RaidSummaryContainer > .raid-summary > .player-data ul > li > img {
+    width: 32px;
+    height: 32px;
+}
