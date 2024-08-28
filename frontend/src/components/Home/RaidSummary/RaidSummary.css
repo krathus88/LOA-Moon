@@ -6,13 +6,28 @@
 }
 
 #RaidSummaryContainer > .raid-summary {
+    background-color: #282830;
+    position: relative;
     display: flex;
     flex-direction: row;
-    text-shadow: #000000 1px 1px 2px;
     text-shadow: #000000 1px 1px 2px;
     border-width: 2px !important;
     max-width: 1200px;
     width: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+#RaidSummaryContainer > .raid-summary .raid-summary-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 305px;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    pointer-events: none;
+    clip-path: polygon(0 0, 79% 0, 100% 100%, 0 100%);
 }
 
 #RaidSummaryContainer > .raid-summary ul {
@@ -69,7 +84,7 @@
 #RaidSummaryContainer > .raid-summary .player-data > .head {
     background-color: #000;
     border-top-right-radius: 0.5rem;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 1rem 100%);
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 1% 100%);
     padding-left: 5rem;
     padding-right: 5rem;
     display: flex;
@@ -132,12 +147,29 @@
     }
 }
 
+@media (max-width: 1150px) {
+    #RaidSummaryContainer > .raid-summary .raid-summary-background {
+        width: 279px;
+    }
+}
+
+@media (max-width: 1075px) {
+    #RaidSummaryContainer > .raid-summary .raid-summary-background {
+        width: 260px;
+    }
+}
+
 @media (max-width: 1000px) {
     #RaidSummaryContainer > .raid-summary .player-data > .head {
         padding-left: 3rem;
         padding-right: 3rem;
     }
+
+    #RaidSummaryContainer > .raid-summary .raid-summary-background {
+        width: 241px;
+    }
 }
+
 @media (max-width: 682px) {
     #RaidSummaryContainer > .raid-summary .player-data {
         display: none !important;
@@ -152,5 +184,12 @@
         justify-content: start;
         align-items: end;
         gap: 3rem;
+    }
+
+    #RaidSummaryContainer > .raid-summary .raid-summary-background {
+        top: 0;
+        right: 0;
+        left: auto;
+        clip-path: polygon(21% 0, 100% 0, 100% 100%, 0 100%);
     }
 }
