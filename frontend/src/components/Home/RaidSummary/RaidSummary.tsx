@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Player } from "./Player";
+import { getRaidWallpaper } from "@globals/functions";
 
 export function RaidSummary() {
     const [isHeightLarge, setIsHeightLarge] = useState(false);
@@ -29,6 +30,11 @@ export function RaidSummary() {
 
     return (
         <div className="raid-summary pb-1 border shadow rounded-3" ref={raidSummaryRef}>
+            {/* Raid Wallpaper */}
+            <img
+                src={getRaidWallpaper("brelshaza")}
+                alt="Background Raid Image"
+                className="raid-summary-background"></img>
             {/* Info */}
             <div className="info">
                 <h5>[G1] Brelshaza, the Queen of Simps</h5>
@@ -218,6 +224,108 @@ export function RaidSummary() {
                 </div>
                 {/* Player Containers */}
                 <div className="containers">
+                    <ul>
+                        <Player
+                            iconId={101}
+                            engraving="H"
+                            name="Krathus"
+                            dps="8.7M"
+                            dps_percentage={48}
+                            type="dps"
+                        />
+                        <Player
+                            iconId={102}
+                            engraving="RE"
+                            name="Krathus"
+                            dps="8.7M"
+                            dps_percentage={30}
+                            type="dps"
+                        />
+                        <Player
+                            iconId={103}
+                            engraving="S"
+                            name="Krathus"
+                            dps="8.7M"
+                            dps_percentage={19}
+                            type="dps"
+                        />
+                        <Player
+                            iconId={104}
+                            engraving="IDK"
+                            name="Krathus"
+                            dps="8.7M"
+                            dps_percentage={3}
+                            type="supp"
+                        />
+                    </ul>
+                    <ul>
+                        <Player
+                            iconId={101}
+                            engraving="H"
+                            name="Krathus"
+                            dps="8.7M"
+                            dps_percentage={48}
+                            type="dps"
+                        />
+                        <Player
+                            iconId={102}
+                            engraving="RE"
+                            name="Krathus"
+                            dps="8.7M"
+                            dps_percentage={30}
+                            type="dps"
+                        />
+                        <Player
+                            iconId={103}
+                            engraving="S"
+                            name="Krathus"
+                            dps="8.7M"
+                            dps_percentage={19}
+                            type="dps"
+                        />
+                        <Player
+                            iconId={104}
+                            engraving="IDK"
+                            name="Krathus"
+                            dps="8.7M"
+                            dps_percentage={3}
+                            type="supp"
+                        />
+                    </ul>
+                    <ul>
+                        <Player
+                            iconId={101}
+                            engraving="H"
+                            name="Krathus"
+                            dps="8.7M"
+                            dps_percentage={48}
+                            type="dps"
+                        />
+                        <Player
+                            iconId={102}
+                            engraving="RE"
+                            name="Krathus"
+                            dps="8.7M"
+                            dps_percentage={30}
+                            type="dps"
+                        />
+                        <Player
+                            iconId={103}
+                            engraving="S"
+                            name="Krathus"
+                            dps="8.7M"
+                            dps_percentage={19}
+                            type="dps"
+                        />
+                        <Player
+                            iconId={104}
+                            engraving="IDK"
+                            name="Krathus"
+                            dps="8.7M"
+                            dps_percentage={3}
+                            type="supp"
+                        />
+                    </ul>
                     <ul>
                         <Player
                             iconId={101}
