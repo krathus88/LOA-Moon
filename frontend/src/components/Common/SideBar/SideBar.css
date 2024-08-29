@@ -13,7 +13,7 @@
 #SideNavigationBar {
     height: 80dvh;
     position: fixed;
-    margin-top: 60px;
+    margin-top: 80px;
     width: var(--side-navigation-width);
 }
 

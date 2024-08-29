@@ -3,12 +3,23 @@ import "./RaidSummary.css";
 
 export function RaidSummaryContainer() {
     return (
-        <div className="col" id="RaidSummaryContainer">
-            <RaidSummary />
-            <RaidSummary />
-            <RaidSummary />
-            <RaidSummary />
-            <RaidSummary />
-        </div>
+        <ul className="col" id="RaidSummaryContainer">
+            <li>
+                <RaidSummary />
+            </li>
+
+            <li>
+                <RaidSummary />
+            </li>
+            <li>
+                <RaidSummary />
+            </li>
+            <li>
+                <RaidSummary />
+            </li>
+            <li>
+                <RaidSummary />
+            </li>
+        </ul>
     );
 }

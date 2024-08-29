@@ -3,22 +3,35 @@
     flex-direction: column;
     gap: 1rem;
     align-items: center;
+    list-style-type: none;
+    margin-bottom: 0;
+    padding-left: 0;
 }
 
-#RaidSummaryContainer > .raid-summary {
+#RaidSummaryContainer > li {
+    max-width: 1200px;
+    width: 100%;
+    transition-duration: 0.3s;
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+#RaidSummaryContainer > li:hover {
+    opacity: 0.75;
+}
+
+#RaidSummaryContainer .raid-summary {
     background-color: #282830;
     position: relative;
     display: flex;
     flex-direction: row;
-    text-shadow: #000000 1px 1px 2px;
+    text-shadow: 1px 1px 2px #000;
     border-width: 2px !important;
-    max-width: 1200px;
-    width: 100%;
     overflow: hidden;
     z-index: 1;
 }
 
-#RaidSummaryContainer > .raid-summary .raid-summary-background {
+#RaidSummaryContainer .raid-summary .raid-summary-background {
     position: absolute;
     top: 0;
     left: 0;
@@ -30,14 +43,14 @@
     clip-path: polygon(0 0, 79% 0, 100% 100%, 0 100%);
 }
 
-#RaidSummaryContainer > .raid-summary ul {
+#RaidSummaryContainer .raid-summary ul {
     list-style-type: none;
     padding-left: 0;
     margin-bottom: 0;
 }
 
 /* info */
-#RaidSummaryContainer > .raid-summary .info {
+#RaidSummaryContainer .raid-summary .info {
     min-width: 175px;
     max-width: 225px;
     flex-shrink: 1;
@@ -51,25 +64,25 @@
     margin-left: 0.5rem;
 }
 
-#RaidSummaryContainer > .raid-summary .info > h5 {
+#RaidSummaryContainer .raid-summary .info > h5 {
     margin-bottom: 0.25rem;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-#RaidSummaryContainer > .raid-summary .info svg {
+#RaidSummaryContainer .raid-summary .info svg {
     box-sizing: content-box;
     display: inline-block;
     vertical-align: -0.125em;
 }
 
-#RaidSummaryContainer > .raid-summary .info > div {
+#RaidSummaryContainer .raid-summary .info > div {
     display: flex;
     flex-direction: column;
 }
 
 /* player-data */
-#RaidSummaryContainer > .raid-summary .player-data {
+#RaidSummaryContainer .raid-summary .player-data {
     flex-shrink: 1;
     flex-grow: 1;
     flex-basis: 80%;
@@ -81,7 +94,7 @@
     gap: 0.5rem;
 }
 
-#RaidSummaryContainer > .raid-summary .player-data > .head {
+#RaidSummaryContainer .raid-summary .player-data > .head {
     background-color: #000;
     border-top-right-radius: 0.5rem;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 1% 100%);
@@ -92,7 +105,7 @@
     justify-content: space-between;
 }
 
-#RaidSummaryContainer > .raid-summary .player-data > .containers {
+#RaidSummaryContainer .raid-summary .player-data > .containers {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
@@ -101,13 +114,13 @@
     margin-left: 1rem;
 }
 
-#RaidSummaryContainer > .raid-summary .player-data > .containers > ul {
+#RaidSummaryContainer .raid-summary .player-data > .containers > ul {
     min-width: 200px;
     max-width: 500px;
     flex: 1 1 auto;
 }
 
-#RaidSummaryContainer > .raid-summary .player-data .player-row {
+#RaidSummaryContainer .raid-summary .player-data .player-row {
     height: 24px;
     display: flex;
     align-items: center;
@@ -118,85 +131,86 @@
     white-space: nowrap;
 }
 
-#RaidSummaryContainer > .raid-summary .player-data .player-row > img {
+#RaidSummaryContainer .raid-summary .player-data .player-row > img {
     width: 22px;
     height: 22px;
 }
 
-#RaidSummaryContainer > .raid-summary .player-data .player-row .name {
+#RaidSummaryContainer .raid-summary .player-data .player-row .name {
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-#RaidSummaryContainer > .raid-summary .player-data .player-row .dps {
+#RaidSummaryContainer .raid-summary .player-data .player-row .dps {
     display: inline-block;
     width: 50px;
     text-align: center;
 }
 
-#RaidSummaryContainer > .raid-summary .player-data .player-row .dps-percentage {
+#RaidSummaryContainer .raid-summary .player-data .player-row .dps-percentage {
     display: inline-block;
     width: 30px;
     margin-left: 5px;
     text-align: center;
 }
 
-@media (max-width: 1250px) {
-    #RaidSummaryContainer > .raid-summary .player-data > .containers > ul {
+@media (max-width: 1251px) {
+    #RaidSummaryContainer .raid-summary .player-data > .containers > ul {
         flex: 1 1 45%;
     }
 }
 
 @media (max-width: 1150px) {
-    #RaidSummaryContainer > .raid-summary .raid-summary-background {
+    #RaidSummaryContainer .raid-summary .raid-summary-background {
         width: 279px;
     }
 }
 
 @media (max-width: 1075px) {
-    #RaidSummaryContainer > .raid-summary .raid-summary-background {
+    #RaidSummaryContainer .raid-summary .raid-summary-background {
         width: 260px;
     }
 }
 
 @media (max-width: 1000px) {
-    #RaidSummaryContainer > .raid-summary .player-data > .head {
+    #RaidSummaryContainer .raid-summary .player-data > .head {
         padding-left: 3rem;
         padding-right: 3rem;
     }
 
-    #RaidSummaryContainer > .raid-summary .raid-summary-background {
+    #RaidSummaryContainer .raid-summary .raid-summary-background {
         width: 241px;
     }
 }
 
 @media (max-width: 682px) {
-    #RaidSummaryContainer > .raid-summary .player-data {
+    #RaidSummaryContainer .raid-summary .player-data {
         display: none !important;
     }
 
-    #RaidSummaryContainer > .raid-summary .info {
+    #RaidSummaryContainer .raid-summary .info {
         max-width: none;
     }
 
-    #RaidSummaryContainer > .raid-summary .info > div {
+    #RaidSummaryContainer .raid-summary .info > div {
         flex-direction: row-reverse;
         justify-content: start;
         align-items: end;
         gap: 3rem;
     }
 
-    #RaidSummaryContainer > .raid-summary .raid-summary-background {
+    #RaidSummaryContainer .raid-summary .raid-summary-background {
         top: 0;
         right: 0;
         left: auto;
         clip-path: polygon(21% 0, 100% 0, 100% 100%, 0 100%);
-        width: 325px;
+        width: 275px;
     }
 }
 
-@media (max-width: 682px) {
-    #RaidSummaryContainer > .raid-summary .raid-summary-background {
-        width: 275px;
+@media (max-width: 400px) {
+    #RaidSummaryContainer .raid-summary .raid-summary-background {
+        width: 100%;
+        clip-path: none;
     }
 }
