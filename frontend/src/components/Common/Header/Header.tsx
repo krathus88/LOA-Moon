@@ -1,4 +1,4 @@
-import { SITE_NAME } from "@globals/constants";
+import { SITE_NAME } from "../../../utils/constants";
 import { useState } from "react";
 import { Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -12,13 +12,16 @@ export function Header() {
     return (
         <header>
             <Navbar expanded={expanded} expand="md" className="mx-lg-5 mx-md-3 mx-2">
-                <Navbar.Brand
-                    className="text-center no-link"
-                    as={Link}
-                    to="/"
-                    onClick={() => setExpanded(false)}>
-                    <h1 className="fw-bold">{SITE_NAME}</h1>
-                </Navbar.Brand>
+                <div className="mx-auto">
+                    <Navbar.Brand
+                        className="text-center no-link"
+                        as={Link}
+                        to="/"
+                        onClick={() => setExpanded(false)}>
+                        <h1 className="fw-bold">{SITE_NAME}</h1>
+                    </Navbar.Brand>
+                </div>
+
                 <ThemeSwitch />
                 <Navbar.Toggle
                     aria-controls="responsive-navbar-nav"

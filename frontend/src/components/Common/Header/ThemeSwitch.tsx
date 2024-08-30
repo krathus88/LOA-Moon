@@ -16,7 +16,7 @@ export function ThemeSwitch() {
     };
 
     return (
-        <div className="ms-auto d-flex align-items-center me-3" id="themeSwitch">
+        <div className="d-flex align-items-center me-3" id="themeSwitch">
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="20"

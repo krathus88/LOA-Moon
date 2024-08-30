@@ -1,13 +1,13 @@
-import "@components/Home/Home.css";
+import "@components/PartyRankings/PartyRankings.css";
 
 export function Component() {
     return (
         <main>
             <div className="container my-5">
-                <p>Tab1</p>
+                <p>Party Rankings</p>
             </div>
         </main>
     );
 }
 
-Component.displayName = "Tab1";
+Component.displayName = "PartyRankingsPage";

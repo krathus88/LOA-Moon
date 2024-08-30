@@ -1,7 +1,6 @@
 import { lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Layout } from "@components/Common/Layout";
-import "./App.css";
 
 const HomePage = lazy(() =>
     import("@pages/HomePage").then((module) => ({
@@ -9,26 +8,20 @@ const HomePage = lazy(() =>
     }))
 );
 
-const Tab1 = lazy(() =>
-    import("@pages/Tab1").then((module) => ({
+const ClassRankingsPage = lazy(() =>
+    import("@pages/ClassRankingsPage").then((module) => ({
         default: module.Component,
     }))
 );
 
-const Tab2 = lazy(() =>
-    import("@pages/Tab2").then((module) => ({
+const PartyRankingsPage = lazy(() =>
+    import("@pages/PartyRankingsPage").then((module) => ({
         default: module.Component,
     }))
 );
 
-const Tab3 = lazy(() =>
-    import("@pages/Tab3").then((module) => ({
-        default: module.Component,
-    }))
-);
-
-const Tab4 = lazy(() =>
-    import("@pages/Tab4").then((module) => ({
+const FaqPage = lazy(() =>
+    import("@pages/FaqPage").then((module) => ({
         default: module.Component,
     }))
 );
@@ -42,20 +35,23 @@ const router = createBrowserRouter([
                 element: <HomePage />,
             },
             {
-                path: "/tab1",
-                element: <Tab1 />,
+                path: "/class-rankings",
+                element: <ClassRankingsPage />,
             },
             {
-                path: "/tab2",
-                element: <Tab2 />,
+                path: "/party-rankings",
+                element: <PartyRankingsPage />,
             },
             {
-                path: "/tab3",
-                element: <Tab3 />,
+                path: "/faq",
+                element: <FaqPage />,
             },
             {
-                path: "/tab4",
-                element: <Tab4 />,
+                path: "/encounter/:encounter_id",
+                async lazy() {
+                    const { Component } = await import("@pages/EncounterPage");
+                    return { loader: Component.loader, Component };
+                },
             },
         ],
     },
