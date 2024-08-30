@@ -1,11 +1,13 @@
 [data-bs-theme="dark"] {
-    #SideNavigationBar #SideBarContacts svg path {
-        fill: #ffffff;
+    #SideNavigationBar > ul > li > a {
+        --bs-nav-link-color: #fff;
+        --bs-nav-link-hover-color: #ffffffa1;
+        --bs-nav-link-disabled-color: #ffffff60;
     }
 }
 
 [data-bs-theme="light"] {
-    #SideNavigationBar #SideBarContacts svg path {
+    #SideNavigationBar a svg {
         fill: #000000;
     }
 }
@@ -15,6 +17,10 @@
     position: fixed;
     margin-top: 80px;
     width: var(--side-navigation-width);
+}
+
+#SideNavigationBar a.nav-link {
+    fill: #fff;
 }
 
 @media (max-width: 767px) {

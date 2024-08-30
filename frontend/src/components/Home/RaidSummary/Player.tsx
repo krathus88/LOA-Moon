@@ -1,4 +1,4 @@
-import { getIcon } from "@globals/functions";
+import { getIcon } from "../../../utils/functions";
 
 type PlayerProps = {
     iconId: number;

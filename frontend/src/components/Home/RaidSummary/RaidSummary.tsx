@@ -1,10 +1,14 @@
-import { getRaidWallpaper } from "@globals/functions";
+import { getRaidWallpaper } from "../../../utils/functions";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Info } from "./Info";
 import { PlayerData } from "./PlayerData";
 
-export function RaidSummary() {
+type RaidSummaryProps = {
+    encounter_id: number;
+};
+
+export function RaidSummary({ encounter_id }: RaidSummaryProps) {
     const [isHeightLarge, setIsHeightLarge] = useState(false);
     const [isWidthLarge, setIsWidthLarge] = useState(true);
     const raidSummaryRef = useRef<HTMLAnchorElement | null>(null);
@@ -17,7 +21,6 @@ export function RaidSummary() {
 
                 const width = raidSummaryRef.current.clientWidth;
                 setIsWidthLarge(width >= 647);
-                console.log(width);
             }
         };
 
@@ -33,12 +36,12 @@ export function RaidSummary() {
     return (
         <Link
             className="raid-summary pb-1 border shadow rounded-3 no-link"
-            to="/tab1"
+            to={`/encounter/${encounter_id}`}
             ref={raidSummaryRef}>
             {/* Raid Wallpaper */}
             <img
                 src={getRaidWallpaper("brelshaza")}
-                alt="Background Raid Image"
+                alt=""
                 className="raid-summary-background"></img>
             <Info isHeightLarge={isHeightLarge} isWidthLarge={isWidthLarge} />
             <PlayerData isHeightLarge={isHeightLarge} />

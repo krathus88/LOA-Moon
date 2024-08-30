@@ -71,6 +71,12 @@ main {
     display: block !important;
 }
 
+.main-container {
+    display: flex;
+    flex-direction: row;
+    overflow: hidden;
+}
+
 @media (max-width: 767px) {
     main {
         margin-left: 0px;

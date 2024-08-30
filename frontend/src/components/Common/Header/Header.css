@@ -1,16 +1,17 @@
-header {
-}
-
 header > nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-header > nav > .navbar-brand {
+header > nav .navbar-brand {
     flex: 1;
     color: var(--bs-body-color);
     margin-right: 0 !important;
+}
+
+header > nav .navbar-brand:hover {
+    color: var(--bs-body-color);
 }
 
 header h1 {
