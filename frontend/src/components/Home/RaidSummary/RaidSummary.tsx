@@ -67,7 +67,8 @@ export function RaidSummary({
             <img
                 src={getRaidWallpaper(instance_name)}
                 alt=""
-                className="raid-summary-background"></img>
+                className="raid-summary-background"
+            />
             <Info
                 isHeightLarge={isHeightLarge}
                 isWidthLarge={isWidthLarge}

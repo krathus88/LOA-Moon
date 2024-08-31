@@ -14,7 +14,7 @@ export const fetchData = async (
 ) => {
     try {
         const url = `${BASE_URL}${endpoint}`;
-
+        console.log(url);
         const response = await axios({
             method,
             url,
