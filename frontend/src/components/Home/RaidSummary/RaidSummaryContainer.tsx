@@ -1,68 +1,112 @@
-import { useState, useEffect, useCallback, useRef } from "react";
-import { RaidSummary } from "./RaidSummary";
-import "./RaidSummary.css";
 import { Loading } from "@components/Common/Loading";
 import { RaidSummaryType } from "@type/RaidSummaryType";
+import { fetchData } from "@utils/functions";
+import { useEffect, useRef, useState } from "react";
+import { RaidSummary } from "./RaidSummary";
+import "./RaidSummary.css";
 
-type RaidSummaryContainerProps = {
-    data: RaidSummaryType[];
-};
-
-export function RaidSummaryContainer({ data }: RaidSummaryContainerProps) {
-    const [displayedEntries, setDisplayedEntries] = useState<RaidSummaryType[]>([]);
-    const [isLoading, setIsLoading] = useState(false);
-    const [hasMore, setHasMore] = useState(true); // Assuming more data might be available initially
+export function RaidSummaryContainer() {
+    const [data, setData] = useState<RaidSummaryType[]>([]);
+    const [displayedData, setDisplayedData] = useState<RaidSummaryType[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+    const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(1);
+    const [noResults, setNoResults] = useState(false);
     const observer = useRef<IntersectionObserver | null>(null);
 
-    // Load the initial entries
-    useEffect(() => {
-        setDisplayedEntries(data.slice(0, 10));
-    }, [data]);
-
-    const loadMoreEntries = useCallback(() => {
-        if (isLoading || !hasMore) return;
-
-        setIsLoading(true);
-
-        const newEntries = data.slice(
-            displayedEntries.length,
-            displayedEntries.length + 5
-        );
-        setDisplayedEntries((prevEntries) => [...prevEntries, ...newEntries]);
-        setIsLoading(false);
-        setHasMore(newEntries.length > 0); // If no more data is available
-    }, [data, displayedEntries, isLoading, hasMore]);
+    const fetchDataFromAPI = async (page: number = 1) => {
+        try {
+            const result = await fetchData("GET", `home?page=${page}`);
+            return result;
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            return [];
+        }
+    };
 
     useEffect(() => {
+        const fetchDataAsync = async () => {
+            const result = await fetchDataFromAPI();
+
+            if (result.length <= 0) {
+                setNoResults(true);
+                setIsLoading(false);
+
+                return;
+            }
+
+            setData(result);
+            setDisplayedData(result.slice(0, 10));
+            setIsLoading(false);
+            setHasMore(result.length > 10);
+            setPage(2);
+        };
+
+        fetchDataAsync();
+    }, []);
+
+    useEffect(() => {
+        const loadMoreData = async () => {
+            if (!hasMore) {
+                const result = await fetchDataFromAPI(page);
+
+                if (result.length <= 0) {
+                    setNoResults(true);
+                    setIsLoading(false);
+
+                    return;
+                }
+
+                setData((prevData) => [...prevData, ...result]);
+                setPage(page + 1);
+            }
+
+            const nextBatch = data.slice(
+                displayedData.length,
+                displayedData.length + 5
+            );
+
+            setDisplayedData((prevData) => [...prevData, ...nextBatch]);
+
+            setHasMore(displayedData.length + 5 < data.length);
+
+            setIsLoading(false);
+        };
+
+        if (isLoading || noResults) return;
+
+        /* Intersection Observer */
         if (observer.current) observer.current.disconnect();
 
-        const options = {
-            root: null, // viewport
-            rootMargin: "0px",
-            threshold: 1.0, // trigger when the target is fully visible
-        };
+        observer.current = new IntersectionObserver(
+            (entries) => {
+                if (entries[0].isIntersecting && !isLoading) {
+                    setIsLoading(true);
 
-        observer.current = new IntersectionObserver((entries) => {
-            if (entries[0].isIntersecting) {
-                loadMoreEntries();
-            }
-        }, options);
+                    loadMoreData();
+                }
+            },
+            { threshold: 1.0 }
+        );
 
-        const target = document.querySelector("#scrollTarget");
-        if (target) {
-            observer.current.observe(target);
-        }
+        const lastElement = document.querySelector("#scrollTarget");
+        if (lastElement) observer.current.observe(lastElement);
 
         return () => {
-            if (observer.current) observer.current.disconnect();
+            if (observer.current) {
+                observer.current.disconnect();
+            }
         };
-    }, [loadMoreEntries]);
+    }, [isLoading, hasMore, displayedData, data, page, noResults]);
 
-    console.log(displayedEntries);
+    if (isLoading && data.length <= 0) return <Loading />;
+
+    if (noResults && data.length >= 0)
+        return <li className="text-center">No data to show.</li>;
 
     return (
         <>
-            {displayedEntries.map((entry) => (
+            {displayedData.map((entry) => (
                 <li key={entry.encounter_id}>
                     <RaidSummary
                         encounter_id={entry.encounter_id}
@@ -85,7 +129,7 @@ export function RaidSummaryContainer({ data }: RaidSummaryContainerProps) {
                     <Loading />
                 </li>
             )}
-            {!hasMore && <p>No more entries to load</p>}
+            {noResults && <li className="text-center">No more data to show.</li>}
             <div id="scrollTarget"></div>
         </>
     );

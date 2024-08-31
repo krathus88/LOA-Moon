@@ -21,7 +21,6 @@ def format_raid_summary_data(data):
             total_damage += player_entry["dps"]
 
         for player_entry in entry["players"]:
-            print(player_entry)
             if player_entry["is_dead"]:
                 death_count += 1
 

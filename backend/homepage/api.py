@@ -11,11 +11,14 @@ router = Router()
 
 @router.get("/")
 # @decorate_view(cache_page(2 * 60))  # seconds
-def get_home_data(request):
+def get_home_data(request, page: int = 1):
+    page_size = 25  # Number of items per page
+    offset = (page - 1) * page_size  # Calculate the offset
+
     # Query to get the latest 20 entries, ordered by fight_end descending
     latest_encounters = EncounterPreview.objects.prefetch_related("players").order_by(
         "-fight_end"
-    )[:20]
+    )[offset : (offset + page_size)]
 
     data = []
     for encounter in latest_encounters:
