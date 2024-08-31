@@ -1,9 +1,11 @@
 import sqlite3
+import json
 
 from django.db import models
 
-from .models import EncounterPreview
-from constants.encounters import encounter_map
+from homepage.models import EncounterPreview
+from constants.encounters import encounter_map, boss_hp_map
+from globals.classes import classify_class
 
 
 def parse_db_file(db_file_path):
@@ -110,13 +112,7 @@ def parse_db_file(db_file_path):
 
 def format_db_data(data: dict):
     all_formatted_data = []
-
-    lattest_encounter_id = EncounterPreview.objects.aggregate(
-        max_id=models.Max("encounter_id")
-    )["max_id"]
-
-    if not lattest_encounter_id:
-        lattest_encounter_id = 0
+    all_player_data = []
 
     for key, value in data.items():
         # If data is invalid, skip
@@ -125,6 +121,9 @@ def format_db_data(data: dict):
             or not value["encounter_preview"]["difficulty"]
         ):
             continue
+
+        misc_data = json.loads(value["encounter"]["misc"])
+        party_info = misc_data.get("partyInfo", {})
 
         npc_id = None
         max_boss_hp = None
@@ -137,6 +136,13 @@ def format_db_data(data: dict):
                     max_boss_hp = entry["max_hp"]
 
                 continue
+
+            # Determine the party_num by checking the player's name in the party_info
+            party_num = 0
+            for p_num, players in party_info.items():
+                if entry["name"] in players:
+                    party_num = int(p_num)
+                    break
 
             player_data.append(
                 {
@@ -153,25 +159,27 @@ def format_db_data(data: dict):
                         else entry["gear_score"]
                     ),
                     "is_dead": True if entry["is_dead"] == 1 else False,
+                    "party_num": party_num,
+                    "local_player": entry["name"]
+                    == value["encounter_preview"]["local_player"],
                 }
             )
 
-        lattest_encounter_id += 1
+        all_player_data.append(player_data)
 
         formatted_data = {
-            "encounter_id": lattest_encounter_id,
             "fight_end": value["encounter"]["last_combat_packet"]
-            / 1000,  # Convert from miliseconds to seconds
+            / 1000,  # Convert from milliseconds to seconds
             "fight_duration": value["encounter_preview"]["duration"],
-            "local_player": value["encounter_preview"]["local_player"],
             "boss_name": value["encounter_preview"]["current_boss"],
             "difficulty": value["encounter_preview"]["difficulty"],
             "max_hp": max_boss_hp,
+            "max_hp_bars": boss_hp_map.get(
+                value["encounter_preview"]["current_boss"], None
+            ),
             "npc_id": npc_id,
         }
 
-        formatted_data["player_data"] = player_data
-
         all_formatted_data.append(formatted_data)
 
-    return all_formatted_data
+    return all_formatted_data, all_player_data
