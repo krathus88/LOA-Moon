@@ -38,6 +38,7 @@ def upload_db(request, file: UploadedFile = File(...)):
                 local_player=entry["local_player"],
                 boss_name=entry["boss_name"],
                 difficulty=entry["difficulty"],
+                max_hp=entry["max_hp"],
                 npc_id=entry["npc_id"],
                 player_data=entry["player_data"],
             )

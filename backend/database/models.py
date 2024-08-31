@@ -10,6 +10,7 @@ class EncounterPreview(models.Model):
     local_player = models.CharField(max_length=16, db_index=True)
     boss_name = models.CharField(max_length=64, db_index=True)
     difficulty = models.CharField(max_length=10, db_index=True)
+    max_hp = models.BigIntegerField(null=True)
     npc_id = models.IntegerField(null=True)
     player_data = models.JSONField()
 

@@ -3,6 +3,7 @@ import sqlite3
 from django.db import models
 
 from .models import EncounterPreview
+from constants.encounters import encounter_map
 
 
 def parse_db_file(db_file_path):
@@ -18,6 +19,13 @@ def parse_db_file(db_file_path):
     }
 
     consolidated_data = {}
+
+    # Entry needs to meet both these ID's criteria to be valid
+    valid_encounter_ids = set()
+    valid_encounter_cleared_ids = set()
+
+    # Entry CAN'T meet this ID's criteria to be valid
+    blacklisted_encounter_ids = set()
 
     for table_name in relevant_tables:
         # Fetch the column names and types
@@ -37,8 +45,27 @@ def parse_db_file(db_file_path):
                 key = row[column_indices["id"]]
             elif table_name == "encounter_preview":
                 key = row[column_indices["id"]]
+                # If cleared
+                if row[column_indices["cleared"]] == 1:
+                    valid_encounter_cleared_ids.add(key)
+
             elif table_name == "entity":
                 key = row[column_indices["encounter_id"]]
+
+                if row[column_indices["entity_type"]] == "PLAYER" and (
+                    row[column_indices["character_id"]] == 0
+                    or not row[column_indices["entity_type"]]
+                ):
+                    blacklisted_encounter_ids.add(key)
+                    continue
+
+                # If the boss is a valid one
+                if (
+                    row[column_indices["entity_type"]] == "BOSS"
+                    and row[column_indices["name"]] in encounter_map
+                    and row[column_indices["current_hp"]] <= 0
+                ):
+                    valid_encounter_ids.add(key)
             else:
                 continue
 
@@ -67,6 +94,14 @@ def parse_db_file(db_file_path):
             elif table_name == "entity":
                 consolidated_data[key]["entity"].append(row_data)
 
+    consolidated_data = {
+        key: value
+        for key, value in consolidated_data.items()
+        if key in valid_encounter_ids
+        and key in valid_encounter_cleared_ids
+        and key not in blacklisted_encounter_ids
+    }
+
     # Close the connection
     conn.close()
 
@@ -92,11 +127,14 @@ def format_db_data(data: dict):
             continue
 
         npc_id = None
+        max_boss_hp = None
         player_data = []
         for entry in value["entity"]:
             # If it's a boss, skip
             if entry["npc_id"] > 0:
-                npc_id = entry["npc_id"]
+                if entry["name"] in encounter_map:
+                    npc_id = entry["npc_id"]
+                    max_boss_hp = entry["max_hp"]
 
                 continue
 
@@ -128,6 +166,7 @@ def format_db_data(data: dict):
             "local_player": value["encounter_preview"]["local_player"],
             "boss_name": value["encounter_preview"]["current_boss"],
             "difficulty": value["encounter_preview"]["difficulty"],
+            "max_hp": max_boss_hp,
             "npc_id": npc_id,
         }
 

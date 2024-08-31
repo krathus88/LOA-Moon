@@ -9,6 +9,16 @@
     text-overflow: clip;
 }
 
+#RaidSummaryContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    list-style-type: none;
+    margin-bottom: 0;
+    padding-left: 0;
+}
+
 @media (min-width: 1501px) {
     #RaidOverallContainer #FilterContainer {
         flex: 0 0 auto;

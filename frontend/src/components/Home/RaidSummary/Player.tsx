@@ -24,7 +24,7 @@ export function Player({
 
     return (
         <li
-            className="player-row mb-1 rounded-3 shadow-lg"
+            className="player-row mb-1 rounded-3"
             style={{
                 borderColor: color,
                 backgroundImage: `linear-gradient(to right, ${color} ${dps_percentage}%,  transparent 0%`,

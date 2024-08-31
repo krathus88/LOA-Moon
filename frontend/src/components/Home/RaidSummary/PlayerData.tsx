@@ -1,10 +1,29 @@
 import { Player } from "./Player";
+import { chunkArrayIntoParties } from "@utils/functions";
+import { getPlayerType } from "@utils/functions";
+import { PlayerDataType } from "@type/RaidSummaryType";
 
 type PlayerDataProps = {
     isHeightLarge: boolean;
+    max_boss_hp: string;
+    max_boss_hp_bars: string | null;
+    avg_ilvl: number;
+    highest_ilvl: number;
+    death_count: number;
+    player_data: PlayerDataType[];
 };
 
-export function PlayerData({ isHeightLarge }: PlayerDataProps) {
+export function PlayerData({
+    isHeightLarge,
+    max_boss_hp,
+    max_boss_hp_bars,
+    avg_ilvl,
+    highest_ilvl,
+    death_count,
+    player_data,
+}: PlayerDataProps) {
+    const playerChunks = chunkArrayIntoParties(player_data, 4);
+
     return (
         <div
             className="player-data"
@@ -26,7 +45,9 @@ export function PlayerData({ isHeightLarge }: PlayerDataProps) {
                             fill="currentColor"
                             d="M64 64V32H0V64 448v32H32 480h32V416H480 64V64zM342.6 278.6l128-128-45.3-45.3L320 210.7l-57.4-57.4L240 130.7l-22.6 22.6-112 112 45.3 45.3L240 221.3l57.4 57.4L320 301.3l22.6-22.6z"></path>
                     </svg>{" "}
-                    <small className="fw-light">Total Boss HP</small>
+                    <small className="fw-light">
+                        {max_boss_hp} {max_boss_hp_bars}
+                    </small>
                 </small>
                 <small>
                     <svg
@@ -42,7 +63,9 @@ export function PlayerData({ isHeightLarge }: PlayerDataProps) {
                                 fillOpacity="1"></path>
                         </g>
                     </svg>{" "}
-                    <small className="fw-light">Avg ilvl</small>
+                    <small className="fw-light">
+                        {avg_ilvl !== null ? avg_ilvl : "N/A"} ({highest_ilvl})
+                    </small>
                 </small>
                 <small>
                     <svg
@@ -72,79 +95,26 @@ export function PlayerData({ isHeightLarge }: PlayerDataProps) {
                             />
                         </g>
                     </svg>{" "}
-                    <small>Death Count</small>
+                    <small>{death_count}</small>
                 </small>
             </div>
             {/* Player Containers */}
             <div className="containers">
-                <ul>
-                    <Player
-                        iconId={101}
-                        engraving="H"
-                        name="Krathus"
-                        dps="8.7M"
-                        dps_percentage={48}
-                        type="dps"
-                    />
-                    <Player
-                        iconId={102}
-                        engraving="RE"
-                        name="Krathus"
-                        dps="8.7M"
-                        dps_percentage={30}
-                        type="dps"
-                    />
-                    <Player
-                        iconId={103}
-                        engraving="S"
-                        name="Krathus"
-                        dps="8.7M"
-                        dps_percentage={19}
-                        type="dps"
-                    />
-                    <Player
-                        iconId={104}
-                        engraving="IDK"
-                        name="Krathus"
-                        dps="8.7M"
-                        dps_percentage={3}
-                        type="supp"
-                    />
-                </ul>
-                <ul>
-                    <Player
-                        iconId={101}
-                        engraving="H"
-                        name="Krathus"
-                        dps="8.7M"
-                        dps_percentage={48}
-                        type="dps"
-                    />
-                    <Player
-                        iconId={102}
-                        engraving="RE"
-                        name="Krathus"
-                        dps="8.7M"
-                        dps_percentage={30}
-                        type="dps"
-                    />
-                    <Player
-                        iconId={103}
-                        engraving="S"
-                        name="Krathus"
-                        dps="8.7M"
-                        dps_percentage={19}
-                        type="dps"
-                    />
-                    <Player
-                        iconId={104}
-                        engraving="IDK"
-                        name="Krathus"
-                        dps="8.7M"
-                        dps_percentage={3}
-                        type="supp"
-                    />
-                </ul>
+                {playerChunks.map((chunk, index) => (
+                    <ul key={index}>
+                        {chunk.map((player) => (
+                            <Player
+                                key={player.character_id}
+                                iconId={player.class_id} // Adjust if needed
+                                engraving="N/A" // Adjust if needed
+                                name={player.name}
+                                dps={player.dps} // Format as needed
+                                dps_percentage={player.damage_percentage} // Example calculation
+                                type={getPlayerType(player.class_id)} // Adjust type based on conditions
+                            />
+                        ))}
+                    </ul>
+                ))}
             </div>
         </div>
     );

@@ -46,21 +46,21 @@ encounter_map = {
     # G1
     "Saydon": {
         "gate": "G1",
-        "instance": "Clown",
+        "instance": "Kakul-Saydon",
     },
     # G2
     "Kakul": {
         "gate": "G2",
-        "instance": "Clown",
+        "instance": "Kakul-Saydon",
     },
     # G3
     "Kakul-Saydon": {
         "gate": "G3",
-        "instance": "Clown",
+        "instance": "Kakul-Saydon",
     },
     "Encore-Desiring Kakul-Saydon": {
         "gate": "G3",
-        "instance": "Clown",
+        "instance": "Kakul-Saydon",
     },
     ## Brelshaza
     # G1

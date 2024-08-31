@@ -1,19 +1,20 @@
 import axios from "axios";
+import { SUPP_MAP } from "./constants";
+
+const BASE_URL = import.meta.env.VITE_BACKEND_API;
 
 export const fetchData = async (
     method: string,
-    url: string,
+    endpoint: string,
     params?: {
-        puuid?: string;
-        region?: string;
-        summoner_name?: string;
-        summoner_tag?: string;
-        start?: string;
-        num_games?: string;
-        lastMatch?: string;
+        filter1?: string;
+        filter2?: string;
+        filter3?: string;
     }
 ) => {
     try {
+        const url = `${BASE_URL}${endpoint}`;
+
         const response = await axios({
             method,
             url,
@@ -45,3 +46,15 @@ export function getIcon(iconNumber: number) {
 export function getRaidWallpaper(raidName: string) {
     return new URL(`../assets/raids/${raidName}.webp`, import.meta.url).href;
 }
+
+export function chunkArrayIntoParties<T>(array: T[], chunkSize: number): T[][] {
+    const result: T[][] = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+        result.push(array.slice(i, i + chunkSize));
+    }
+    return result;
+}
+
+export const getPlayerType = (classId: number): string => {
+    return SUPP_MAP.get(classId) || "dps";
+};

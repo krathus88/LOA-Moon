@@ -1,13 +1,39 @@
 type InfoProps = {
     isHeightLarge: boolean;
     isWidthLarge: boolean;
+    instance_name: string;
+    gate: string;
+    difficulty: string;
+    clear_time: string;
+    fight_end_time: string;
+    death_count: number;
+    avg_ilvl: number | null;
+    highest_ilvl: number;
+    max_boss_hp: string;
+    max_boss_hp_bars: string | null;
 };
 
-export function Info({ isHeightLarge, isWidthLarge }: InfoProps) {
+export function Info({
+    isHeightLarge,
+    isWidthLarge,
+    instance_name,
+    gate,
+    difficulty,
+    clear_time,
+    fight_end_time,
+    death_count,
+    avg_ilvl,
+    highest_ilvl,
+    max_boss_hp,
+    max_boss_hp_bars,
+}: InfoProps) {
     return (
         <div className="info">
-            <h5>[G1] Brelshaza, the Queen of Simps</h5>
-            <small className="fw-light mb-1">Hard</small>
+            <h5>
+                <span className="rounded-3">{gate}</span>
+                {instance_name}
+            </h5>
+            <small className="fw-light mb-1">{difficulty}</small>
             <div className="mt-auto mb-1">
                 {(isHeightLarge || !isWidthLarge) && (
                     <div>
@@ -40,7 +66,7 @@ export function Info({ isHeightLarge, isWidthLarge }: InfoProps) {
                                         />
                                     </g>
                                 </svg>{" "}
-                                <small className="fw-light">Death Count</small>
+                                <small className="fw-light">{death_count}</small>
                             </li>
                             <li>
                                 <svg
@@ -59,7 +85,10 @@ export function Info({ isHeightLarge, isWidthLarge }: InfoProps) {
                                             fillOpacity="1"></path>
                                     </g>
                                 </svg>{" "}
-                                <small className="fw-light">Avg ilvl</small>
+                                <small className="fw-light">
+                                    {avg_ilvl !== null ? avg_ilvl : "N/A"} (
+                                    {highest_ilvl})
+                                </small>
                             </li>
                             <li style={{ color: "#ff9797" }}>
                                 <svg
@@ -76,7 +105,9 @@ export function Info({ isHeightLarge, isWidthLarge }: InfoProps) {
                                         fill="currentColor"
                                         d="M64 64V32H0V64 448v32H32 480h32V416H480 64V64zM342.6 278.6l128-128-45.3-45.3L320 210.7l-57.4-57.4L240 130.7l-22.6 22.6-112 112 45.3 45.3L240 221.3l57.4 57.4L320 301.3l22.6-22.6z"></path>
                                 </svg>{" "}
-                                <small className="fw-light">Total Boss HP</small>
+                                <small className="fw-light">
+                                    {max_boss_hp} {max_boss_hp_bars}
+                                </small>
                             </li>
                         </ul>
                     </div>
@@ -97,7 +128,7 @@ export function Info({ isHeightLarge, isWidthLarge }: InfoProps) {
                                 fill="currentColor"
                                 d="M256 0a256 256 0 1 1 0 512A256 256 0 1 1 256 0zM232 120V256v12.8l10.7 7.1 96 64 20 13.3 26.6-39.9-20-13.3L280 243.2V120 96H232v24z"></path>
                         </svg>{" "}
-                        <small className="fw-light">Clear Time</small>
+                        <small className="fw-light">{clear_time}</small>
                     </div>
                     <div style={{ color: "#97dfff" }}>
                         <svg
@@ -114,7 +145,7 @@ export function Info({ isHeightLarge, isWidthLarge }: InfoProps) {
                                 fill="currentColor"
                                 d="M96 0V64H0v96H448V64H352V0H288V64H160V0H96zM448 192H0V512H448V192z"></path>
                         </svg>{" "}
-                        <small className="fw-light">How long ago</small>
+                        <small className="fw-light">{fight_end_time}</small>
                     </div>
                 </div>
             </div>
