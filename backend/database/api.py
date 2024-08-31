@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse
 
 from .services import parse_db_file, format_db_data
-from .models import EncounterPreview
+from homepage.models import EncounterPreview, EncounterPreviewPlayers
 
 
 router = Router()
@@ -27,23 +27,44 @@ def upload_db(request, file: UploadedFile = File(...)):
     # Clean up: remove the temporary file
     os.remove(file_path)
 
-    parsed_encounter_preview_data = format_db_data(data)
+    parsed_encounter_preview_data, parsed_encounter_preview_player_data = (
+        format_db_data(data)
+    )
 
-    for entry in parsed_encounter_preview_data:
+    for i, entry in enumerate(parsed_encounter_preview_data):
         try:
-            EncounterPreview.objects.create(
-                encounter_id=entry["encounter_id"],
+            encounter = EncounterPreview.objects.create(
                 fight_end=entry["fight_end"],
                 fight_duration=entry["fight_duration"],
-                local_player=entry["local_player"],
                 boss_name=entry["boss_name"],
                 difficulty=entry["difficulty"],
                 max_hp=entry["max_hp"],
+                max_hp_bars=entry["max_hp_bars"],
                 npc_id=entry["npc_id"],
-                player_data=entry["player_data"],
             )
         except IntegrityError as e:
             # Handle the exception if needed
             raise HttpResponse(f"Error saving encounter preview.", status=500)
+
+        # Process EncounterPreviewPlayers data for the corresponding encounter
+        for player_entry in parsed_encounter_preview_player_data[i]:
+            try:
+                EncounterPreviewPlayers.objects.create(
+                    encounter=encounter,
+                    name=player_entry["name"],
+                    character_id=player_entry["character_id"],
+                    class_id=player_entry["class_id"],
+                    subclass=player_entry["subclass"],
+                    dps=player_entry["dps"],
+                    gear_score=player_entry["gear_score"],
+                    is_dead=player_entry["is_dead"],
+                    party_num=player_entry["party_num"],
+                    local_player=player_entry["local_player"],
+                )
+            except IntegrityError as e:
+                print(e)
+                return HttpResponse(
+                    f"Error saving encounter preview player.", status=500
+                )
 
     return {"status": "success", "message": "Data processed and saved."}

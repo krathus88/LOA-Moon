@@ -1,7 +1,7 @@
 import time
 from datetime import datetime
 
-from constants.encounters import encounter_map
+from constants.encounters import encounter_map, boss_hp_map
 
 
 # region Raid Summary
@@ -11,41 +11,46 @@ def format_raid_summary_data(data):
     for entry in data:
         total_ilvl = 0
         death_count = 0
-        calculate_ilvl = True
         total_damage = 0
         highest_ilvl = 0
 
-        # Calculate the total damage dealt by all players
-        for player_entry in entry["player_data"]:
+        # Initialize a list to store processed player data
+        all_players = []
+
+        for player_entry in entry["players"]:
             total_damage += player_entry["dps"]
 
-        for player_entry in entry["player_data"]:
-            # Calculate and add the damage percentage
-            player_entry["damage_percentage"] = (
-                round((player_entry["dps"] / total_damage) * 100, 1)
-                if total_damage > 0
-                else 0.0
-            )
-            # Format the DPS value
-            player_entry["dps"] = format_damage(player_entry["dps"])
-
+        for player_entry in entry["players"]:
+            print(player_entry)
             if player_entry["is_dead"]:
                 death_count += 1
 
             gear_score = player_entry.get("gear_score")
-            if not gear_score:
-                calculate_ilvl = False
-                continue
+            if gear_score:
+                total_ilvl += gear_score
+                if gear_score > highest_ilvl:
+                    highest_ilvl = gear_score
 
-            total_ilvl += gear_score
-            if gear_score > highest_ilvl:
-                highest_ilvl = gear_score
+            # Add player data to the all_players list
+            all_players.append(
+                {
+                    "id": player_entry["id"],
+                    "name": player_entry["name"],
+                    "class_id": player_entry["class_id"],
+                    "subclass": player_entry["subclass"],
+                    "dps": format_damage(player_entry["dps"]),
+                    "damage_percentage": (
+                        round((player_entry["dps"] / total_damage) * 100, 1)
+                        if total_damage > 0
+                        else 0.0
+                    ),
+                    "gear_score": player_entry["gear_score"],
+                    "is_dead": player_entry["is_dead"],
+                    "party_num": player_entry["party_num"],
+                }
+            )
 
-        avg_ilvl = (
-            None
-            if not calculate_ilvl
-            else round(total_ilvl / len(entry["player_data"]), 2)
-        )
+        avg_ilvl = round(total_ilvl / len(all_players), 2)
 
         encounter_info = encounter_map.get(entry["boss_name"], {})
         gate = encounter_info.get("gate")
@@ -59,11 +64,11 @@ def format_raid_summary_data(data):
                 "clear_time": convert_clear_time_to_minutes(entry["fight_duration"]),
                 "fight_end": time_since_fight_ended(entry["fight_end"]),
                 "max_boss_hp": format_damage(entry["max_hp"]),
-                "max_boss_hp_bars": None,
+                "max_boss_hp_bars": entry["max_hp_bars"],
                 "avg_ilvl": avg_ilvl,
                 "highest_ilvl": round(highest_ilvl, 1),
                 "death_count": death_count,
-                "player_data": sort_players_in_chunks(entry["player_data"]),
+                "player_data": sort_players_in_chunks(all_players),
             }
         )
 
@@ -74,13 +79,26 @@ def format_raid_summary_data(data):
 
 
 # region Helper Functions
-def sort_players_in_chunks(player_data, chunk_size=4):
+def sort_players_in_chunks(player_data):
+    # Create a dictionary to group players by party_num
+    grouped_players = {}
+
+    for player in player_data:
+        party_num = player["party_num"]
+        if party_num not in grouped_players:
+            grouped_players[party_num] = []
+        grouped_players[party_num].append(player)
+
+    # Sort players within each party by damage_percentage
     sorted_players = []
-    for i in range(0, len(player_data), chunk_size):
-        chunk = player_data[i : i + chunk_size]
-        sorted_players.extend(
-            sorted(chunk, key=lambda p: p["damage_percentage"], reverse=True)
+    for party_num in sorted(grouped_players.keys()):
+        sorted_party = sorted(
+            grouped_players[party_num],
+            key=lambda p: p["damage_percentage"],
+            reverse=True,
         )
+        sorted_players.extend(sorted_party)
+
     return sorted_players
 
 
