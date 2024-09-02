@@ -1,6 +1,6 @@
 from django.apps import AppConfig
 
 
-class DatabaseConfig(AppConfig):
+class MeterLogsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'database'
+    name = 'meter_logs'

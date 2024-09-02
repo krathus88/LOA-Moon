@@ -28,6 +28,12 @@ const FaqPage = lazy(() =>
     }))
 );
 
+const ProfilePage = lazy(() =>
+    import("@pages/ProfilePage").then((module) => ({
+        default: module.Component,
+    }))
+);
+
 const router = createBrowserRouter([
     {
         element: (
@@ -58,6 +64,10 @@ const router = createBrowserRouter([
                     const { Component } = await import("@pages/EncounterPage");
                     return { loader: Component.loader, Component };
                 },
+            },
+            {
+                path: "/profile",
+                element: <ProfilePage />,
             },
         ],
     },

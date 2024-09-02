@@ -6,7 +6,7 @@ from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from .config import app_configs
 
 from authentication.api import router as authentication_router
-from database.api import router as database_router
+from meter_logs.api import router as meter_logs_router
 from user.api import router as user_router
 from homepage.api import router as homepage_router
 
@@ -29,7 +29,7 @@ def get_csrf_token(request):
 
 api_public = NinjaAPI(csrf=True, **app_configs, urls_namespace="health")
 
-api_public.add_router("db", database_router, tags=["Database"])
+api_public.add_router("log", meter_logs_router, tags=["Database"])
 
 
 @api_public.get("/")

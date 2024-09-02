@@ -13,7 +13,7 @@ from homepage.models import EncounterPreview, EncounterPreviewPlayers
 router = Router()
 
 
-@router.post("/log")
+@router.post("/")
 def upload_log(request, file: UploadedFile = File(...)):
     # Save the uploaded file temporarily
     file_path = os.path.join(settings.MEDIA_ROOT, file.name)
@@ -59,7 +59,6 @@ def upload_log(request, file: UploadedFile = File(...)):
                     gear_score=player_entry["gear_score"],
                     is_dead=player_entry["is_dead"],
                     party_num=player_entry["party_num"],
-                    local_player=player_entry["local_player"],
                 )
             except IntegrityError as e:
                 print(e)
