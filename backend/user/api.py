@@ -1,9 +1,12 @@
+import uuid
+
 from ninja import Router
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from allauth.socialaccount.models import SocialAccount
 
 from .models import Profile
+
 
 router = Router()
 
@@ -50,3 +53,41 @@ def user_login(request):
         return {"name": display_name, "avatar": profile.avatar}
     else:
         return JsonResponse({"message": "Unauthorized"}, status=401)
+
+
+@router.post("/atoken/generate")
+def generate_access_token(request):
+    user = request.user
+
+    if not user.is_authenticated:
+        return JsonResponse({"message": "Unauthorized"}, status=401)
+
+    # Get or create the user's profile
+    profile, created = Profile.objects.get_or_create(social_account__user=user)
+
+    # Generate a new access token (you might want to use a more secure method for production)
+    new_token = str(uuid.uuid4())  # Example token generation
+
+    # Update the profile with the new access token
+    profile.access_token = new_token
+    profile.save()
+
+    # Return the access token in the response
+    return JsonResponse({"access_token": new_token})
+
+
+@router.post("/atoken/revoke")
+def revoke_access_token(request):
+    user = request.user
+
+    if not user.is_authenticated:
+        return JsonResponse({"message": "Unauthorized"}, status=401)
+
+    # Get the user's profile
+    profile = get_object_or_404(Profile, social_account__user=user)
+
+    # Revoke the access token by clearing it
+    profile.access_token = None
+    profile.save()
+
+    return JsonResponse({"message": "Access token revoked"})

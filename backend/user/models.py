@@ -14,4 +14,4 @@ class Profile(models.Model):
     access_token = models.CharField(max_length=64, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.name} - {self.social_account}"
+        return f"{self.name}"
