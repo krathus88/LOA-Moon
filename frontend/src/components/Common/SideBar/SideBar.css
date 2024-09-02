@@ -1,5 +1,5 @@
 [data-bs-theme="dark"] {
-    #SideNavigationBar > ul > li > a {
+    #SideNavigationBar > ul > li a {
         --bs-nav-link-color: #fff;
         --bs-nav-link-hover-color: #ffffffa1;
         --bs-nav-link-disabled-color: #ffffff60;
