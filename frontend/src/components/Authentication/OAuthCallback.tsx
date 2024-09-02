@@ -15,6 +15,13 @@ export const OAuthCallback: React.FC = () => {
             const code = params.get("code");
             const state = params.get("state");
 
+            // If the required query parameters are missing, redirect to homepage
+            if (!code || !state) {
+                console.error("Invalid OAuth callback attempt, missing code or state");
+                navigate("/");
+                return;
+            }
+
             if (code && state) {
                 const storedState = sessionStorage.getItem("oauth_state");
 

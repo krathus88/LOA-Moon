@@ -5,6 +5,7 @@ from ninja.files import UploadedFile
 from django.conf import settings
 from django.db import IntegrityError
 from django.http import HttpResponse
+from django.db.models import Q
 
 from authentication.services import token_auth
 from homepage.models import EncounterPreview, EncounterPreviewPlayers
@@ -36,6 +37,37 @@ def upload_log(request, file: UploadedFile = File(...)):
     )
 
     for i, entry in enumerate(parsed_encounter_preview_data):
+        fight_end_time = entry["fight_end"]
+        time_range_start = fight_end_time - 30  # seconds before
+        time_range_end = fight_end_time + 30  # seconds after
+
+        # Find potential matches within the time range
+        potential_matches = EncounterPreview.objects.filter(
+            Q(fight_end__gte=time_range_start) & Q(fight_end__lte=time_range_end),
+            boss_name=entry["boss_name"],
+            difficulty=entry["difficulty"],
+            npc_id=entry["npc_id"],
+        )
+
+        match_found = False
+
+        # Check each potential match to see if it has the same players
+        for match in potential_matches:
+            existing_players = set(match.players.values_list("character_id", flat=True))
+            new_players = set(
+                player["character_id"]
+                for player in parsed_encounter_preview_player_data[i]
+            )
+
+            # If the players match (considering some overlap), skip this encounter
+            if existing_players == new_players:
+                match_found = True
+                break
+
+        if match_found:
+            # Skip this encounter as it already exists with the same players
+            continue
+
         try:
             encounter = EncounterPreview.objects.create(
                 fight_end=entry["fight_end"],
