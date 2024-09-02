@@ -100,7 +100,7 @@ export function RaidSummaryContainer() {
 
     if (isLoading && data.length <= 0) return <Loading />;
 
-    if (noResults && data.length >= 0)
+    if (noResults && data.length <= 0)
         return <li className="text-center">No data to show.</li>;
 
     return (
