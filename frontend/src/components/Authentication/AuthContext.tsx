@@ -29,7 +29,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const response = await api.get("http://127.0.0.1:8000/api/user/");
+                const response = await api.get("/user/");
                 setUser(response.data);
             } catch {
                 setUser(null);

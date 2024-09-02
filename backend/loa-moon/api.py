@@ -11,14 +11,14 @@ from user.api import router as user_router
 from homepage.api import router as homepage_router
 
 
-api = NinjaAPI(csrf=True, **app_configs, urls_namespace="api")
+api_private = NinjaAPI(csrf=True, **app_configs, urls_namespace="api")
 
-api.add_router("auth", authentication_router, tags=["Auth"])
-api.add_router("user", user_router, tags=["User"])
-api.add_router("home", homepage_router, tags=["HomePage"])
+api_private.add_router("auth", authentication_router, tags=["Auth"])
+api_private.add_router("user", user_router, tags=["User"])
+api_private.add_router("home", homepage_router, tags=["HomePage"])
 
 
-@api.post("/csrf")
+@api_private.post("/csrf")
 @ensure_csrf_cookie
 @csrf_exempt
 def get_csrf_token(request):

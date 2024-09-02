@@ -53,6 +53,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "allauth.account.middleware.AccountMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "loa-moon.middleware.RestrictIPMiddleware",
 ]
 
 ROOT_URLCONF = "loa-moon.urls"
