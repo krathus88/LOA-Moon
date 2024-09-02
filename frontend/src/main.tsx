@@ -1,3 +1,4 @@
+import "./config/axios.ts"; // Axios Config
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App.tsx";
@@ -12,9 +13,5 @@ if (import.meta.env.MODE === "production") {
     ReactDOM.createRoot(rootElement!).render(<App />);
 } else {
     // Render with StrictMode in development
-    ReactDOM.createRoot(rootElement!).render(
-        <React.StrictMode>
-            <App />
-        </React.StrictMode>
-    );
+    ReactDOM.createRoot(rootElement!).render(<App />);
 }

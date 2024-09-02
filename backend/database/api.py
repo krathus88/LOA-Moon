@@ -14,7 +14,7 @@ router = Router()
 
 
 @router.post("/log")
-def upload_db(request, file: UploadedFile = File(...)):
+def upload_log(request, file: UploadedFile = File(...)):
     # Save the uploaded file temporarily
     file_path = os.path.join(settings.MEDIA_ROOT, file.name)
     with open(file_path, "wb+") as f:

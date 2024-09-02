@@ -4,8 +4,12 @@ import { DiscordIcon } from "@components/Common/Icons/DiscordIcon";
 import { ClassRankingsIcon } from "../Icons/ClassRankingsIcon";
 import { PartyRankingsIcon } from "../Icons/PartyRankingsIcon";
 import { FaqIcon } from "../Icons/FaqIcon";
+import { LoginIcon } from "../Icons/LoginIcon";
+import { useAuth } from "@components/Authentication/useAuth";
 
 export function SideBar() {
+    const { login } = useAuth();
+
     return (
         <div className="d-flex flex-column flex-shrink-0" id="SideNavigationBar">
             <ul className="nav nav-flush flex-column text-center">
@@ -46,6 +50,15 @@ export function SideBar() {
                         target="_blank"
                         className="d-flex align-items-center justify-content-center nav-link no-link mt-2">
                         <DiscordIcon />
+                    </a>
+                </li>
+            </ul>
+            <ul className="nav nav-flush mt-auto">
+                <li>
+                    <a
+                        onClick={login}
+                        className="d-flex align-items-center justify-content-center nav-link no-link mt-2">
+                        <LoginIcon />
                     </a>
                 </li>
             </ul>

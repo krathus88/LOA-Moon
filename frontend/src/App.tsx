@@ -1,6 +1,8 @@
 import { lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Layout } from "@components/Common/Layout";
+import { AuthProvider } from "@components/Authentication/AuthContext";
+import { OAuthCallback } from "@components/Authentication/OAuthCallback";
 
 const HomePage = lazy(() =>
     import("@pages/HomePage").then((module) => ({
@@ -28,7 +30,11 @@ const FaqPage = lazy(() =>
 
 const router = createBrowserRouter([
     {
-        element: <Layout />,
+        element: (
+            <AuthProvider>
+                <Layout />
+            </AuthProvider>
+        ),
         children: [
             {
                 path: "/",
@@ -54,6 +60,10 @@ const router = createBrowserRouter([
                 },
             },
         ],
+    },
+    {
+        path: "/auth/callback",
+        element: <OAuthCallback />,
     },
 ]);
 

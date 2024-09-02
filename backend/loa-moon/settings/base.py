@@ -33,6 +33,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "corsheaders",
     "ninja",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "allauth.socialaccount.providers.discord",
+    "authentication",
+    "user",
     "database",
     "homepage",
 ]
@@ -45,6 +51,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    "allauth.account.middleware.AccountMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
@@ -115,13 +122,20 @@ ALLOWED_ORIGINS_env = os.getenv("ALLOWED_ORIGINS")
 if ALLOWED_ORIGINS_env:
     ALLOWED_ORIGINS_env = ALLOWED_ORIGINS_env.split(",")
 
-CORS_ALLOW_HEADERS = (
-    *default_headers,
-    "Access-Control-Allow-Origin",
-)
-
+CORS_ALLOWED_ORIGINS = ALLOWED_ORIGINS_env
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOWED_ORIGINS = ALLOWED_ORIGINS_env
-
 CSRF_TRUSTED_ORIGINS = ALLOWED_ORIGINS_env
+
+
+SOCIALACCOUNT_PROVIDERS = {
+    "discord": {
+        "APP": {
+            "client_id": os.getenv("DISCORD_CLIENT_ID"),
+            "secret": os.getenv("DISCORD_CLIENT_SECRET"),
+        },
+        "SCOPE": [
+            "identify",
+        ],
+    }
+}
