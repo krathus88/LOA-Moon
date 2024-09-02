@@ -1,7 +1,3 @@
-import os
-import requests
-
-
 from ninja import Router
 from allauth.socialaccount.providers.discord.views import DiscordOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Error
@@ -12,15 +8,12 @@ from django.contrib.auth.decorators import login_required
 from datetime import datetime, timedelta, timezone
 
 from .schemas import DiscordCompleteBody
+from .services import exchange_code_for_token, revoke_token
 
 
 router = Router()
 
 
-DISCORD_API_ENDPOINT = "https://discord.com/api/v10"
-
-
-# region Auth
 @router.post("/complete/")
 def discord_login(request, body: DiscordCompleteBody):
     try:
@@ -90,42 +83,3 @@ def discord_logout(request):
         return JsonResponse({"error": "No social token found for user"}, status=400)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
-
-
-# endregion
-
-
-# region Helper Functions
-def exchange_code_for_token(code):
-    data = {
-        "grant_type": "authorization_code",
-        "code": code,
-        "redirect_uri": os.getenv("DISCORD_REDIRECT_URI"),
-    }
-    headers = {"Content-Type": "application/x-www-form-urlencoded"}
-    r = requests.post(
-        "%s/oauth2/token" % DISCORD_API_ENDPOINT,
-        data=data,
-        headers=headers,
-        auth=(os.getenv("DISCORD_CLIENT_ID"), os.getenv("DISCORD_CLIENT_SECRET")),
-    )
-    r.raise_for_status()
-    return r.json()
-
-
-def revoke_token(access_token):
-    """Revoke the user's access token with Discord."""
-    headers = {
-        "Authorization": f"Bearer {access_token}",
-        "Content-Type": "application/x-www-form-urlencoded",
-    }
-    r = requests.post(
-        "%s/oauth2/token/revoke" % DISCORD_API_ENDPOINT,
-        headers=headers,
-        data={"token": access_token},
-        auth=(os.getenv("DISCORD_CLIENT_ID"), os.getenv("DISCORD_CLIENT_SECRET")),
-    )
-    r.raise_for_status()
-
-
-# endregion

@@ -27,7 +27,7 @@ def get_csrf_token(request):
     return response
 
 
-api_public = NinjaAPI(csrf=True, **app_configs, urls_namespace="health")
+api_public = NinjaAPI(**app_configs, urls_namespace="health")
 
 api_public.add_router("log", meter_logs_router, tags=["Database"])
 

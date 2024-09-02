@@ -1,7 +1,7 @@
-import { getCsrfToken } from "@utils/functions";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { api } from "../../config/axios";
+import { getCsrfToken } from "@utils/functions";
 
 export interface User {
     name: string;
@@ -10,30 +10,31 @@ export interface User {
 
 export interface AuthContextType {
     user: User | null;
+    loading: boolean;
     setUser: React.Dispatch<React.SetStateAction<User | null>>;
     login: () => Promise<void>;
     logout: () => Promise<void>;
 }
 
-// Create a context with a default value that will be overwritten
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Define the props for the AuthProvider component
 interface AuthProviderProps {
     children: ReactNode;
 }
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const [user, setUser] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchUser = async () => {
             try {
                 const response = await api.get("http://127.0.0.1:8000/api/user/");
-
                 setUser(response.data);
             } catch {
                 setUser(null);
+            } finally {
+                setLoading(false);
             }
         };
 
@@ -71,7 +72,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     };
 
     return (
-        <AuthContext.Provider value={{ user, setUser, login, logout }}>
+        <AuthContext.Provider value={{ user, loading, setUser, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

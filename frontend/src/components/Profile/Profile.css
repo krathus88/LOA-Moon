@@ -1,0 +1,19 @@
+.input-with-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    max-width: 500px;
+}
+
+.input-with-button .form-control {
+    padding-right: 80px; /* Adjust based on button width */
+    flex: 1;
+}
+
+.input-with-button .btn-copy {
+    position: absolute;
+    right: 0;
+    height: 100%;
+    top: 0;
+    border-radius: var(--bs-border-radius);
+}

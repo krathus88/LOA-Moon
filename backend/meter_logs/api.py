@@ -6,15 +6,19 @@ from django.conf import settings
 from django.db import IntegrityError
 from django.http import HttpResponse
 
-from .services import parse_db_file, format_db_data
+from authentication.services import token_auth
 from homepage.models import EncounterPreview, EncounterPreviewPlayers
+from .services import parse_db_file, format_db_data
 
 
 router = Router()
 
 
-@router.post("/")
+@router.post("/", auth=token_auth)
 def upload_log(request, file: UploadedFile = File(...)):
+    # Authenticated user is available as request.auth (which is a Profile instance)
+    profile = request.auth
+
     # Save the uploaded file temporarily
     file_path = os.path.join(settings.MEDIA_ROOT, file.name)
     with open(file_path, "wb+") as f:
@@ -42,7 +46,7 @@ def upload_log(request, file: UploadedFile = File(...)):
                 max_hp_bars=entry["max_hp_bars"],
                 npc_id=entry["npc_id"],
             )
-        except IntegrityError as e:
+        except IntegrityError:
             # Handle the exception if needed
             raise HttpResponse(f"Error saving encounter preview.", status=500)
 
@@ -60,8 +64,7 @@ def upload_log(request, file: UploadedFile = File(...)):
                     is_dead=player_entry["is_dead"],
                     party_num=player_entry["party_num"],
                 )
-            except IntegrityError as e:
-                print(e)
+            except IntegrityError:
                 return HttpResponse(
                     f"Error saving encounter preview player.", status=500
                 )
