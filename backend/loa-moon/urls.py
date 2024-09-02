@@ -17,11 +17,11 @@ Including another URLconf
 
 from django.contrib import admin
 from django.urls import path
-from .api import api, api_public
+from .api import api_private, api_public
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", api_public.urls),
-    path("api/", api.urls),
+    path("", api_private.urls),
+    path("api/", api_public.urls),
 ]

@@ -6,7 +6,7 @@ axios.defaults.xsrfCookieName = "csrftoken";
 axios.defaults.withCredentials = true;
 
 // Set the baseURL and timeout dynamically based on environment
-let djangoURL = "http://127.0.0.1:8000/api";
+let djangoURL = import.meta.env.VITE_BACKEND_API || "http://127.0.0.1:8000";
 let defaultTimeout = 30000;
 
 if (import.meta.env.PROD) {
