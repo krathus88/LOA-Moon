@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 import { api } from "../../config/axios";
 
 export interface User {
-    id: string;
-    username: string;
+    name: string;
+    avatar: string;
 }
 
 export interface AuthContextType {

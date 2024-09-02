@@ -128,16 +128,3 @@ CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = ALLOWED_ORIGINS_env
 
 SOCIALACCOUNT_STORE_TOKENS = True
-""" SOCIALACCOUNT_PROVIDERS = {
-    "discord": {
-        "APP": {
-            "client_id": os.getenv("DISCORD_CLIENT_ID"),
-            "secret": os.getenv("DISCORD_CLIENT_SECRET"),
-        },
-        "SCOPE": [
-            "identify",
-        ],
-        "STORE_TOKENS": True,
-    }
-}
- """
