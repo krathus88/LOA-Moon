@@ -1,9 +1,9 @@
 import { Loading } from "@components/Common/Loading";
 import { RaidSummaryType } from "@type/RaidSummaryType";
-import { fetchData } from "@utils/functions";
 import { useEffect, useRef, useState } from "react";
 import { RaidSummary } from "./RaidSummary";
 import "./RaidSummary.css";
+import { api } from "@config/axios";
 
 export function RaidSummaryContainer() {
     const [data, setData] = useState<RaidSummaryType[]>([]);
@@ -14,13 +14,13 @@ export function RaidSummaryContainer() {
     const [noResults, setNoResults] = useState(false);
     const observer = useRef<IntersectionObserver | null>(null);
 
-    const fetchDataFromAPI = async (page: number = 1) => {
+    const fetchDataFromAPI = async (page: number = 1): Promise<RaidSummaryType[]> => {
         try {
-            const result = await fetchData("GET", `home?page=${page}`);
-            return result;
+            const result = await api.get(`/home?page=${page}`);
+            return result.data; // result.data is of type RaidSummaryType[]
         } catch (error) {
             console.error("Error fetching data:", error);
-            return [];
+            return []; // Return an empty array on error
         }
     };
 
@@ -31,7 +31,6 @@ export function RaidSummaryContainer() {
             if (result.length <= 0) {
                 setNoResults(true);
                 setIsLoading(false);
-
                 return;
             }
 

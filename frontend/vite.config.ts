@@ -7,6 +7,9 @@ import path from "path";
 export default defineConfig(() => {
     return {
         plugins: [react(), svgr()],
+        server: {
+            host: "127.0.0.1",
+        },
         resolve: {
             alias: {
                 "@assets": path.resolve(__dirname, "./src/assets"),
@@ -14,6 +17,7 @@ export default defineConfig(() => {
                 "@pages": path.resolve(__dirname, "./src/pages"),
                 "@type": path.resolve(__dirname, "./src/types"),
                 "@utils": path.resolve(__dirname, "./src/utils"),
+                "@config": path.resolve(__dirname, "./src/config"),
             },
         },
     };

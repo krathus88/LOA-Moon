@@ -1,43 +1,60 @@
-import axios from "axios";
 import { SUPP_MAP } from "./constants";
 
-const BASE_URL = import.meta.env.VITE_BACKEND_API;
+export const getCookie = (name: string) => {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== "") {
+        const cookies = document.cookie.split(";");
 
-export const fetchData = async (
-    method: string,
-    endpoint: string,
-    params?: {
-        filter1?: string;
-        filter2?: string;
-        filter3?: string;
-    }
-) => {
-    try {
-        const url = `${BASE_URL}${endpoint}`;
-        console.log(url);
-        const response = await axios({
-            method,
-            url,
-            params,
-        });
-
-        return response.data;
-    } catch (error) {
-        console.log(error);
-        if (axios.isAxiosError(error)) {
-            if (error.response) {
-                throw error;
-            } else if (error.request) {
-                console.error("Network Error:", error.request);
-                throw error.response;
-            } else {
-                console.error("Error:", error.message);
+        for (let i = 0; i < cookies.length; i++) {
+            const cookie = cookies[i].trim(); // Use native JavaScript trim function
+            if (cookie.startsWith(`${name}=`)) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
             }
         }
-
-        throw error;
     }
+    return cookieValue;
 };
+
+type CookieOptions = {
+    path?: string;
+    expires?: Date;
+    domain?: string;
+    secure?: boolean;
+    sameSite?: "Lax" | "Strict" | "None";
+};
+
+export function setCookie(
+    name: string,
+    value: string,
+    options: CookieOptions = {}
+): void {
+    let cookieString = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+
+    if (options.path) {
+        cookieString += `; path=${options.path}`;
+    }
+    if (options.expires) {
+        cookieString += `; expires=${options.expires.toUTCString()}`;
+    } else {
+        // Set default expiration if not provided
+        const longevityInSeconds = 31449600; // 364 days
+        const expirationDate = new Date();
+        expirationDate.setTime(expirationDate.getTime() + longevityInSeconds * 1000);
+        cookieString += `; expires=${expirationDate.toUTCString()}`;
+    }
+    if (options.domain) {
+        cookieString += `; domain=${options.domain}`;
+    }
+    if (options.secure) {
+        cookieString += `; secure`;
+    }
+    if (options.sameSite) {
+        cookieString += `; samesite=${options.sameSite}`;
+    }
+
+    document.cookie = cookieString;
+}
 
 export function getIcon(iconNumber: number) {
     return new URL(`../assets/classes/${iconNumber}.png`, import.meta.url).href;
