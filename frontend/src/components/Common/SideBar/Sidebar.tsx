@@ -6,9 +6,10 @@ import { PartyRankingsIcon } from "../Icons/PartyRankingsIcon";
 import { FaqIcon } from "../Icons/FaqIcon";
 import { LoginIcon } from "../Icons/LoginIcon";
 import { useAuth } from "@components/Authentication/useAuth";
+import { UserProfileContainer } from "./UserProfileContainer";
 
 export function SideBar() {
-    const { login } = useAuth();
+    const { user, login } = useAuth();
 
     return (
         <div className="d-flex flex-column flex-shrink-0" id="SideNavigationBar">
@@ -55,11 +56,15 @@ export function SideBar() {
             </ul>
             <ul className="nav nav-flush mt-auto">
                 <li>
-                    <a
-                        onClick={login}
-                        className="d-flex align-items-center justify-content-center nav-link no-link mt-2">
-                        <LoginIcon />
-                    </a>
+                    {user ? (
+                        <UserProfileContainer />
+                    ) : (
+                        <a
+                            onClick={login}
+                            className="d-flex align-items-center justify-content-center nav-link no-link mt-2">
+                            <LoginIcon />
+                        </a>
+                    )}
                 </li>
             </ul>
         </div>

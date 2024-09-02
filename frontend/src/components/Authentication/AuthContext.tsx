@@ -1,3 +1,4 @@
+import { getCsrfToken } from "@utils/functions";
 import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { api } from "../../config/axios";
@@ -29,6 +30,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         const fetchUser = async () => {
             try {
                 const response = await api.get("http://127.0.0.1:8000/api/user/");
+
                 setUser(response.data);
             } catch {
                 setUser(null);
@@ -49,8 +51,18 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     const logout = async () => {
         try {
-            // Example logout request
-            await api.post("/api/logout");
+            const csrfToken = await getCsrfToken();
+
+            await api.post(
+                "/auth/logout/",
+                {},
+                {
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": csrfToken,
+                    },
+                }
+            );
         } catch (error) {
             console.error("Logout failed", error);
         } finally {

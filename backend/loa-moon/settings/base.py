@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     "allauth.socialaccount.providers.discord",
     "authentication",
     "user",
-    "database",
+    "meter_logs",
     "homepage",
 ]
 
@@ -127,8 +127,8 @@ CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS = ALLOWED_ORIGINS_env
 
-
-SOCIALACCOUNT_PROVIDERS = {
+SOCIALACCOUNT_STORE_TOKENS = True
+""" SOCIALACCOUNT_PROVIDERS = {
     "discord": {
         "APP": {
             "client_id": os.getenv("DISCORD_CLIENT_ID"),
@@ -137,5 +137,7 @@ SOCIALACCOUNT_PROVIDERS = {
         "SCOPE": [
             "identify",
         ],
+        "STORE_TOKENS": True,
     }
 }
+ """

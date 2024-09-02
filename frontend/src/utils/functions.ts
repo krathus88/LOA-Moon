@@ -1,7 +1,9 @@
 import { SUPP_MAP } from "./constants";
+import { api } from "@config/axios";
 
-export const getCookie = (name: string) => {
-    let cookieValue = null;
+export const getCookie = (name: string): string | undefined => {
+    let cookieValue: string | undefined = undefined; // Start with undefined
+
     if (document.cookie && document.cookie !== "") {
         const cookies = document.cookie.split(";");
 
@@ -13,7 +15,40 @@ export const getCookie = (name: string) => {
             }
         }
     }
+
     return cookieValue;
+};
+
+export const getCsrfToken = async (): Promise<string | undefined> => {
+    let csrfToken = getCookie("csrftoken");
+
+    if (!csrfToken) {
+        const csrf_response = await api.post("/csrf");
+        if (csrf_response.status === 200) {
+            // Check if the CSRF token is returned as a cookie
+            csrfToken = getCookie("csrftoken");
+
+            // Fallback: Check the headers or response body if it's not in the cookies
+            if (!csrfToken) {
+                csrfToken = csrf_response.headers["x-csrftoken"] || csrf_response.data;
+            }
+
+            if (csrfToken) {
+                // Store the CSRF token as a cookie if not already present
+                setCookie("csrftoken", csrfToken, {
+                    path: "/",
+                    secure: true,
+                    sameSite: "Lax",
+                    domain:
+                        import.meta.env.MODE === "production"
+                            ? import.meta.env.VITE_BACKEND_DOMAIN
+                            : undefined,
+                });
+            }
+        }
+    }
+
+    return csrfToken;
 };
 
 type CookieOptions = {
