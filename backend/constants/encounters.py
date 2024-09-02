@@ -1,3 +1,6 @@
+accepted_difficulties = ["Normal", "Hard", "Extreme", "Inferno", "Trial", "The First"]
+
+
 encounter_map = {
     ## Valtan
     # G1
@@ -24,22 +27,13 @@ encounter_map = {
     },
     ## Vykas
     # G1
-    "Incubus Morphe": {
-        "gate": "G1",
-        "instance": "Vykas",
-    },
-    "Nightmarish Morphe": {
+    "Covetous Devourer Vykas": {
         "gate": "G1",
         "instance": "Vykas",
     },
     # G2
-    "Covetous Devourer Vykas": {
-        "gate": "G2",
-        "instance": "Vykas",
-    },
-    # G3
     "Covetous Legion Commander Vykas": {
-        "gate": "G3",
+        "gate": "G2",
         "instance": "Vykas",
     },
     ## Clown
@@ -89,24 +83,6 @@ encounter_map = {
     # G4
     "Phantom Legion Commander Brelshaza": {
         "gate": "G4",
-        "instance": "Brelshaza",
-    },
-    # G5
-    "Brelshaza, Monarch of Nightmares": {
-        "gate": "G5",
-        "instance": "Brelshaza",
-    },
-    "Imagined Primordial Nightmare": {
-        "gate": "G5",
-        "instance": "Brelshaza",
-    },
-    "Pseudospace Primordial Nightmare": {
-        "gate": "G5",
-        "instance": "Brelshaza",
-    },
-    # G6
-    "Phantom Legion Commander Brelshaza": {
-        "gate": "G6",
         "instance": "Brelshaza",
     },
     ## Kayangel
@@ -161,29 +137,24 @@ encounter_map = {
         "instance": "Ivory Tower",
     },
     # G3
-    "Firehorn, Trampler of Earth": {
+    "Lazaram, the Trailblazer": {
         "gate": "G3",
         "instance": "Ivory Tower",
     },
-    # G4
-    "Lazaram, the Trailblazer": {
-        "gate": "G4",
-        "instance": "Ivory Tower",
-    },
     "Subordinated Vertus": {
-        "gate": "G4",
+        "gate": "G3",
         "instance": "Ivory Tower",
     },
     "Subordinated Calventus": {
-        "gate": "G4",
+        "gate": "G3",
         "instance": "Ivory Tower",
     },
     "Subordinated Legoros": {
-        "gate": "G4",
+        "gate": "G3",
         "instance": "Ivory Tower",
     },
     "Brand of Subordination": {
-        "gate": "G4",
+        "gate": "G3",
         "instance": "Ivory Tower",
     },
     ## Thaemine

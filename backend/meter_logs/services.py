@@ -1,10 +1,7 @@
 import sqlite3
 import json
 
-from django.db import models
-
-from homepage.models import EncounterPreview
-from constants.encounters import encounter_map, boss_hp_map
+from constants.encounters import accepted_difficulties, encounter_map, boss_hp_map
 from globals.classes import classify_class
 
 
@@ -120,6 +117,11 @@ def format_db_data(data: dict):
             not value["encounter_preview"]["local_player"]
             or not value["encounter_preview"]["difficulty"]
         ):
+            continue
+
+        # Check if the difficulty is one of the accepted difficulties
+        difficulty = value["encounter_preview"]["difficulty"]
+        if difficulty not in accepted_difficulties:
             continue
 
         misc_data = json.loads(value["encounter"]["misc"])
