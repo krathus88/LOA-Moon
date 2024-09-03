@@ -39,7 +39,7 @@ export const getCsrfToken = async (): Promise<string | undefined> => {
                 setCookie("csrftoken", csrfToken, {
                     path: "/",
                     secure: true,
-                    sameSite: "Lax",
+                    sameSite: "None",
                     domain:
                         import.meta.env.MODE === "production"
                             ? import.meta.env.VITE_BACKEND_DOMAIN
