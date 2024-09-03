@@ -93,6 +93,10 @@ encounter_map = {
         "gate": "G3",
         "instance": "Akkan",
     },
+    "Lord of Kartheon Akkan": {
+        "gate": "G3",
+        "instance": "Akkan",
+    },
     ## Ivory Tower
     # G1
     "Kaltaya, the Blooming Chaos": {
