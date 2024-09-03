@@ -9,7 +9,7 @@ from django.db.models import Q
 
 from authentication.services import TokenAuth
 from encounter.models import Encounter, EncounterPlayers
-from .services import parse_db_file, format_db_data
+from .services import parse_db_file, format_db_data, associate_characters_with_user
 
 
 router = Router()
@@ -17,7 +17,6 @@ router = Router()
 
 @router.post("/", auth=TokenAuth())
 def upload_log(request, file: UploadedFile = File(...)):
-    # Authenticated user is available as request.auth (which is a Profile instance)
     profile = request.auth
 
     # Save the uploaded file temporarily
@@ -32,9 +31,14 @@ def upload_log(request, file: UploadedFile = File(...)):
     # Clean up: remove the temporary file
     os.remove(file_path)
 
-    parsed_encounter_preview_data, parsed_encounter_preview_player_data = (
-        format_db_data(data)
-    )
+    (
+        parsed_encounter_preview_data,
+        parsed_encounter_preview_player_data,
+        local_player_names,
+    ) = format_db_data(data)
+
+    # Associate characters with the user
+    associate_characters_with_user(profile, local_player_names)
 
     for i, entry in enumerate(parsed_encounter_preview_data):
         fight_end_time = entry["fight_end"]

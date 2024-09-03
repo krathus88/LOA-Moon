@@ -1,8 +1,10 @@
 import sqlite3
 import json
 
+from django.db import IntegrityError
 from constants.encounters import accepted_difficulties, encounter_map, boss_hp_map
-from globals.classes import classify_class
+from constants.game import patches
+from user.models import Characters
 
 
 def parse_db_file(db_file_path):
@@ -39,6 +41,12 @@ def parse_db_file(db_file_path):
         rows = cursor.fetchall()
 
         for row in rows:
+            if (
+                table_name == "encounter"
+                and row[column_indices["last_combat_packet"]] < patches[-1]
+            ):
+                continue
+
             # Determine the key (like `encounter_id`) based on the table
             if table_name == "encounter":
                 key = row[column_indices["id"]]
@@ -110,6 +118,7 @@ def parse_db_file(db_file_path):
 def format_db_data(data: dict):
     all_formatted_data = []
     all_player_data = []
+    local_players = set()
 
     for key, value in data.items():
         # If data is invalid, skip
@@ -146,6 +155,12 @@ def format_db_data(data: dict):
                     party_num = int(p_num)
                     break
 
+            is_local_player = (
+                entry["name"] == value["encounter_preview"]["local_player"]
+            )
+            if is_local_player:
+                local_players.add(entry["name"])
+
             player_data.append(
                 {
                     "name": entry["name"],
@@ -162,8 +177,7 @@ def format_db_data(data: dict):
                     ),
                     "is_dead": True if entry["is_dead"] == 1 else False,
                     "party_num": party_num,
-                    "local_player": entry["name"]
-                    == value["encounter_preview"]["local_player"],
+                    "local_player": is_local_player,
                 }
             )
 
@@ -184,4 +198,19 @@ def format_db_data(data: dict):
 
         all_formatted_data.append(formatted_data)
 
-    return all_formatted_data, all_player_data
+    return all_formatted_data, all_player_data, local_players
+
+
+def associate_characters_with_user(user, character_names):
+    existing_character_names = set(user.characters.values_list("name", flat=True))
+
+    # Get characters that are not associated with the user
+    unassociated_character_names = set(character_names) - existing_character_names
+
+    for char_name in unassociated_character_names:
+        try:
+            # Create a new character associated with the user
+            Characters.objects.create(profile=user, name=char_name)
+        except IntegrityError:
+            # Character name already exists in the Characters database
+            continue

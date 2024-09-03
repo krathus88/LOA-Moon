@@ -83,12 +83,14 @@ export function FileUpload({ accessToken }: FileUploadProps) {
             {fileName && (
                 <>
                     <p>Selected file: {fileName}</p>
-                    <button
-                        className="btn btn-success mt-3"
-                        onClick={uploadToBackend}
-                        disabled={isUploadButtonClicked.current}>
-                        Upload to DB
-                    </button>
+                    {accessToken && (
+                        <button
+                            className="btn btn-success mt-3"
+                            onClick={uploadToBackend}
+                            disabled={isUploadButtonClicked.current}>
+                            Upload to DB
+                        </button>
+                    )}
                 </>
             )}
         </div>

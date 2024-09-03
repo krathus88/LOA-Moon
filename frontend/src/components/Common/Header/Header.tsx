@@ -15,9 +15,11 @@ export function Header() {
                 <div className="mx-auto">
                     <Navbar.Brand
                         className="text-center no-link"
+                        id="Logo"
                         as={Link}
                         to="/"
                         onClick={() => setExpanded(false)}>
+                        <img src="/logo.png" alt="Logo"></img>
                         <h1 className="font-special">{SITE_NAME}</h1>
                     </Navbar.Brand>
                 </div>
