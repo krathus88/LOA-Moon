@@ -18,7 +18,7 @@ export function Header() {
                         as={Link}
                         to="/"
                         onClick={() => setExpanded(false)}>
-                        <h1 className="fw-bold">{SITE_NAME}</h1>
+                        <h1 className="font-special">{SITE_NAME}</h1>
                     </Navbar.Brand>
                 </div>
 

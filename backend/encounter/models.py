@@ -2,7 +2,7 @@ from django.db import models
 
 
 # Create your models here.
-class EncounterPreview(models.Model):
+class Encounter(models.Model):
     fight_end = models.IntegerField(db_index=True)
     fight_duration = models.IntegerField(db_index=True)
     boss_name = models.CharField(max_length=64, db_index=True)
@@ -12,12 +12,12 @@ class EncounterPreview(models.Model):
     npc_id = models.IntegerField(null=True)
 
     def __str__(self):
-        return f"Encounter: {self.encounter_id} - {self.boss_name}"
+        return f"Encounter: {self.id} - {self.boss_name}"
 
 
-class EncounterPreviewPlayers(models.Model):
+class EncounterPlayers(models.Model):
     encounter = models.ForeignKey(
-        EncounterPreview, on_delete=models.CASCADE, related_name="players"
+        Encounter, on_delete=models.CASCADE, related_name="players"
     )
     name = models.CharField(max_length=16, db_index=True)
     character_id = models.BigIntegerField(null=True)
@@ -27,7 +27,7 @@ class EncounterPreviewPlayers(models.Model):
     gear_score = models.FloatField(db_index=True)
     is_dead = models.BooleanField(db_index=True)
     party_num = models.IntegerField()
-    display_name = models.BooleanField(default=True)
+    display_name = models.BooleanField(db_index=True, default=True)
 
     def __str__(self):
         return f"Encounter: {self.encounter.id} - Player: {self.name}"

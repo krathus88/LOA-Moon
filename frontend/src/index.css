@@ -32,6 +32,12 @@ main {
     margin-left: var(--side-navigation-width);
 }
 
+.font-special {
+    font-family: "Megrim", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
 .font-ita {
     font-style: italic;
 }

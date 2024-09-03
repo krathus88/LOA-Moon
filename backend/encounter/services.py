@@ -1,7 +1,11 @@
 import time
+
+from django.db.models import Q
 from datetime import datetime
 
-from constants.encounters import encounter_map, boss_hp_map
+from constants.classes import class_name_to_class_id
+from constants.encounters import encounter_map
+
 
 
 # region Raid Summary
@@ -72,6 +76,67 @@ def format_raid_summary_data(data):
         )
 
     return formatted_data
+
+
+def build_encounter_filter_query(
+    p_name=None,
+    p_class=None,
+    p_spec=None,
+    encounter=None,
+    difficulty=None,
+    date_from=None,
+    date_until=None,
+    clear_time_from=None,
+    clear_time_until=None,
+):
+    """
+    Build a Q object for filtering encounters based on provided parameters.
+    """
+    query = Q()
+
+    # Player --- Need to fix on frontend. Only yield results for said class
+    #        --- no need for all classes in an encounter, only said class
+    if p_name:
+        query &= Q(players__name__exact=p_name)
+    else:
+        # If Player Name NOT defined, apply these filters
+        if p_class:
+            class_id = class_name_to_class_id.get(p_class)
+            query &= Q(players__class_id__exact=class_id)
+        if p_spec:
+            # Not yet implemented, do nothing for now
+            """ query &= Q(players__subclass__exact=p_spec) """
+
+    # Encounter
+    if encounter:
+        boss_key, gate = encounter.split('_', 1)
+        for boss_name, details in encounter_map.items():
+            if details["gate"].lower() == gate and details["instance"].lower() == boss_key:
+                query &= Q(boss_name__icontains=boss_name)
+                break
+
+    if difficulty:
+        query &= Q(difficulty__icontains=difficulty)
+
+    # Date
+    if date_from:
+        date_obj = datetime.strptime(date_from, "%Y-%m-%d")
+        timestamp = int(time.mktime(date_obj.timetuple()))
+
+        query &= Q(fight_end__gte=timestamp)
+    if date_until:
+        date_obj = datetime.strptime(date_until, "%Y-%m-%d")
+        timestamp = int(time.mktime(date_obj.timetuple()))
+
+        query &= Q(fight_end__lte=date_obj)
+
+    # Clear Time
+    if clear_time_from >= 0:
+        query &= Q(fight_duration__gte=clear_time_from)
+    if clear_time_until >= 0:
+        query &= Q(fight_duration__lte=clear_time_until)
+
+    return query
 
 
 # endregion

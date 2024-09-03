@@ -1,12 +1,13 @@
 import { Loading } from "@components/Common/Loading";
 import { getCsrfToken } from "@utils/functions";
-import React, { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { api } from "../../config/axios";
+import { api } from "../config/axios";
 
-export const OAuthCallback: React.FC = () => {
+export function Component() {
     const location = useLocation();
     const navigate = useNavigate();
+    const isEffectCalled = useRef(false);
 
     useEffect(() => {
         const completeOAuth = async () => {
@@ -55,8 +56,14 @@ export const OAuthCallback: React.FC = () => {
             }
         };
 
-        completeOAuth();
+        if (!isEffectCalled.current) {
+            // Check if the effect was already called
+            isEffectCalled.current = true;
+            completeOAuth();
+        }
     }, [location, navigate]);
 
     return <Loading />;
-};
+}
+
+Component.displayName = "OAuthCallback";

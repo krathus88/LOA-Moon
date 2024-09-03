@@ -1,0 +1,19 @@
+#FilterContainer > div {
+    max-width: 250px;
+}
+
+#FilterContainer > div .form-control:focus,
+#FilterContainer > div .form-control:hover {
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+#FilterContainer > div > label {
+    color: #adb5bd;
+    font-weight: 400;
+}
+
+#FilterContainer > div > #date_until {
+    height: 60px;
+    padding-top: 1.9rem;
+}

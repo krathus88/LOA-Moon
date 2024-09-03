@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "authentication",
     "user",
     "meter_logs",
-    "homepage",
+    "encounter",
 ]
 
 MIDDLEWARE = [

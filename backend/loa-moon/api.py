@@ -8,14 +8,14 @@ from .config import app_configs
 from authentication.api import router as authentication_router
 from meter_logs.api import router as meter_logs_router
 from user.api import router as user_router
-from homepage.api import router as homepage_router
+from encounter.api import router as encounter_router
 
 
 api_private = NinjaAPI(csrf=True, **app_configs, urls_namespace="api")
 
 api_private.add_router("auth", authentication_router, tags=["Auth"])
 api_private.add_router("user", user_router, tags=["User"])
-api_private.add_router("home", homepage_router, tags=["HomePage"])
+api_private.add_router("encounter", encounter_router, tags=["Encounter"])
 
 
 @api_private.post("/csrf")

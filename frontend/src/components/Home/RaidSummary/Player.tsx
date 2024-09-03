@@ -1,5 +1,3 @@
-import { getIcon } from "../../../utils/functions";
-
 type PlayerProps = {
     iconId: number;
     engraving: string;
@@ -29,7 +27,7 @@ export function Player({
                 borderColor: color,
                 backgroundImage: `linear-gradient(to right, ${color} ${dps_percentage}%,  transparent 0%`,
             }}>
-            <img src={getIcon(iconId)} alt={`Icon ${iconId}`} />
+            <img src={`/classes/${iconId}.png`} alt={`Icon ${iconId}`} />
             <small className="name fw-light">
                 {engraving} - {name}
             </small>

@@ -2,7 +2,6 @@ import { lazy } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Layout } from "@components/Common/Layout";
 import { AuthProvider } from "@components/Authentication/AuthContext";
-import { OAuthCallback } from "@components/Authentication/OAuthCallback";
 
 const HomePage = lazy(() =>
     import("@pages/HomePage").then((module) => ({
@@ -30,6 +29,12 @@ const FaqPage = lazy(() =>
 
 const ProfilePage = lazy(() =>
     import("@pages/ProfilePage").then((module) => ({
+        default: module.Component,
+    }))
+);
+
+const OAuthCallbackPage = lazy(() =>
+    import("@pages/OAuthCallbackPage").then((module) => ({
         default: module.Component,
     }))
 );
@@ -73,7 +78,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/auth/callback",
-        element: <OAuthCallback />,
+        element: <OAuthCallbackPage />,
     },
 ]);
 
