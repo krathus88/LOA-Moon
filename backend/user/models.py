@@ -1,6 +1,5 @@
 from django.db import models
 from allauth.socialaccount.models import SocialAccount
-from django.contrib.postgres.fields import ArrayField
 
 
 # Create your models here.
@@ -13,14 +12,14 @@ class Profile(models.Model):
     avatar = models.URLField(max_length=255, blank=True, null=True)
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.id} - {self.name}"
 
 
 class Characters(models.Model):
-    profile = models.OneToOneField(
-        Profile, on_delete=models.CASCADE, primary_key=False, related_name="character"
+    profile = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name="characters"
     )
-    name = models.CharField(max_length=16, blank=True, null=True)
+    name = models.CharField(max_length=16, blank=True, null=True, unique=True)
     display_name = models.BooleanField(default=True)
     display_logs = models.BooleanField(default=True)
 

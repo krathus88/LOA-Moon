@@ -186,7 +186,7 @@ export function SearchFiltersContainer({
                     setFilters={setFilters}
                 />
                 <Date
-                    label="Until"
+                    label="To"
                     type="date_until"
                     filters={filters}
                     setFilters={setFilters}

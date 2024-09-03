@@ -14,6 +14,17 @@ header > nav .navbar-brand:hover {
     color: var(--bs-body-color);
 }
 
+header > nav #Logo {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
+}
+
+header > nav #Logo > img {
+    width: 48px;
+    height: 48px;
+}
+
 header h1 {
     margin-bottom: 0;
 }
