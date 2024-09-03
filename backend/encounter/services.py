@@ -109,7 +109,7 @@ def build_encounter_filter_query(
         boss_key, gate = encounter.split('_', 1)
         for boss_name, details in encounter_map.items():
             if details["gate"].lower() == gate and details["instance"].lower() == boss_key:
-                query &= Q(boss_name__icontains=boss_name)
+                query &= Q(boss_name__exact=boss_name)
                 break
 
     if difficulty:

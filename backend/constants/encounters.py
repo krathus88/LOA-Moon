@@ -8,19 +8,7 @@ encounter_map = {
         "gate": "G1",
         "instance": "Valtan",
     },
-    "Destroyer Lucas": {
-        "gate": "G1",
-        "instance": "Valtan",
-    },
-    "Leader Lugaru": {
-        "gate": "G1",
-        "instance": "Valtan",
-    },
     # G2
-    "Demon Beast Commander Valtan": {
-        "gate": "G2",
-        "instance": "Valtan",
-    },
     "Ravaged Tyrant of Beasts": {
         "gate": "G2",
         "instance": "Valtan",
@@ -48,10 +36,6 @@ encounter_map = {
         "instance": "Kakul-Saydon",
     },
     # G3
-    "Kakul-Saydon": {
-        "gate": "G3",
-        "instance": "Kakul-Saydon",
-    },
     "Encore-Desiring Kakul-Saydon": {
         "gate": "G3",
         "instance": "Kakul-Saydon",
@@ -63,14 +47,6 @@ encounter_map = {
         "instance": "Brelshaza",
     },
     # G2
-    "Prokel": {
-        "gate": "G2",
-        "instance": "Brelshaza",
-    },
-    "Prokel's Spiritual Echo": {
-        "gate": "G2",
-        "instance": "Brelshaza",
-    },
     "Ashtarot": {
         "gate": "G2",
         "instance": "Brelshaza",
@@ -103,10 +79,6 @@ encounter_map = {
     },
     ## Akkan
     # G1
-    "Griefbringer Maurug": {
-        "gate": "G1",
-        "instance": "Akkan",
-    },
     "Evolved Maurug": {
         "gate": "G1",
         "instance": "Akkan",
@@ -118,10 +90,6 @@ encounter_map = {
     },
     # G3
     "Plague Legion Commander Akkan": {
-        "gate": "G3",
-        "instance": "Akkan",
-    },
-    "Lord of Kartheon Akkan": {
         "gate": "G3",
         "instance": "Akkan",
     },
@@ -138,22 +106,6 @@ encounter_map = {
     },
     # G3
     "Lazaram, the Trailblazer": {
-        "gate": "G3",
-        "instance": "Ivory Tower",
-    },
-    "Subordinated Vertus": {
-        "gate": "G3",
-        "instance": "Ivory Tower",
-    },
-    "Subordinated Calventus": {
-        "gate": "G3",
-        "instance": "Ivory Tower",
-    },
-    "Subordinated Legoros": {
-        "gate": "G3",
-        "instance": "Ivory Tower",
-    },
-    "Brand of Subordination": {
         "gate": "G3",
         "instance": "Ivory Tower",
     },
