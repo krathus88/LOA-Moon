@@ -13,5 +13,9 @@ if (import.meta.env.MODE === "production") {
     ReactDOM.createRoot(rootElement!).render(<App />);
 } else {
     // Render with StrictMode in development
-    ReactDOM.createRoot(rootElement!).render(<App />);
+    ReactDOM.createRoot(rootElement!).render(
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    );
 }

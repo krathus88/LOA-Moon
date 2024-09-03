@@ -8,7 +8,7 @@ from django.http import HttpResponse
 from django.db.models import Q
 
 from authentication.services import token_auth
-from homepage.models import EncounterPreview, EncounterPreviewPlayers
+from encounter.models import Encounter, EncounterPlayers
 from .services import parse_db_file, format_db_data
 
 
@@ -42,7 +42,7 @@ def upload_log(request, file: UploadedFile = File(...)):
         time_range_end = fight_end_time + 30  # seconds after
 
         # Find potential matches within the time range
-        potential_matches = EncounterPreview.objects.filter(
+        potential_matches = Encounter.objects.filter(
             Q(fight_end__gte=time_range_start) & Q(fight_end__lte=time_range_end),
             boss_name=entry["boss_name"],
             difficulty=entry["difficulty"],
@@ -69,7 +69,7 @@ def upload_log(request, file: UploadedFile = File(...)):
             continue
 
         try:
-            encounter = EncounterPreview.objects.create(
+            encounter = Encounter.objects.create(
                 fight_end=entry["fight_end"],
                 fight_duration=entry["fight_duration"],
                 boss_name=entry["boss_name"],
@@ -82,10 +82,10 @@ def upload_log(request, file: UploadedFile = File(...)):
             # Handle the exception if needed
             raise HttpResponse(f"Error saving encounter preview.", status=500)
 
-        # Process EncounterPreviewPlayers data for the corresponding encounter
+        # Process EncounterPlayers data for the corresponding encounter
         for player_entry in parsed_encounter_preview_player_data[i]:
             try:
-                EncounterPreviewPlayers.objects.create(
+                EncounterPlayers.objects.create(
                     encounter=encounter,
                     name=player_entry["name"],
                     character_id=player_entry["character_id"],

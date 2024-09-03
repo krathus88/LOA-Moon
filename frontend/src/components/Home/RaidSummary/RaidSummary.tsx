@@ -1,7 +1,6 @@
-import { PlayerDataType } from "@type/RaidSummaryType";
+import { PlayerDataType } from "@type/HomePageType";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { getRaidWallpaper } from "../../../utils/functions";
 import { Info } from "./Info";
 import { PlayerData } from "./PlayerData";
 
@@ -65,7 +64,7 @@ export function RaidSummary({
             ref={raidSummaryRef}>
             {/* Raid Wallpaper */}
             <img
-                src={getRaidWallpaper(instance_name)}
+                src={`/raids/${instance_name}.webp`}
                 alt=""
                 className="raid-summary-background"
             />

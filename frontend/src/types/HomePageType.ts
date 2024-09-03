@@ -22,3 +22,15 @@ export type RaidSummaryType = {
     death_count: number;
     player_data: PlayerDataType[];
 };
+
+export type FiltersType = {
+    p_name?: string;
+    p_class?: string;
+    p_spec?: string;
+    encounter?: string;
+    difficulty?: string;
+    date_from?: string;
+    date_until?: string;
+    clear_time_from?: number;
+    clear_time_until?: number;
+};

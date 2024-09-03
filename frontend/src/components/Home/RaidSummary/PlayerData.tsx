@@ -1,7 +1,7 @@
 import { Player } from "./Player";
 import { chunkArrayIntoParties } from "@utils/functions";
 import { getPlayerType } from "@utils/functions";
-import { PlayerDataType } from "@type/RaidSummaryType";
+import { PlayerDataType } from "@type/HomePageType";
 
 type PlayerDataProps = {
     isHeightLarge: boolean;

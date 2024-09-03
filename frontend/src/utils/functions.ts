@@ -1,3 +1,4 @@
+import { FiltersType } from "@type/HomePageType";
 import { SUPP_MAP } from "./constants";
 import { api } from "@config/axios";
 
@@ -51,6 +52,11 @@ export const getCsrfToken = async (): Promise<string | undefined> => {
     return csrfToken;
 };
 
+export const toQueryString = (filters: FiltersType): string => {
+    const query = new URLSearchParams(filters as Record<string, string>);
+    return query.toString();
+};
+
 type CookieOptions = {
     path?: string;
     expires?: Date;
@@ -89,14 +95,6 @@ export function setCookie(
     }
 
     document.cookie = cookieString;
-}
-
-export function getIcon(iconNumber: number) {
-    return new URL(`../assets/classes/${iconNumber}.png`, import.meta.url).href;
-}
-
-export function getRaidWallpaper(raidName: string) {
-    return new URL(`../assets/raids/${raidName}.webp`, import.meta.url).href;
 }
 
 export function chunkArrayIntoParties<T>(array: T[], chunkSize: number): T[][] {
