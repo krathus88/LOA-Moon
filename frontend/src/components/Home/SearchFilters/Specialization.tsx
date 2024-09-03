@@ -33,7 +33,7 @@ export function Specialization({
                 handleSpecChange(selectedOption as { value: string })
             }
             isClearable
-            value={specializationSelectValue}
+            value={specializationSelectValue || null}
             placeholder="Specialization"
             styles={selectStyle}
             theme={(theme) => ({
