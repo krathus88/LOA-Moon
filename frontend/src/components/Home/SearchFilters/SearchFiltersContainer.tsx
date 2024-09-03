@@ -113,7 +113,10 @@ export function SearchFiltersContainer({
             );
         } else {
             // If no class is selected, show all specializations
-            const allSpecs = Object.values(CLASS_SPECS).flat();
+            const allSpecs = Object.values(CLASS_SPECS).reduce(
+                (acc, val) => acc.concat(val),
+                []
+            );
             setSpecializationOptions(
                 allSpecs.map((spec) => ({ value: spec, label: spec }))
             );
