@@ -2,7 +2,6 @@ import { NavDropdown } from "react-bootstrap";
 import { useAuth } from "@components/Authentication/useAuth";
 import { Link } from "react-router-dom";
 import { LoginIcon } from "../Icons/LoginIcon";
-import defaultAvatar from "@assets/default-avatar.webp";
 
 export function UserProfileContainer() {
     const { user, login, logout } = useAuth();
@@ -18,7 +17,7 @@ export function UserProfileContainer() {
         );
     }
 
-    const avatarUrl = user?.avatar || defaultAvatar;
+    const avatarUrl = user?.avatar || "/default-avatar.webp";
 
     return (
         <NavDropdown
