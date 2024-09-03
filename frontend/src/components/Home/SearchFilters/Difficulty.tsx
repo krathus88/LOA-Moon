@@ -21,7 +21,6 @@ export function Difficulty({ filters, selectStyle, setFilters }: DifficultyProps
 
     return (
         <Select
-            className="mb-3"
             id="DifficultySelect"
             options={DIFFICULTY_LEVELS}
             onChange={(selectedOption) =>
@@ -29,7 +28,7 @@ export function Difficulty({ filters, selectStyle, setFilters }: DifficultyProps
             }
             isClearable
             value={difficultySelectValue}
-            placeholder="Select a difficulty"
+            placeholder="Difficulty"
             styles={selectStyle}
             theme={(theme) => ({
                 ...theme,

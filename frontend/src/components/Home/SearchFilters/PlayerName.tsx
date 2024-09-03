@@ -15,7 +15,7 @@ export function PlayerName({ filters, setFilters }: PlayerNameProps) {
     };
 
     return (
-        <div className="form-floating mb-3">
+        <div id="NameInput" className="form-floating">
             <input
                 type="text"
                 className="form-control"

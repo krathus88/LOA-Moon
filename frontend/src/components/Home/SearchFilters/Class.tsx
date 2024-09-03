@@ -39,7 +39,6 @@ export function Class({ filters, selectStyle, setFilters }: ClassProps) {
 
     return (
         <Select
-            className="mb-3"
             id="ClassSelect"
             options={classOptions}
             onChange={(selectedOption) =>
@@ -47,7 +46,7 @@ export function Class({ filters, selectStyle, setFilters }: ClassProps) {
             }
             isClearable
             value={classOptions.find((option) => option.value === filters.p_class)}
-            placeholder="Select a class"
+            placeholder="Class"
             styles={selectStyle}
             theme={(theme) => ({
                 ...theme,

@@ -148,41 +148,52 @@ export function SearchFiltersContainer({
 
     return (
         <form className="form-label m-1" id="FilterContainer" onSubmit={handleSubmit}>
-            <PlayerName filters={filters} setFilters={setFilters} />
-            <Class
-                filters={filters}
-                selectStyle={SelectStyle}
-                setFilters={setFilters}
-            />
-            <Specialization
-                specializationOptions={specializationOptions}
-                filters={filters}
-                selectStyle={SelectStyle}
-                setFilters={setFilters}
-            />
-            <Encounter
-                filters={filters}
-                selectStyle={SelectStyle}
-                setFilters={setFilters}
-            />
-            <Difficulty
-                filters={filters}
-                selectStyle={SelectStyle}
-                setFilters={setFilters}
-            />
-            <Date
-                label="From"
-                type="date_from"
-                filters={filters}
-                setFilters={setFilters}
-            />
-            <Date
-                label="Until"
-                type="date_until"
-                filters={filters}
-                setFilters={setFilters}
-            />
-            <button type="submit" className="btn btn-primary" disabled={isLoading}>
+            <div id="FilterPlayers">
+                <PlayerName filters={filters} setFilters={setFilters} />
+                <Class
+                    filters={filters}
+                    selectStyle={SelectStyle}
+                    setFilters={setFilters}
+                />
+                <Specialization
+                    specializationOptions={specializationOptions}
+                    filters={filters}
+                    selectStyle={SelectStyle}
+                    setFilters={setFilters}
+                />
+            </div>
+
+            <hr />
+
+            <div id="FilterEncounters">
+                <Encounter
+                    filters={filters}
+                    selectStyle={SelectStyle}
+                    setFilters={setFilters}
+                />
+                <Difficulty
+                    filters={filters}
+                    selectStyle={SelectStyle}
+                    setFilters={setFilters}
+                />
+            </div>
+
+            <div id="FilterDates">
+                <Date
+                    label="From"
+                    type="date_from"
+                    filters={filters}
+                    setFilters={setFilters}
+                />
+                <Date
+                    label="Until"
+                    type="date_until"
+                    filters={filters}
+                    setFilters={setFilters}
+                />
+            </div>
+
+            <button type="submit" className="btn btn-secondary" disabled={isLoading}>
                 Apply Filters
             </button>
         </form>

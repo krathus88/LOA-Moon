@@ -86,14 +86,11 @@ def build_encounter_filter_query(
     difficulty=None,
     date_from=None,
     date_until=None,
-    clear_time_from=None,
-    clear_time_until=None,
 ):
     """
     Build a Q object for filtering encounters based on provided parameters.
     """
     query = Q()
-
     # Player --- Need to fix on frontend. Only yield results for said class
     #        --- no need for all classes in an encounter, only said class
     if p_name:
@@ -128,13 +125,7 @@ def build_encounter_filter_query(
         date_obj = datetime.strptime(date_until, "%Y-%m-%d")
         timestamp = int(time.mktime(date_obj.timetuple()))
 
-        query &= Q(fight_end__lte=date_obj)
-
-    # Clear Time
-    if clear_time_from >= 0:
-        query &= Q(fight_duration__gte=clear_time_from)
-    if clear_time_until >= 0:
-        query &= Q(fight_duration__lte=clear_time_until)
+        query &= Q(fight_end__lte=timestamp)
 
     return query
 

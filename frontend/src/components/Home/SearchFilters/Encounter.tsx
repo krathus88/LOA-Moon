@@ -22,7 +22,6 @@ export function Encounter({ filters, selectStyle, setFilters }: EncounterProps) 
 
     return (
         <Select
-            className="mb-3"
             id="EncounterSelect"
             options={ENCOUNTER_GROUPS}
             onChange={(selectedOption) =>
@@ -30,7 +29,7 @@ export function Encounter({ filters, selectStyle, setFilters }: EncounterProps) 
             }
             isClearable
             value={encounterSelectValue}
-            placeholder="Select an encounter"
+            placeholder="Encounter"
             styles={selectStyle}
             theme={(theme) => ({
                 ...theme,
