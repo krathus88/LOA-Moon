@@ -28,6 +28,7 @@ export function Component() {
                 // Check if the state matches
                 if (state !== storedState) {
                     console.error("State does not match");
+                    navigate("/");
                     return;
                 }
 

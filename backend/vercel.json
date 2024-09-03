@@ -2,14 +2,14 @@
     "version": 2,
     "builds": [
         {
-            "src": "loa-moon/wsgi.py",
+            "src": "loa-moon/asgi.py",
             "use": "@vercel/python"
         }
     ],
     "routes": [
         {
             "src": "/(.*)",
-            "dest": "loa-moon/wsgi.py"
+            "dest": "loa-moon/asgi.py"
         }
     ]
 }
