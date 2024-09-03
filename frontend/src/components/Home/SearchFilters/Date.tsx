@@ -19,7 +19,7 @@ export function Date({ label, type, filters, setFilters }: DateProps) {
     };
 
     return (
-        <div className="form-floating mb-3">
+        <div className="form-floating">
             <input
                 type="date"
                 className="form-control"

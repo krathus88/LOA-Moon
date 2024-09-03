@@ -1,4 +1,3 @@
-import { Loading } from "@components/Common/Loading";
 import { getCsrfToken } from "@utils/functions";
 import { useEffect, useRef } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -63,7 +62,7 @@ export function Component() {
         }
     }, [location, navigate]);
 
-    return <Loading />;
+    return;
 }
 
 Component.displayName = "OAuthCallback";

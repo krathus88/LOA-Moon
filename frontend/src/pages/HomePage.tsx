@@ -29,7 +29,7 @@ export function Component() {
                     setDisplayedData={setDisplayedData}
                     setNoResults={setNoResults}
                 />
-                <ul className="col" id="RaidSummaryContainer">
+                <ul id="RaidSummaryContainer">
                     <RaidSummaryContainer
                         filters={filters}
                         isLoading={isLoading}

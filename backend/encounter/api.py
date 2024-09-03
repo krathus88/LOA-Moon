@@ -22,8 +22,6 @@ def get_home_data(
     difficulty: str = "",
     date_from: str = "",
     date_until: str = "",
-    clear_time_from: int = -1,
-    clear_time_until: int = -1,
 ):
     page_size = 25  # Number of items per page
     offset = (page - 1) * page_size  # Calculate the offset
@@ -37,8 +35,6 @@ def get_home_data(
         difficulty=difficulty,
         date_from=date_from,
         date_until=date_until,
-        clear_time_from=clear_time_from,
-        clear_time_until=clear_time_until,
     )
 
     latest_encounters = (

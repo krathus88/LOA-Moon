@@ -27,7 +27,6 @@ export function Specialization({
 
     return (
         <Select
-            className="mb-3"
             id="SpecSelect"
             options={specializationOptions}
             onChange={(selectedOption) =>
@@ -35,7 +34,7 @@ export function Specialization({
             }
             isClearable
             value={specializationSelectValue}
-            placeholder="Select a specialization"
+            placeholder="Specialization"
             styles={selectStyle}
             theme={(theme) => ({
                 ...theme,
