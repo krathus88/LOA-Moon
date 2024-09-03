@@ -42,7 +42,7 @@ export const getCsrfToken = async (): Promise<string | undefined> => {
                     sameSite: "None",
                     domain:
                         import.meta.env.MODE === "production"
-                            ? import.meta.env.VITE_BACKEND_DOMAIN
+                            ? import.meta.env.VITE_FRONTEND_DOMAIN
                             : undefined,
                 });
             }
