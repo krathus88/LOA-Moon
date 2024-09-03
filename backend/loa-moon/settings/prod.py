@@ -26,6 +26,8 @@ ALLOWED_HOSTS = ALLOWED_HOSTS_env
 
 NINJA_API_DOCS_ENABLED = False
 
+CSRF_COOKIE_SAMESITE = "None"
+
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
