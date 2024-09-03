@@ -33,8 +33,8 @@ const ProfilePage = lazy(() =>
     }))
 );
 
-const OAuthCallbackPage = lazy(() =>
-    import("@pages/OAuthCallbackPage").then((module) => ({
+const DiscordOAuthCallbackPage = lazy(() =>
+    import("@pages/DiscordOAuthCallbackPage").then((module) => ({
         default: module.Component,
     }))
 );
@@ -78,7 +78,7 @@ const router = createBrowserRouter([
     },
     {
         path: "/auth/callback",
-        element: <OAuthCallbackPage />,
+        element: <DiscordOAuthCallbackPage />,
     },
 ]);
 

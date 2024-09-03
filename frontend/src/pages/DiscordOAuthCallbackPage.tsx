@@ -62,7 +62,7 @@ export function Component() {
         }
     }, [location, navigate]);
 
-    return;
+    return <></>;
 }
 
-Component.displayName = "OAuthCallback";
+Component.displayName = "DiscordOAuthCallback";
