@@ -37,6 +37,10 @@ export function Class({ filters, selectStyle, setFilters }: ClassProps) {
         })
     );
 
+    const classSelectValue = classOptions.find(
+        (option) => option.value === filters.p_class
+    );
+
     return (
         <Select
             id="ClassSelect"
@@ -45,7 +49,7 @@ export function Class({ filters, selectStyle, setFilters }: ClassProps) {
                 handleClassChange(selectedOption as { value: string })
             }
             isClearable
-            value={classOptions.find((option) => option.value === filters.p_class)}
+            value={classSelectValue}
             placeholder="Class"
             styles={selectStyle}
             theme={(theme) => ({
