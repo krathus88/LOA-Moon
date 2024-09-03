@@ -3,6 +3,7 @@ import "@components/Profile/Profile.css";
 import { api } from "@config/axios";
 import { useState } from "react";
 import { getCsrfToken } from "@utils/functions";
+import { FileUpload } from "@components/Profile/FileUpload";
 
 export function Component() {
     useRequireAuth();
@@ -84,6 +85,7 @@ export function Component() {
                         </button>
                     </div>
                 </div>
+                <FileUpload accessToken={value} />
             </div>
         </main>
     );

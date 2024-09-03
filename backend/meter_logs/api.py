@@ -7,7 +7,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse
 from django.db.models import Q
 
-from authentication.services import token_auth
+from authentication.services import TokenAuth
 from encounter.models import Encounter, EncounterPlayers
 from .services import parse_db_file, format_db_data
 
@@ -15,7 +15,7 @@ from .services import parse_db_file, format_db_data
 router = Router()
 
 
-@router.post("/", auth=token_auth)
+@router.post("/", auth=TokenAuth())
 def upload_log(request, file: UploadedFile = File(...)):
     # Authenticated user is available as request.auth (which is a Profile instance)
     profile = request.auth
