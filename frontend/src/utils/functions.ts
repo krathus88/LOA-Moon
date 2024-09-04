@@ -31,7 +31,7 @@ export const getCsrfToken = async (): Promise<string | undefined> => {
 
             // Fallback: Check the headers or response body if it's not in the cookies
             if (!csrfToken) {
-                csrfToken = csrf_response.headers["x-csrftoken"] || csrf_response.data;
+                csrfToken = csrf_response.headers["x-csrftoken"];
             }
 
             if (csrfToken) {
@@ -39,10 +39,10 @@ export const getCsrfToken = async (): Promise<string | undefined> => {
                 setCookie("csrftoken", csrfToken, {
                     path: "/",
                     secure: true,
-                    sameSite: "None",
+                    sameSite: import.meta.env.MODE === "production" ? "None" : "Lax",
                     domain:
                         import.meta.env.MODE === "production"
-                            ? import.meta.env.VITE_FRONTEND_DOMAIN
+                            ? import.meta.env.VITE_BACKEND_DOMAIN
                             : undefined,
                 });
             }

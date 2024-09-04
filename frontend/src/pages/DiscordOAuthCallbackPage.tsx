@@ -17,7 +17,6 @@ export function Component() {
 
             // If the required query parameters are missing, redirect to homepage
             if (!code || !state) {
-                console.error("Invalid OAuth callback attempt, missing code or state");
                 navigate("/");
                 return;
             }
@@ -27,7 +26,6 @@ export function Component() {
 
                 // Check if the state matches
                 if (state !== storedState) {
-                    console.error("State does not match");
                     navigate("/");
                     return;
                 }
