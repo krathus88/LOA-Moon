@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
-from corsheaders.defaults import default_headers
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -124,14 +123,5 @@ STORAGES = {
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-
-""" ALLOWED_ORIGINS_env = os.getenv("ALLOWED_ORIGINS")
-if ALLOWED_ORIGINS_env:
-    ALLOWED_ORIGINS_env = ALLOWED_ORIGINS_env.split(",")
-
-CORS_ALLOWED_ORIGINS = ALLOWED_ORIGINS_env
-CORS_ALLOW_CREDENTIALS = True
-
-CSRF_TRUSTED_ORIGINS = ALLOWED_ORIGINS_env """
 
 SOCIALACCOUNT_STORE_TOKENS = True
