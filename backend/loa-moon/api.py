@@ -1,6 +1,4 @@
 from ninja import NinjaAPI
-from django.http import JsonResponse
-from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 from django.http import HttpResponse
 
