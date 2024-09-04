@@ -16,7 +16,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True  # TEMPORARILY
 
 ALLOWED_HOSTS_env = os.getenv("ALLOWED_HOSTS")
 if ALLOWED_HOSTS_env:
@@ -29,7 +29,7 @@ NINJA_API_DOCS_ENABLED = False
 SESSION_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SAMESITE = "None"
 CSRF_COOKIE_SECURE = True
-
+CSRF_COOKIE_DOMAIN = os.getenv("ALLOWED_DOMAIN")
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
