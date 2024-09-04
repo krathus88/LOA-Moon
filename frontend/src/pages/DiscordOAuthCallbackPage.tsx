@@ -45,10 +45,9 @@ export function Component() {
                     );
 
                     // Redirect to homepage or dashboard
-                    navigate("/");
+                    navigate("/profile");
                 } catch (error) {
                     console.error("OAuth authentication failed", error);
-                    // Handle the error (e.g., display an error message)
                     navigate("/");
                 }
             }

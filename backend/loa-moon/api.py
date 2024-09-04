@@ -29,11 +29,11 @@ api_public = NinjaAPI(**app_configs, urls_namespace="health")
 api_public.add_router("log", meter_logs_router, tags=["Database"])
 
 
-@api_public.get("/")
+@api_private.get("/")
 async def root(request):
     return {"message": "Hello World"}
 
 
-@api_public.get("/health")
+@api_private.get("/health")
 async def health(request):
     return {"message": "OK"}
