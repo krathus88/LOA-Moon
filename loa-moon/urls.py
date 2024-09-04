@@ -16,12 +16,21 @@ Including another URLconf
 """
 
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
+from django.views.generic import TemplateView
+from django.conf import settings
+from django.conf.urls.static import static
+
 from .api import api_private, api_public
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", api_private.urls),
+    path("api/", api_private.urls),
     path("api/", api_public.urls),
+    re_path(r"^.*$", TemplateView.as_view(template_name="frontend/index.html")),
 ]
+
+# Serve static files during development
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
