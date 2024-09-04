@@ -64,7 +64,7 @@ export function RaidSummary({
             ref={raidSummaryRef}>
             {/* Raid Wallpaper */}
             <img
-                src={`/raids/${instance_name}.webp`}
+                src={`${import.meta.env.BASE_URL}raids/${instance_name}.webp`}
                 alt=""
                 className="raid-summary-background"
             />

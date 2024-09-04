@@ -6,9 +6,13 @@ import path from "path";
 // https://vitejs.dev/config/
 export default defineConfig(() => {
     return {
+        base: "/static/frontend/",
         plugins: [react(), svgr()],
         server: {
             host: "127.0.0.1",
+        },
+        build: {
+            outDir: "../loa-moon/static/frontend",
         },
         resolve: {
             alias: {

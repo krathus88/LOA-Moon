@@ -19,7 +19,9 @@ export function Header() {
                         as={Link}
                         to="/"
                         onClick={() => setExpanded(false)}>
-                        <img src="/logo.png" alt="Logo"></img>
+                        <img
+                            src={`${import.meta.env.BASE_URL}logo.png`}
+                            alt="Logo"></img>
                         <h1 className="font-special">{SITE_NAME}</h1>
                     </Navbar.Brand>
                 </div>

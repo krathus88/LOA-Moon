@@ -23,7 +23,7 @@ export function Class({ filters, selectStyle, setFilters }: ClassProps) {
             label: (
                 <div style={{ display: "flex", alignItems: "center" }}>
                     <img
-                        src={`/classes/${classId}.png`}
+                        src={`${import.meta.env.BASE_URL}classes/${classId}.png`}
                         alt={`${className} icon`}
                         style={{
                             width: "24px",

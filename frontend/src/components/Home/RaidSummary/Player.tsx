@@ -27,7 +27,10 @@ export function Player({
                 borderColor: color,
                 backgroundImage: `linear-gradient(to right, ${color} ${dps_percentage}%,  transparent 0%`,
             }}>
-            <img src={`/classes/${iconId}.png`} alt={`Icon ${iconId}`} />
+            <img
+                src={`${import.meta.env.BASE_URL}classes/${iconId}.png`}
+                alt={`Icon ${iconId}`}
+            />
             <small className="name fw-light">
                 {engraving} - {name}
             </small>

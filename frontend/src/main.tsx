@@ -1,9 +1,10 @@
-import "./config/axios.ts"; // Axios Config
+import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
+import React from "react";
 import ReactDOM from "react-dom/client";
 import { App } from "./App.tsx";
-import "bootstrap/dist/css/bootstrap.min.css";
+import "./config/axios.ts"; // Axios Config
 import "./index.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
 
 const rootElement = document.getElementById("root");
 
@@ -12,5 +13,9 @@ if (import.meta.env.MODE === "production") {
     ReactDOM.createRoot(rootElement!).render(<App />);
 } else {
     // Render with StrictMode in development
-    ReactDOM.createRoot(rootElement!).render(<App />);
+    ReactDOM.createRoot(rootElement!).render(
+        <React.StrictMode>
+            <App />
+        </React.StrictMode>
+    );
 }
