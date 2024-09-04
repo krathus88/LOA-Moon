@@ -7,8 +7,14 @@ export const useRequireAuth = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!loading && user === null) {
-            navigate("/"); // Redirect to home if not authenticated
-        }
+        const checkAuthStatus = async () => {
+            if (loading) return; // Do nothing while loading
+
+            if (user === null) {
+                navigate("/");
+            }
+        };
+
+        checkAuthStatus();
     }, [user, loading, navigate]);
 };

@@ -1,14 +1,31 @@
-import { useRequireAuth } from "@components/Authentication/useRequireAuth";
+import { useAuth } from "@components/Authentication/useAuth";
+import { FileUpload } from "@components/Profile/FileUpload";
 import "@components/Profile/Profile.css";
 import { api } from "@config/axios";
-import { useState } from "react";
 import { getCsrfToken } from "@utils/functions";
-import { FileUpload } from "@components/Profile/FileUpload";
+import { useEffect, useState } from "react";
+import { useRequireAuth } from "@components/Authentication/useRequireAuth";
+import { Loading } from "@components/Common/Loading";
 
 export function Component() {
+    const { fetchUser, loading } = useAuth(); // Assuming useAuth provides 'user' and 'loading' states
+    const [hasFetchedUser, setHasFetchedUser] = useState(false);
+    const [value, setValue] = useState("");
+
+    useEffect(() => {
+        if (!hasFetchedUser && !loading) {
+            const fetchData = async () => {
+                await fetchUser();
+                setHasFetchedUser(true);
+            };
+
+            fetchData();
+        }
+    }, [fetchUser, hasFetchedUser, loading]);
+
     useRequireAuth();
 
-    const [value, setValue] = useState("");
+    if (!hasFetchedUser) return <Loading />;
 
     const handleGenerate = async () => {
         try {
