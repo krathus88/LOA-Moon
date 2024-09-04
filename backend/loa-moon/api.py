@@ -2,6 +2,7 @@ from ninja import NinjaAPI
 from django.http import JsonResponse
 from django.middleware.csrf import get_token
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.http import HttpResponse
 
 from .config import app_configs
 
@@ -22,9 +23,7 @@ api_private.add_router("encounter", encounter_router, tags=["Encounter"])
 @ensure_csrf_cookie
 @csrf_exempt
 def get_csrf_token(request):
-    response = JsonResponse({"detail": "CSRF cookie set"})
-    response["X-CSRFToken"] = get_token(request)
-    return response
+    return HttpResponse()
 
 
 api_public = NinjaAPI(**app_configs, urls_namespace="health")
