@@ -2,14 +2,25 @@
     "version": 2,
     "builds": [
         {
-            "src": "loa-moon/wsgi.py",
+            "src": "frontend/package.json",
+            "use": "@vercel/static-build",
+            "config": {
+                "distDir": "frontend/dist"
+            }
+        },
+        {
+            "src": "manage.py",
             "use": "@vercel/python"
         }
     ],
     "routes": [
         {
+            "src": "/static/(.*)",
+            "dest": "/static/$1"
+        },
+        {
             "src": "/(.*)",
-            "dest": "loa-moon/wsgi.py"
+            "dest": "/loa-moon/static/frontend/$1"
         }
     ]
 }
