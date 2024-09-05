@@ -22,9 +22,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY backend/ /app/
 
 # Collect static files (with access to secrets)
-RUN --mount=type=secret,id=env_secret,dst=/etc/secrets/env_secret \
-    export $(cat /etc/secrets/env_secret | xargs) && \
-    python manage.py collectstatic --noinput
+RUN --mount=type=secret,id=_env,dst=/etc/secrets/.env cat /etc/secrets/.env && python manage.py collectstatic --noinput
 
 # Expose the port the app runs on
 EXPOSE 8000
