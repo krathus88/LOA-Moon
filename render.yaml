@@ -2,12 +2,12 @@ services:
     - type: web
       name: django-ninja-react-vite
       env: docker
-      plan: starter # You can change this based on your requirements
+      plan: starter
       buildCommand: "" # No specific build command, as it's handled by Dockerfile
       startCommand: "" # No specific start command, as it's handled by Dockerfile
 
       # Docker setup
-      dockerfilePath: ./Dockerfile # Path to your Dockerfile
+      dockerfilePath: ./Dockerfile # Path to Dockerfile
 
       # Secrets
       envVars:
@@ -19,14 +19,14 @@ services:
             sync: false
 
       # Static file configuration
-      staticPublishPath: /app/staticfiles # Path to collectstatic output folder in Django
-      healthCheckPath: /
+      staticPublishPath: /backend/loa-moon/staticfiles # Path to collectstatic output folder in Django
+      healthCheckPath: /api/health
 
       # Set auto-deploy on push to the main branch
       autoDeploy: true
 
-      # Environment variables (sync with your .env file on Render)
+      # Environment variables (sync with .env file on Render)
       secrets:
-          - key: _env
+          - key: env_secret
             file: true # Use the secret file feature to mount a secret .env file securely
 
