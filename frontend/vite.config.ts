@@ -9,10 +9,10 @@ export default defineConfig(() => {
         base: "/static/frontend/",
         plugins: [react(), svgr()],
         server: {
-            host: "127.0.0.1",
+            host: process.env.VITE_FRONTEND_DOMAIN || "127.0.0.1",
         },
         build: {
-            outDir: "../loa-moon/static/frontend",
+            outDir: "../backend/loa-moon/static/frontend",
         },
         resolve: {
             alias: {
