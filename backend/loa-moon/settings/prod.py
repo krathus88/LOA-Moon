@@ -18,12 +18,6 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS_env = os.getenv("ALLOWED_HOSTS")
-if ALLOWED_HOSTS_env:
-    ALLOWED_HOSTS_env = ALLOWED_HOSTS_env.split(",")
-
-ALLOWED_HOSTS = ALLOWED_HOSTS_env
-
 NINJA_API_DOCS_ENABLED = False
 
 CSRF_COOKIE_SECURE = True

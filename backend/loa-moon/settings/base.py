@@ -125,3 +125,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 SOCIALACCOUNT_STORE_TOKENS = True
+
+
+ALLOWED_HOSTS_env = os.getenv("ALLOWED_HOSTS", [])
+if ALLOWED_HOSTS_env:
+    ALLOWED_HOSTS_env = ALLOWED_HOSTS_env.split(",")
+ALLOWED_HOSTS = ALLOWED_HOSTS_env
+print(ALLOWED_HOSTS)
