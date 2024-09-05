@@ -15,22 +15,23 @@ ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
 # Install dependencies
-COPY requirements.txt /app/
+COPY backend/requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the backend code
-COPY . /app/
+COPY backend/ /app/
 
 # Copy built frontend files from stage 1
-COPY --from=frontend-build /frontend/../loa-moon/static/frontend /app/loa-moon/static/frontend/
+COPY --from=frontend-build /frontend/dist /app/static/frontend/
 
 # Collect static files (with access to secrets)
-RUN --mount=type=secret,id=_env,dst=/etc/secrets/.env \
+RUN --mount=type=secret,id=env_secret,dst=/etc/secrets/.env \
     export $(cat /etc/secrets/.env | xargs) && \
     python manage.py collectstatic --noinput
 
 # Expose the port the app runs on
 EXPOSE 8000
 
-# Command to run the Django app with Uvicorn
-CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8000", "loa-moon.wsgi:application"]
+# Command to run the Django app with Gunicorn
+CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8000", "backend.loa-moon.wsgi:application"]
+
