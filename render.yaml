@@ -27,6 +27,6 @@ services:
 
       # Environment variables (sync with .env file on Render)
       secrets:
-          - key: env_secret
+          - key: .env
             file: true # Use the secret file feature to mount a secret .env file securely
 
