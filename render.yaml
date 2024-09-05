@@ -1,0 +1,32 @@
+services:
+    - type: web
+      name: django-ninja-react-vite
+      env: docker
+      plan: starter # You can change this based on your requirements
+      buildCommand: "" # No specific build command, as it's handled by Dockerfile
+      startCommand: "" # No specific start command, as it's handled by Dockerfile
+
+      # Docker setup
+      dockerfilePath: ./Dockerfile # Path to your Dockerfile
+
+      # Secrets
+      envVars:
+          - key: DJANGO_SECRET_KEY
+            sync: false
+          - key: DATABASE_URL
+            sync: false
+          - key: VITE_API_URL
+            sync: false
+
+      # Static file configuration
+      staticPublishPath: /app/staticfiles # Path to collectstatic output folder in Django
+      healthCheckPath: /
+
+      # Set auto-deploy on push to the main branch
+      autoDeploy: true
+
+      # Environment variables (sync with your .env file on Render)
+      secrets:
+          - key: _env
+            file: true # Use the secret file feature to mount a secret .env file securely
+

@@ -5,7 +5,8 @@
             "src": "../frontend/package.json",
             "use": "@vercel/static-build",
             "config": {
-                "distDir": "../backend/loa-moon/static/frontend"
+                "distDir": "../backend/loa-moon/static/frontend",
+                "buildCommand": "npm install --prefix ../frontend && npm run build --prefix ../frontend"
             }
         },
         {
@@ -19,7 +20,7 @@
     "routes": [
         {
             "src": "/static/(.*)",
-            "dest": "/static/$1"
+            "dest": "/loa-moon/static/$1"
         },
         {
             "src": "/(.*)",
