@@ -21,9 +21,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy the backend code
 COPY backend/ /app/
 
-# Copy built frontend files from stage 1
-COPY --from=frontend-build /frontend/dist /app/static/frontend/
-
 # Collect static files (with access to secrets)
 RUN --mount=type=secret,id=env_secret,dst=/etc/secrets/.env \
     export $(cat /etc/secrets/.env | xargs) && \
@@ -33,5 +30,5 @@ RUN --mount=type=secret,id=env_secret,dst=/etc/secrets/.env \
 EXPOSE 8000
 
 # Command to run the Django app with Gunicorn
-CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8000", "backend.loa-moon.wsgi:application"]
+CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8000", "loa-moon.wsgi:application"]
 
