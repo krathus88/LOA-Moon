@@ -2,15 +2,18 @@
     "version": 2,
     "builds": [
         {
-            "src": "frontend/package.json",
+            "src": "../frontend/package.json",
             "use": "@vercel/static-build",
             "config": {
-                "distDir": "../loa-moon/static/frontend"
+                "distDir": "../backend/loa-moon/static/frontend"
             }
         },
         {
             "src": "manage.py",
-            "use": "@vercel/python"
+            "use": "@vercel/python",
+            "config": {
+                "maxLambdaSize": "50mb"
+            }
         }
     ],
     "routes": [

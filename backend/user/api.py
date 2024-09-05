@@ -65,14 +65,12 @@ def generate_access_token(request):
     # Get or create the user's profile
     profile, created = Profile.objects.get_or_create(social_account__user=user)
 
-    # Generate a new access token (you might want to use a more secure method for production)
-    new_token = str(uuid.uuid4())  # Example token generation
+    new_token = str(uuid.uuid4())
 
     # Update the profile with the new access token
     profile.access_token = new_token
     profile.save()
 
-    # Return the access token in the response
     return JsonResponse({"access_token": new_token})
 
 
