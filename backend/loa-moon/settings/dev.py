@@ -14,11 +14,6 @@ SECRET_KEY = get_random_secret_key()
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS_env = os.getenv("ALLOWED_HOSTS")
-if ALLOWED_HOSTS_env:
-    ALLOWED_HOSTS_env = ALLOWED_HOSTS_env.split(",")
-ALLOWED_HOSTS = ALLOWED_HOSTS_env
-
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
