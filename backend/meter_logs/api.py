@@ -16,7 +16,7 @@ router = Router()
 
 
 @router.post("/", auth=TokenAuth())
-async def upload_log(request, file: UploadedFile = File(...)):
+def upload_log(request, file: UploadedFile = File(...)):
     profile = request.auth
 
     # Save the uploaded file temporarily

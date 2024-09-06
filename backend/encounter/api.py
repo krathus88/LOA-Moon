@@ -11,7 +11,7 @@ router = Router()
 
 @router.get("/")
 @decorate_view(cache_page(2 * 60))
-async def get_home_data(
+def get_home_data(
     request,
     page: int = 1,
     p_name: str = "",
