@@ -9,15 +9,6 @@ services:
       # Docker setup
       dockerfilePath: ./Dockerfile # Path to Dockerfile
 
-      # Secrets
-      envVars:
-          - key: DJANGO_SECRET_KEY
-            sync: false
-          - key: DATABASE_URL
-            sync: false
-          - key: VITE_API_URL
-            sync: false
-
       # Static file configuration
       staticPublishPath: /backend/loa-moon/staticfiles # Path to collectstatic output folder in Django
       healthCheckPath: /api/health
