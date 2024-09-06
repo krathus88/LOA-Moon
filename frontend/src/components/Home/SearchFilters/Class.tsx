@@ -1,6 +1,6 @@
 import { FiltersType } from "@type/HomePageType";
+import { CLASS_NAME_TO_CLASS_ID, MAP_TO_IMAGE_CLASSES } from "@utils/constants";
 import Select, { StylesConfig } from "react-select";
-import { CLASS_NAME_TO_CLASS_ID } from "@utils/constants";
 
 type ClassProps = {
     filters: FiltersType;
@@ -23,7 +23,7 @@ export function Class({ filters, selectStyle, setFilters }: ClassProps) {
             label: (
                 <div style={{ display: "flex", alignItems: "center" }}>
                     <img
-                        src={`${import.meta.env.BASE_URL}classes/${classId}.png`}
+                        src={MAP_TO_IMAGE_CLASSES[classId]}
                         alt={`${className} icon`}
                         style={{
                             width: "24px",

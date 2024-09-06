@@ -23,19 +23,23 @@ def exchange_code_for_token(code):
         "code": code,
         "redirect_uri": os.getenv("DISCORD_REDIRECT_URI"),
     }
+    print(data)
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
     DISCORD_CLIENT_ID_env = os.getenv("DISCORD_CLIENT_ID")
     DISCORD_CLIENT_ID = DISCORD_CLIENT_ID_env[2:] if DISCORD_CLIENT_ID_env else None
+    print(DISCORD_CLIENT_ID)
     DISCORD_CLIENT_SECRET_env = os.getenv("DISCORD_CLIENT_SECRET")
     DISCORD_CLIENT_SECRET = (
         DISCORD_CLIENT_SECRET_env[2:] if DISCORD_CLIENT_SECRET_env else None
     )
+    print(DISCORD_CLIENT_SECRET)
     r = requests.post(
         "%s/oauth2/token" % DISCORD_API_ENDPOINT,
         data=data,
         headers=headers,
         auth=(DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET),
     )
+    print(r)
     r.raise_for_status()
     return r.json()
 

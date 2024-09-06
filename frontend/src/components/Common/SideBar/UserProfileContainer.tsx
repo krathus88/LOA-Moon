@@ -1,5 +1,6 @@
-import { NavDropdown } from "react-bootstrap";
 import { useAuth } from "@components/Authentication/useAuth";
+import { MAP_TO_IMAGE_OTHER } from "@utils/constants";
+import { NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { LoginIcon } from "../Icons/LoginIcon";
 
@@ -17,13 +18,11 @@ export function UserProfileContainer() {
         );
     }
 
-    const avatarUrl = user?.avatar || "/default-avatar.webp";
-
     return (
         <NavDropdown
             title={
                 <img
-                    src={avatarUrl}
+                    src={user?.avatar || MAP_TO_IMAGE_OTHER["default-avatar"]}
                     alt="mdo"
                     width="32"
                     height="32"
