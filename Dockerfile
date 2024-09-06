@@ -25,7 +25,7 @@ COPY backend/ /app/
 COPY --from=frontend-build /frontend/dist /app/loa-moon/static/frontend/
 
 # Collect static files (with access to secrets)
-RUN python manage.py collectstatic --noinput
+RUN --mount=type=secret,id=_env,dst=/etc/secrets/.env cat /etc/secrets/.env && python manage.py collectstatic --noinput
 
 # Expose the port the app runs on
 EXPOSE 8000
