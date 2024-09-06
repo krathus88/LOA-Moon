@@ -17,7 +17,7 @@ class TokenAuth(HttpBearer):
             return None
 
 
-def exchange_code_for_token(code):
+async def exchange_code_for_token(code):
     data = {
         "grant_type": "authorization_code",
         "code": code,

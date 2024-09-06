@@ -12,7 +12,7 @@ router = Router()
 
 
 @router.get("/")
-def user_login(request):
+async def user_login(request):
     user = request.user
 
     if user.is_authenticated:
@@ -56,7 +56,7 @@ def user_login(request):
 
 
 @router.post("/atoken/generate")
-def generate_access_token(request):
+async def generate_access_token(request):
     user = request.user
 
     if not user.is_authenticated:
@@ -75,7 +75,7 @@ def generate_access_token(request):
 
 
 @router.post("/atoken/revoke")
-def revoke_access_token(request):
+async def revoke_access_token(request):
     user = request.user
 
     if not user.is_authenticated:
