@@ -4,9 +4,11 @@ import svgr from "vite-plugin-svgr";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig(() => {
+export default defineConfig(({ mode }) => {
+    const isDev = mode === "development";
+
     return {
-        base: "/static/frontend/",
+        base: isDev ? "/" : "/static/frontend/",
         plugins: [react(), svgr()],
         server: {
             host: process.env.VITE_FRONTEND_DOMAIN || "127.0.0.1",

@@ -5,7 +5,6 @@ from django.http import HttpResponse
 from .config import app_configs
 
 from authentication.api import router as authentication_router
-from meter_logs.api import router as meter_logs_router
 from user.api import router as user_router
 from encounter.api import router as encounter_router
 
@@ -23,6 +22,8 @@ api_private.add_router("encounter", encounter_router, tags=["Encounter"])
 def get_csrf_token(request):
     return HttpResponse()
 
+
+from meter_logs.api import router as meter_logs_router
 
 api_public = NinjaAPI(**app_configs, urls_namespace="health")
 

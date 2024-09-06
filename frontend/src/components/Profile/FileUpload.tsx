@@ -45,6 +45,7 @@ export function FileUpload({ accessToken }: FileUploadProps) {
                         "X-CSRFToken": csrfToken,
                         Authorization: `Bearer ${accessToken}`,
                     },
+                    timeout: 300000, // 5 minutes
                 });
 
                 alert("File uploaded successfully!");
