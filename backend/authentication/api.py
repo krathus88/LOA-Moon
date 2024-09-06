@@ -15,9 +15,9 @@ router = Router()
 
 
 @router.post("/complete/")
-def discord_login(request, body: DiscordCompleteBody):
+async def discord_login(request, body: DiscordCompleteBody):
     try:
-        token_data = exchange_code_for_token(body.code)
+        token_data = await exchange_code_for_token(body.code)
         access_token = token_data.get("access_token")
         expires_in = token_data.get("expires_in")
         if not access_token:
@@ -53,7 +53,7 @@ def discord_login(request, body: DiscordCompleteBody):
 
 @login_required
 @router.post("/logout/")
-def discord_logout(request):
+async def discord_logout(request):
     try:
         # Get the current user's SocialToken
         social_account = SocialAccount.objects.get(

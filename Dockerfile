@@ -6,7 +6,7 @@ WORKDIR /frontend
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm install
 COPY frontend/ ./
-RUN --mount=type=secret,id=_env,dst=/etc/secrets/.env cat /etc/secrets/.env && npm run build
+RUN --mount=type=secret,id=_env,dst=/etc/secrets/.env cat /etc/secrets/.env > .env && npm run build
 
 # Stage 2: Build backend and combine static files
 FROM python:3.11-slim AS backend
