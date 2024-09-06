@@ -1,6 +1,7 @@
 import React, { useState, useRef } from "react";
 import { api } from "@config/axios";
 import { getCsrfToken } from "@utils/functions";
+import { Loading } from "@components/Common/Loading";
 
 type FileUploadProps = {
     accessToken: string;
@@ -9,7 +10,8 @@ type FileUploadProps = {
 export function FileUpload({ accessToken }: FileUploadProps) {
     const [file, setFile] = useState<File | null>(null);
     const [fileName, setFileName] = useState<string>("");
-    const isUploadButtonClicked = useRef(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const hasUploaded = useRef(false);
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFile = event.target.files?.[0];
@@ -29,7 +31,7 @@ export function FileUpload({ accessToken }: FileUploadProps) {
 
     const uploadToBackend = async () => {
         if (file) {
-            isUploadButtonClicked.current = true;
+            setIsLoading(true);
 
             try {
                 const csrfToken = await getCsrfToken();
@@ -37,7 +39,7 @@ export function FileUpload({ accessToken }: FileUploadProps) {
                 const formData = new FormData();
                 formData.append("file", file);
 
-                await api.post("/api/log/", formData, {
+                await api.post("/log/", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         "X-CSRFToken": csrfToken,
@@ -48,11 +50,12 @@ export function FileUpload({ accessToken }: FileUploadProps) {
                 alert("File uploaded successfully!");
                 setFile(null);
                 setFileName("");
+                hasUploaded.current = true;
             } catch (error) {
                 console.error("Error uploading file:", error);
                 alert("Failed to upload file.");
             } finally {
-                isUploadButtonClicked.current = true;
+                setIsLoading(false);
             }
         } else {
             alert("No file selected.");
@@ -83,11 +86,13 @@ export function FileUpload({ accessToken }: FileUploadProps) {
             {fileName && (
                 <>
                     <p>Selected file: {fileName}</p>
-                    {accessToken && (
+                    {accessToken && isLoading ? (
+                        <Loading />
+                    ) : (
                         <button
                             className="btn btn-success mt-3"
                             onClick={uploadToBackend}
-                            disabled={isUploadButtonClicked.current}>
+                            disabled={isLoading}>
                             Upload to DB
                         </button>
                     )}
