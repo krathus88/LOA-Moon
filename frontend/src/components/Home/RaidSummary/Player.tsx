@@ -1,3 +1,5 @@
+import { MAP_TO_IMAGE_CLASSES } from "@utils/constants";
+
 type PlayerProps = {
     iconId: number;
     engraving: string;
@@ -27,10 +29,7 @@ export function Player({
                 borderColor: color,
                 backgroundImage: `linear-gradient(to right, ${color} ${dps_percentage}%,  transparent 0%`,
             }}>
-            <img
-                src={`${import.meta.env.BASE_URL}classes/${iconId}.png`}
-                alt={`Icon ${iconId}`}
-            />
+            <img src={MAP_TO_IMAGE_CLASSES[iconId]} alt={`Icon ${iconId}`} />
             <small className="name fw-light">
                 {engraving} - {name}
             </small>

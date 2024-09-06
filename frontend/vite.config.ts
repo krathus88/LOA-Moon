@@ -4,22 +4,16 @@ import svgr from "vite-plugin-svgr";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => {
-    const isDev = mode === "development";
-
+export default defineConfig(() => {
     return {
         base: "/static/frontend/",
         plugins: [react(), svgr()],
         server: {
             host: process.env.VITE_FRONTEND_DOMAIN || "127.0.0.1",
         },
-        build: isDev
-            ? {
-                  outDir: "../backend/loa-moon/static/frontend",
-              }
-            : {
-                  outDir: "dist",
-              },
+        build: {
+            outDir: "dist",
+        },
         resolve: {
             alias: {
                 "@assets": path.resolve(__dirname, "./src/assets"),

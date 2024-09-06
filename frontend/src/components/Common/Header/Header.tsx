@@ -1,7 +1,7 @@
-import { SITE_NAME } from "../../../utils/constants";
 import { useState } from "react";
 import { Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { MAP_TO_IMAGE_OTHER, SITE_NAME } from "../../../utils/constants";
 import "./Header.css";
 import { PageTab } from "./PageTab";
 import { ThemeSwitch } from "./ThemeSwitch";
@@ -19,9 +19,7 @@ export function Header() {
                         as={Link}
                         to="/"
                         onClick={() => setExpanded(false)}>
-                        <img
-                            src={`${import.meta.env.BASE_URL}logo.png`}
-                            alt="Logo"></img>
+                        <img src={MAP_TO_IMAGE_OTHER["logo"]} alt="Logo"></img>
                         <h1 className="font-special">{SITE_NAME}</h1>
                     </Navbar.Brand>
                 </div>
