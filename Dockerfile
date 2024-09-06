@@ -6,7 +6,7 @@ WORKDIR /frontend
 COPY frontend/package.json frontend/package-lock.json ./
 RUN npm install
 COPY frontend/ ./
-RUN npm run build
+RUN --mount=type=secret,id=_env,dst=/etc/secrets/.env cat /etc/secrets/.env && npm run build
 
 # Stage 2: Build backend and combine static files
 FROM python:3.11-slim AS backend
@@ -25,10 +25,10 @@ COPY backend/ /app/
 COPY --from=frontend-build /frontend/dist /app/loa-moon/static/frontend/
 
 # Collect static files (with access to secrets)
-RUN --mount=type=secret,id=_env,dst=/etc/secrets/.env cat /etc/secrets/.env && python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
 
 # Expose the port the app runs on
-EXPOSE 8000
+EXPOSE 10000
 
 # Command to run the Django app with Gunicorn
-CMD ["uvicorn", "loa-moon.asgi:app"]
+CMD ["uvicorn", "loa-moon.asgi:app", "--host", "0.0.0.0", "--port", "10000"]
