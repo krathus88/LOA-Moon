@@ -18,24 +18,32 @@ router = Router()
 def discord_login(request, body: DiscordCompleteBody):
     try:
         token_data = exchange_code_for_token(body.code)
+        print("0 - token_data:", token_data)
         access_token = token_data.get("access_token")
         expires_in = token_data.get("expires_in")
         if not access_token:
             return JsonResponse({"error": "Invalid token response"}, status=400)
 
         adapter = DiscordOAuth2Adapter(request)
+        print("1 - adapter:", adapter)
         token = adapter.parse_token({"access_token": access_token})
-
+        print("2 - token:", token)
         # Manually set expiration date
         if expires_in:
+            print("2.1 - token expires in...")
             token.expires_at = datetime.now(timezone.utc) + timedelta(
                 seconds=expires_in
             )
+            print("updated token - expires in:", token)
 
         login = adapter.complete_login(request, app=None, token=token, response=None)
+        print("4 - login:", login)
         login.state = SocialLogin.state_from_request(request)
+        print("4.1 - login + state:", login)
         login.token = token
+        print("4.2 - login + token:", login)
         complete_social_login(request, login)
+        print("finished")
 
     except OAuth2Error as e:
         return JsonResponse({"error": str(e)}, status=400)
