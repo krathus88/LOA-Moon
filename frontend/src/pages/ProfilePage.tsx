@@ -1,14 +1,13 @@
 import { useAuth } from "@components/Authentication/useAuth";
-import { FileUpload } from "@components/Profile/FileUpload";
+import { useRequireAuth } from "@components/Authentication/useRequireAuth";
+import { Loading } from "@components/Common/Loading";
 import "@components/Profile/Profile.css";
 import { api } from "@config/axios";
 import { getCsrfToken } from "@utils/functions";
 import { useEffect, useState } from "react";
-import { useRequireAuth } from "@components/Authentication/useRequireAuth";
-import { Loading } from "@components/Common/Loading";
 
 export function Component() {
-    const { fetchUser, loading } = useAuth(); // Assuming useAuth provides 'user' and 'loading' states
+    const { fetchUser, loading } = useAuth();
     const [hasFetchedUser, setHasFetchedUser] = useState(false);
     const [value, setValue] = useState("");
 
@@ -102,7 +101,6 @@ export function Component() {
                         </button>
                     </div>
                 </div>
-                <FileUpload accessToken={value} />
             </div>
         </main>
     );
