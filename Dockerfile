@@ -16,17 +16,19 @@ ENV PYTHONUNBUFFERED=1
 
 # Install dependencies
 COPY backend/requirements.txt /app/
-RUN pip install --no-cache-dir -r requirements.txt
+RUN echo "Building backend..." && pip install -r requirements.txt
 
 # Copy the backend code
 COPY backend/ /app/
 
+# Copy the frontend build from the first stage to the backend's static directory
+COPY --from=frontend-build /frontend/dist /app/loa-moon/static/frontend/
+
 # Collect static files (with access to secrets)
-RUN --mount=type=secret,id=_env,dst=/etc/secrets/.env cat /etc/secrets/.env && python manage.py collectstatic --noinput
+RUN python manage.py collectstatic --noinput
 
 # Expose the port the app runs on
 EXPOSE 8000
 
 # Command to run the Django app with Gunicorn
-CMD ["gunicorn", "--workers", "3", "--bind", "0.0.0.0:8000", "loa-moon.wsgi:application"]
-
+CMD ["uvicorn", "loa-moon.asgi:app", "--host", "0.0.0.0", "--port", "8000"]
