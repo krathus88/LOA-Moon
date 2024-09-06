@@ -15,6 +15,15 @@ SECRET_KEY = get_random_secret_key()
 DEBUG = True
 
 
+# CORS settings, only for development
+staticfiles_index = INSTALLED_APPS.index("django.contrib.staticfiles")
+INSTALLED_APPS.insert(staticfiles_index + 1, "corsheaders")
+commonmiddleware_index = MIDDLEWARE.index("django.middleware.common.CommonMiddleware")
+MIDDLEWARE.insert(commonmiddleware_index, "corsheaders.middleware.CorsMiddleware")
+
+CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:5173"]
+CORS_ALLOW_CREDENTIALS = True
+
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
