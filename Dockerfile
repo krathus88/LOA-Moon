@@ -31,4 +31,4 @@ RUN --mount=type=secret,id=_env,dst=/etc/secrets/.env cat /etc/secrets/.env && p
 EXPOSE 8000
 
 # Command to run the Django app with Gunicorn
-CMD ["uvicorn", "loa-moon.asgi:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "loa-moon.asgi:app"]
