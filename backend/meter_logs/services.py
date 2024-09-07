@@ -391,6 +391,8 @@ def format_db_data(data: dict):
                     "is_dead": True if entry["is_dead"] == 1 else False,
                     "party_num": party_num,
                     "local_player": is_local_player,
+                    "skills": player_skills,
+                    "buffs": player_buffs,
                 }
             )
 
