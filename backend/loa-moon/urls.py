@@ -19,15 +19,13 @@ from django.contrib import admin
 from django.urls import path, re_path
 from django.views.generic import TemplateView
 from django.conf import settings
-from django.conf.urls.static import static
 
-from .api import api_private, api_public
+from .api import api
 
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("api/", api_private.urls),
-    path("api/", api_public.urls),
+    path("api/", api.urls),
 ]
 
 # Serve the frontend template in non-debug mode

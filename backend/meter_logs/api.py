@@ -6,6 +6,7 @@ from django.conf import settings
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.db.models import Q
+from django.views.decorators.csrf import csrf_exempt
 
 from authentication.services import TokenAuth
 from encounter.models import Encounter, EncounterPlayers
@@ -16,6 +17,7 @@ router = Router()
 
 
 @router.post("/", auth=TokenAuth())
+@csrf_exempt
 def upload_log(request, file: UploadedFile = File(...)):
     profile = request.auth
 
