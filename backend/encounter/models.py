@@ -22,7 +22,7 @@ class EncounterPlayers(models.Model):
     name = models.CharField(max_length=16, db_index=True)
     character_id = models.BigIntegerField(null=True)
     class_id = models.IntegerField(db_index=True)
-    subclass = models.CharField(max_length=20, db_index=True, null=True)
+    subclass = models.CharField(max_length=26, db_index=True, null=True)
     dps = models.IntegerField(db_index=True)
     gear_score = models.FloatField(db_index=True)
     is_dead = models.BooleanField(db_index=True)

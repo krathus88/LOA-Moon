@@ -1,5 +1,8 @@
 import sqlite3
 import json
+import json
+import gzip
+import io
 
 from django.db import IntegrityError
 from constants.encounters import accepted_difficulties, encounter_map, boss_hp_map
@@ -86,13 +89,7 @@ def parse_db_file(db_file_path):
             # Organize data according to the table
             row_data = {}
             for col_name, col_value, col_type in zip(columns, row, column_types):
-                if col_type == "BLOB":
-                    # Skip BLOB columns
-                    continue
-                elif isinstance(col_value, bytes):
-                    continue
-                else:
-                    row_data[col_name] = col_value
+                row_data[col_name] = col_value
 
             if table_name == "encounter":
                 consolidated_data[key]["encounter"] = row_data
@@ -115,6 +112,151 @@ def parse_db_file(db_file_path):
     return consolidated_data
 
 
+def format_db_data(data: dict):
+    all_formatted_data = []
+    all_player_data = []
+    local_players = set()
+
+    for id, table in data.items():
+        # If data is invalid, skip
+        if (
+            not table["encounter_preview"]["local_player"]
+            or not table["encounter_preview"]["difficulty"]
+        ):
+            continue
+
+        # Check if the difficulty is one of the accepted difficulties
+        difficulty = table["encounter_preview"]["difficulty"]
+        if difficulty not in accepted_difficulties:
+            continue
+
+        misc_data = json.loads(table["encounter"]["misc"])
+        party_info = misc_data.get("partyInfo", None)
+
+        # Check if DB table Encounter has multiple of 4 Players (4, 8, 12, 16, etc)
+        if not party_info or not any(
+            len(party) % 4 == 0 for party in party_info.values()
+        ):
+            continue
+
+        buffs_data = table["encounter"].get("buffs")
+        debuffs_data = table["encounter"].get("debuffs")
+
+        # Handle both JSON and gzip compressed data
+        buffs = parse_data(buffs_data)
+        debuffs = parse_data(debuffs_data)
+
+        # Combine buffs and debuffs into one dictionary
+        buff_dict = buffs | debuffs
+
+        # Check if (de)buffs is empty
+        if len(buff_dict.keys()) == 0:
+            continue
+
+        npc_id = None
+        max_boss_hp = None
+        player_count = 0
+        player_data = []
+        for entry in table["entity"]:
+            # If it's a boss, skip
+            if entry["npc_id"] > 0:
+                if entry["name"] in encounter_map:
+                    npc_id = entry["npc_id"]
+                    max_boss_hp = entry["max_hp"]
+                continue
+
+            # Check if it's a Player
+            if entry["class_id"] > 0 and entry["entity_type"] == "PLAYER":
+                player_count += 1
+
+            # Determine the party_num by checking the player's name in the party_info
+            party_num = 0
+            for p_num, players in party_info.items():
+                if entry["name"] in players:
+                    party_num = int(p_num)
+                    break
+
+            is_local_player = (
+                entry["name"] == table["encounter_preview"]["local_player"]
+            )
+            if is_local_player:
+                local_players.add(entry["name"])
+
+            skill_info_data = entry.get("skills")
+            skill_info = parse_data(skill_info_data)
+            if len(skill_info.keys()) == 0:
+                break
+
+            player_skills, player_buffs = process_skills(skill_info, buff_dict)
+            subclass = classify_subclass(
+                entry, player_skills, player_buffs, table["encounter"]
+            )
+
+            player_data.append(
+                {
+                    "name": entry["name"],
+                    "character_id": entry["character_id"],
+                    "class_id": (
+                        None if (entry["class_id"] == 0 or None) else entry["class_id"]
+                    ),
+                    "subclass": subclass,
+                    "dps": entry["dps"],
+                    "gear_score": (
+                        None
+                        if (entry["gear_score"] == 0 or None)
+                        else entry["gear_score"]
+                    ),
+                    "is_dead": True if entry["is_dead"] == 1 else False,
+                    "party_num": party_num,
+                    "local_player": is_local_player,
+                    "skills": player_skills,
+                    "buffs": player_buffs,
+                }
+            )
+
+        # Check if DB table Entity has multiple of 4 Players (4, 8, 16, etc)
+        if player_count > 0 and player_count != 12 and player_count % 4 != 0:
+            continue
+
+        all_player_data.append(player_data)
+
+        formatted_data = {
+            "fight_end": table["encounter"]["last_combat_packet"]
+            / 1000,  # Convert from milliseconds to seconds
+            "fight_duration": table["encounter_preview"]["duration"],
+            "boss_name": table["encounter_preview"]["current_boss"],
+            "difficulty": table["encounter_preview"]["difficulty"],
+            "max_hp": max_boss_hp,
+            "max_hp_bars": boss_hp_map.get(
+                table["encounter_preview"]["current_boss"], None
+            ),
+            "npc_id": npc_id,
+        }
+
+        all_formatted_data.append(formatted_data)
+
+    return all_formatted_data, all_player_data, local_players
+
+
+def associate_characters_with_user(user, character_names):
+    existing_character_names = set(user.characters.values_list("name", flat=True))
+
+    # Get characters that are not associated with the user
+    unassociated_character_names = set(character_names) - existing_character_names
+
+    for char_name in unassociated_character_names:
+        try:
+            # Create a new character associated with the user
+            Characters.objects.create(profile=user, name=char_name)
+        except IntegrityError:
+            # Character name already exists in the Characters database
+            continue
+
+
+# endregion
+
+
+# region Helper Functions
 def process_skills(skill_info: dict, buff_dict: dict) -> tuple[dict, dict]:
     """
     Return a dictionary of skills with related buff information and a dictionary
@@ -313,109 +455,6 @@ def classify_subclass(
         return "Unknown"
 
 
-def format_db_data(data: dict):
-    all_formatted_data = []
-    all_player_data = []
-    local_players = set()
-
-    for key, value in data.items():
-        # If data is invalid, skip
-        if (
-            not value["encounter_preview"]["local_player"]
-            or not value["encounter_preview"]["difficulty"]
-        ):
-            continue
-
-        # Check if the difficulty is one of the accepted difficulties
-        difficulty = value["encounter_preview"]["difficulty"]
-        if difficulty not in accepted_difficulties:
-            continue
-
-        misc_data = json.loads(value["encounter"]["misc"])
-        party_info = misc_data.get("partyInfo", {})
-
-        # Parsed and combined dictionaries
-        buffs = json.loads(value["encounter"].get("buffs", "{}"))
-        debuffs = json.loads(value["encounter"].get("debuffs", "{}"))
-        buff_dict = buffs | debuffs
-
-        # Check if (de)buffs is empty
-        if len(buff_dict.keys()) == 0:
-            continue
-
-        npc_id = None
-        max_boss_hp = None
-        player_data = []
-        for entry in value["entity"]:
-            # If it's a boss, skip
-            if entry["npc_id"] > 0:
-                if entry["name"] in encounter_map:
-                    npc_id = entry["npc_id"]
-                    max_boss_hp = entry["max_hp"]
-
-                continue
-
-            # Determine the party_num by checking the player's name in the party_info
-            party_num = 0
-            for p_num, players in party_info.items():
-                if entry["name"] in players:
-                    party_num = int(p_num)
-                    break
-
-            is_local_player = (
-                entry["name"] == value["encounter_preview"]["local_player"]
-            )
-            if is_local_player:
-                local_players.add(entry["name"])
-
-            skill_info = json.loads(entry["skills"])
-            player_skills, player_buffs = process_skills(skill_info, buff_dict)
-            subclass = classify_subclass(
-                entry, player_skills, player_buffs, value["encounter"]
-            )
-
-            player_data.append(
-                {
-                    "name": entry["name"],
-                    "character_id": entry["character_id"],
-                    "class_id": (
-                        None if (entry["class_id"] == 0 or None) else entry["class_id"]
-                    ),
-                    "subclass": subclass,
-                    "dps": entry["dps"],
-                    "gear_score": (
-                        None
-                        if (entry["gear_score"] == 0 or None)
-                        else entry["gear_score"]
-                    ),
-                    "is_dead": True if entry["is_dead"] == 1 else False,
-                    "party_num": party_num,
-                    "local_player": is_local_player,
-                    "skills": player_skills,
-                    "buffs": player_buffs,
-                }
-            )
-
-        all_player_data.append(player_data)
-
-        formatted_data = {
-            "fight_end": value["encounter"]["last_combat_packet"]
-            / 1000,  # Convert from milliseconds to seconds
-            "fight_duration": value["encounter_preview"]["duration"],
-            "boss_name": value["encounter_preview"]["current_boss"],
-            "difficulty": value["encounter_preview"]["difficulty"],
-            "max_hp": max_boss_hp,
-            "max_hp_bars": boss_hp_map.get(
-                value["encounter_preview"]["current_boss"], None
-            ),
-            "npc_id": npc_id,
-        }
-
-        all_formatted_data.append(formatted_data)
-
-    return all_formatted_data, all_player_data, local_players
-
-
 def associate_characters_with_user(user, character_names):
     existing_character_names = set(user.characters.values_list("name", flat=True))
 
@@ -429,3 +468,26 @@ def associate_characters_with_user(user, character_names):
         except IntegrityError:
             # Character name already exists in the Characters database
             continue
+
+
+def decompress_gzip(data):
+    with gzip.GzipFile(fileobj=io.BytesIO(data)) as f:
+        return f.read()
+
+
+def parse_data(data):
+    # Check if data is of type str or bytes
+    if type(data) == str:
+        # Data is a JSON string
+        return json.loads(data)
+    elif type(data) == bytes:
+        try:
+            # Attempt to decode bytes directly as JSON
+            return json.loads(data.decode("utf-8"))
+        except UnicodeDecodeError:
+            # If decoding fails, try decompressing
+            decompressed_data = decompress_gzip(data)
+            return json.loads(decompressed_data)
+
+
+# endregion
