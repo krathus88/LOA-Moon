@@ -160,7 +160,6 @@ export function RaidSummaryContainer({
                         clear_time={entry.clear_time}
                         fight_end_time={entry.fight_end}
                         max_boss_hp={entry.max_boss_hp}
-                        max_boss_hp_bars={entry.max_boss_hp_bars}
                         avg_ilvl={entry.avg_ilvl}
                         highest_ilvl={entry.highest_ilvl}
                         death_count={entry.death_count}

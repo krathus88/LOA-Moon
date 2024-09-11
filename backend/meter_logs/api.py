@@ -1,42 +1,42 @@
 import os
+import json
 
-from ninja import Router, File
-from ninja.files import UploadedFile
-from django.conf import settings
+from ninja import Router
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
+from django.core.files.storage import default_storage
 
 from authentication.services import TokenAuth
-from encounter.models import Encounter, EncounterPlayers
-from .services import parse_db_file, format_db_data, associate_characters_with_user
-
+from encounter.models import Encounter, EncounterPlayers, EncounterPlayerData
+from .services import decompress_data, format_db_data, associate_characters_with_user
 
 router = Router()
 
 
 @router.post("/", auth=TokenAuth())
 @csrf_exempt
-def upload_log(request, file: UploadedFile = File(...)):
+def upload_log(request):
+    data = decompress_data(request)
+
+    # Create a JSON response
+    json_data = json.dumps(data, indent=4)
+
+    # Define the path where you want to save the JSON file
+    file_path = os.path.join("E:/Projects/LOA Moon", "data.json")
+
+    # Save the JSON data to a file
+    with open(file_path, "w") as file:
+        file.write(json_data)
+
     profile = request.auth
-
-    # Save the uploaded file temporarily
-    file_path = os.path.join(settings.MEDIA_ROOT, file.name)
-    with open(file_path, "wb+") as f:
-        for chunk in file.chunks():
-            f.write(chunk)
-
-    # Parse the .db file
-    data = parse_db_file(file_path)
-
-    # Clean up: remove the temporary file
-    os.remove(file_path)
 
     (
         parsed_encounter_preview_data,
         parsed_encounter_preview_player_data,
         local_player_names,
+        encounters_info,
     ) = format_db_data(data)
 
     # Associate characters with the user
@@ -56,7 +56,6 @@ def upload_log(request, file: UploadedFile = File(...)):
         )
 
         match_found = False
-
         # Check each potential match to see if it has the same players
         for match in potential_matches:
             existing_players = set(match.players.values_list("character_id", flat=True))
@@ -70,28 +69,31 @@ def upload_log(request, file: UploadedFile = File(...)):
                 match_found = True
                 break
 
+        # Skip this encounter as it already exists with the same players
         if match_found:
-            # Skip this encounter as it already exists with the same players
+            encounters_info[entry["local_id"]]["success"] = True
+            encounters_info[entry["local_id"]]["is_valid"] = True
+            encounters_info[entry["local_id"]]["id"] = match.id
             continue
 
         try:
             encounter = Encounter.objects.create(
+                region=entry["region"],
                 fight_end=entry["fight_end"],
                 fight_duration=entry["fight_duration"],
                 boss_name=entry["boss_name"],
                 difficulty=entry["difficulty"],
                 max_hp=entry["max_hp"],
-                max_hp_bars=entry["max_hp_bars"],
                 npc_id=entry["npc_id"],
             )
         except IntegrityError:
             # Handle the exception if needed
-            raise HttpResponse(f"Error saving encounter preview.", status=500)
+            raise HttpResponse(f"Error saving Encounter Preview.", status=500)
 
         # Process EncounterPlayers data for the corresponding encounter
         for player_entry in parsed_encounter_preview_player_data[i]:
             try:
-                EncounterPlayers.objects.create(
+                encounter_player = EncounterPlayers.objects.create(
                     encounter=encounter,
                     name=player_entry["name"],
                     character_id=player_entry["character_id"],
@@ -102,9 +104,35 @@ def upload_log(request, file: UploadedFile = File(...)):
                     is_dead=player_entry["is_dead"],
                     party_num=player_entry["party_num"],
                 )
-            except IntegrityError:
-                return HttpResponse(
-                    f"Error saving encounter preview player.", status=500
-                )
 
-    return {"status": "success", "message": "Data processed and saved."}
+            except IntegrityError:
+                return HttpResponse(f"Error saving Encounter Player.", status=500)
+
+            try:
+                EncounterPlayerData.objects.create(
+                    player=encounter_player,
+                    total_damage=player_entry["total_damage"],
+                    casts=player_entry["casts"],
+                    hits=player_entry["hits"],
+                    crits=player_entry["crits"],
+                    back_attacks=player_entry["back_attacks"],
+                    front_attacks=player_entry["front_attacks"],
+                    counters=player_entry["counters"],
+                    buffs=player_entry["buffs"],
+                    debuffs=player_entry["debuffs"],
+                    skills=player_entry["skills"],
+                    shields=player_entry["shields"],
+                    absorbs=player_entry["absorbs"],
+                )
+            except IntegrityError:
+                return HttpResponse(f"Error saving Encounter Player Data.", status=500)
+
+        encounters_info[entry["local_id"]]["success"] = True
+        encounters_info[entry["local_id"]]["is_valid"] = True
+        encounters_info[entry["local_id"]]["id"] = encounter.id
+
+    return {
+        "status": "success",
+        "message": "Data processed and saved.",
+        "encounters_info": encounters_info,
+    }

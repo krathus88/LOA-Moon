@@ -67,7 +67,6 @@ def format_raid_summary_data(data):
                 "clear_time": convert_clear_time_to_minutes(entry["fight_duration"]),
                 "fight_end": time_since_fight_ended(entry["fight_end"]),
                 "max_boss_hp": format_damage(entry["max_hp"]),
-                "max_boss_hp_bars": entry["max_hp_bars"],
                 "avg_ilvl": avg_ilvl,
                 "highest_ilvl": round(highest_ilvl, 1),
                 "death_count": death_count,

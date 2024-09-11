@@ -12,7 +12,6 @@ type InfoProps = {
     avg_ilvl: number | null;
     highest_ilvl: number;
     max_boss_hp: string;
-    max_boss_hp_bars: string | null;
 };
 
 export function Info({
@@ -27,7 +26,6 @@ export function Info({
     avg_ilvl,
     highest_ilvl,
     max_boss_hp,
-    max_boss_hp_bars,
 }: InfoProps) {
     const difficultyColor =
         DIFFICULTY_COLOR_MAP.get(difficulty) || "rgb(222, 226, 230)"; // Default to white if not found
@@ -112,12 +110,7 @@ export function Info({
                                         fill="currentColor"
                                         d="M64 64V32H0V64 448v32H32 480h32V416H480 64V64zM342.6 278.6l128-128-45.3-45.3L320 210.7l-57.4-57.4L240 130.7l-22.6 22.6-112 112 45.3 45.3L240 221.3l57.4 57.4L320 301.3l22.6-22.6z"></path>
                                 </svg>{" "}
-                                <small className="fw-light">
-                                    {max_boss_hp}{" "}
-                                    <span style={{ color: "rgb(222, 226, 230)" }}>
-                                        | {max_boss_hp_bars}x
-                                    </span>
-                                </small>
+                                <small className="fw-light">{max_boss_hp}</small>
                             </li>
                         </ul>
                     </div>
