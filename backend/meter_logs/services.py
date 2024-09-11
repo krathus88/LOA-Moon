@@ -45,7 +45,7 @@ def decompress_data(request) -> List[UploadLogBody]:
 def format_db_data(data: List[UploadLogBody]):
     all_formatted_data = []
     all_player_data = []
-    local_players = set()
+    local_players = []
     encounters_info = {}
 
     for log_entry in data:
@@ -56,12 +56,12 @@ def format_db_data(data: List[UploadLogBody]):
             "id": None,
         }
 
-        # Check if Log is from a an accepted patch
-        if log_entry["lastCombatPacket"] < patches[-1]:
-            continue
-
         # If data is invalid, skip
         if not log_entry["localPlayer"] or not log_entry["difficulty"]:
+            continue
+
+        # Check if Log is from a an accepted patch
+        if log_entry["lastCombatPacket"] < patches[-1]:
             continue
 
         # Check if the difficulty is one of the accepted difficulties
@@ -115,7 +115,12 @@ def format_db_data(data: List[UploadLogBody]):
 
             is_local_player = entity["name"] == log_entry["localPlayer"]
             if is_local_player:
-                local_players.add(entity["name"])
+                local_players.append(
+                    {
+                        "name": entity["name"],
+                        "region": log_entry["encounterDamageStats"]["misc"]["region"],
+                    }
+                )
 
             """ skill_info = entity["skills"]
             # Check if data is valid
@@ -186,18 +191,27 @@ def format_db_data(data: List[UploadLogBody]):
     return all_formatted_data, all_player_data, local_players, encounters_info
 
 
-def associate_characters_with_user(user, character_names):
-    existing_character_names = set(user.characters.values_list("name", flat=True))
+def associate_characters_with_user(user, character_names_regions):
+    # Get the set of existing (name, region) tuples for the user's profile
+    existing_character_tuples = set(user.characters.values_list("name", "region"))
 
-    # Get characters that are not associated with the user
-    unassociated_character_names = set(character_names) - existing_character_names
+    # Filter out characters that are already associated with the user's profile
+    unassociated_character_tuples = [
+        char_info
+        for char_info in character_names_regions
+        if (char_info["name"], char_info["region"]) not in existing_character_tuples
+    ]
 
-    for char_name in unassociated_character_names:
+    for char_info in unassociated_character_tuples:
         try:
-            # Create a new character associated with the user
-            Characters.objects.create(profile=user, name=char_name)
+            # Create a new character associated with the user's profile
+            Characters.objects.create(
+                profile=user,
+                region=char_info["region"],
+                name=char_info["name"],
+            )
         except IntegrityError:
-            # Character name already exists in the Characters database
+            # Character with this name and region already exists, skip it
             continue
 
 
@@ -415,21 +429,6 @@ def classify_subclass(
         return "Wind Fury" if _check_buff("Wind Fury") else "Drizzle"
     else:
         return "Unknown"
-
-
-def associate_characters_with_user(user, character_names):
-    existing_character_names = set(user.characters.values_list("name", flat=True))
-
-    # Get characters that are not associated with the user
-    unassociated_character_names = set(character_names) - existing_character_names
-
-    for char_name in unassociated_character_names:
-        try:
-            # Create a new character associated with the user
-            Characters.objects.create(profile=user, name=char_name)
-        except IntegrityError:
-            # Character name already exists in the Characters database
-            continue
 
 
 def decompress_gzip(data):

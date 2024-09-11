@@ -50,6 +50,7 @@ def upload_log(request):
         # Find potential matches within the time range
         potential_matches = Encounter.objects.filter(
             Q(fight_end__gte=time_range_start) & Q(fight_end__lte=time_range_end),
+            region=entry["region"],
             boss_name=entry["boss_name"],
             difficulty=entry["difficulty"],
             npc_id=entry["npc_id"],
