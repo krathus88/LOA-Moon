@@ -10,8 +10,8 @@ class RateLimitMiddleware:
     def __call__(self, request):
         # Configuration
 
-        rate_limit_5min = 250
-        rate_limit_1min = 100  # Maximum number of requests
+        rate_limit_5min = 125
+        rate_limit_1min = 50  # Maximum number of requests
         time_window_5min = 300
         time_window_1min = 60  # Time window in seconds
 

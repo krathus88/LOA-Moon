@@ -13,7 +13,6 @@ type RaidSummaryProps = {
     clear_time: string;
     fight_end_time: string;
     max_boss_hp: string;
-    max_boss_hp_bars: string | null;
     avg_ilvl: number;
     highest_ilvl: number;
     death_count: number;
@@ -28,7 +27,6 @@ export function RaidSummary({
     clear_time,
     fight_end_time,
     max_boss_hp,
-    max_boss_hp_bars,
     avg_ilvl,
     highest_ilvl,
     death_count,
@@ -81,12 +79,10 @@ export function RaidSummary({
                 avg_ilvl={avg_ilvl}
                 highest_ilvl={highest_ilvl}
                 max_boss_hp={max_boss_hp}
-                max_boss_hp_bars={max_boss_hp_bars}
             />
             <PlayerData
                 isHeightLarge={isHeightLarge}
                 max_boss_hp={max_boss_hp}
-                max_boss_hp_bars={max_boss_hp_bars}
                 avg_ilvl={avg_ilvl}
                 highest_ilvl={highest_ilvl}
                 death_count={death_count}

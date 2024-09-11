@@ -1,5 +1,6 @@
 import os
 from django.core.management.utils import get_random_secret_key
+from corsheaders.defaults import default_headers
 
 from .base import *
 
@@ -21,10 +22,16 @@ INSTALLED_APPS.insert(staticfiles_index + 1, "corsheaders")
 commonmiddleware_index = MIDDLEWARE.index("django.middleware.common.CommonMiddleware")
 MIDDLEWARE.insert(commonmiddleware_index, "corsheaders.middleware.CorsMiddleware")
 
-CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:5173"]
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
+CORS_ALLOW_HEADERS = (
+    *default_headers,
+    "content-encoding",
+)
+
 CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:5173"]
+
 
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
