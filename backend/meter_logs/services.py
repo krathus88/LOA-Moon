@@ -8,7 +8,7 @@ from django.http import HttpResponseBadRequest
 from django.db import IntegrityError
 from typing import List
 
-from constants.encounters import accepted_difficulties, encounter_map
+from constants.encounters import encounter_map
 from constants.game import patches
 from user.models import Characters
 from .schemas import UploadLogBody, EntitiesType
@@ -55,6 +55,10 @@ def format_db_data(data: List[UploadLogBody]):
             "is_valid": False,
             "id": None,
         }
+
+        # Check if Log is from a an accepted patch
+        if log_entry["lastCombatPacket"] < patches[-1]:
+            continue
 
         # If data is invalid, skip
         if not log_entry["localPlayer"] or not log_entry["difficulty"]:
