@@ -20,16 +20,6 @@ router = Router()
 def upload_log(request):
     data = decompress_data(request)
 
-    # Create a JSON response
-    json_data = json.dumps(data, indent=4)
-
-    # Define the path where you want to save the JSON file
-    file_path = os.path.join("E:/Projects/LOA Moon", "data.json")
-
-    # Save the JSON data to a file
-    with open(file_path, "w") as file:
-        file.write(json_data)
-
     profile = request.auth
 
     (
