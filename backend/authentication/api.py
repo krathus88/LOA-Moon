@@ -5,6 +5,8 @@ from allauth.socialaccount.helpers import complete_social_login
 from allauth.socialaccount.models import SocialLogin, SocialToken, SocialAccount
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
+from django.http import HttpResponse
 from datetime import datetime, timedelta, timezone
 
 from .schemas import DiscordCompleteBody
@@ -12,6 +14,13 @@ from .services import exchange_code_for_token, revoke_token
 
 
 router = Router()
+
+
+@router.post("/csrf")
+@ensure_csrf_cookie
+@csrf_exempt
+def get_csrf_token(request):
+    return HttpResponse()
 
 
 @router.post("/complete/")

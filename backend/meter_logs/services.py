@@ -1,120 +1,224 @@
 import sqlite3
 import json
+import json
+import gzip
+import io
 
+from django.http import HttpResponseBadRequest
 from django.db import IntegrityError
-from constants.encounters import accepted_difficulties, encounter_map, boss_hp_map
+from typing import List
+
+from constants.encounters import encounter_map
 from constants.game import patches
 from user.models import Characters
+from .schemas import UploadLogBody, EntitiesType
 
 
-def parse_db_file(db_file_path):
-    # Connect to the SQLite database
-    conn = sqlite3.connect(db_file_path)
-    cursor = conn.cursor()
+# region Main
 
-    # Define the tables to fetch
-    relevant_tables = {
-        "encounter",
-        "encounter_preview",
-        "entity",
-    }
 
-    consolidated_data = {}
+def decompress_data(request) -> List[UploadLogBody]:
+    if "gzip" not in request.META.get("HTTP_CONTENT_ENCODING", ""):
+        return HttpResponseBadRequest("Content-Encoding must be gzip")
 
-    # Entry needs to meet both these ID's criteria to be valid
-    valid_encounter_ids = set()
-    valid_encounter_cleared_ids = set()
+    try:
+        # Read the compressed body
+        compressed_data = request.body
 
-    # Entry CAN'T meet this ID's criteria to be valid
-    blacklisted_encounter_ids = set()
+        # Decompress the data
+        with gzip.GzipFile(fileobj=io.BytesIO(compressed_data), mode="rb") as gzip_file:
+            decompressed_data = gzip_file.read()
 
-    for table_name in relevant_tables:
-        # Fetch the column names and types
-        cursor.execute(f"PRAGMA table_info({table_name})")
-        columns_info = cursor.fetchall()
-        columns = [info[1] for info in columns_info]
-        column_types = [info[2] for info in columns_info]
-        column_indices = {info[1]: index for index, info in enumerate(columns_info)}
+        # Parse JSON data
+        body = json.loads(decompressed_data)
 
-        # Fetch all data from the table
-        cursor.execute(f"SELECT * FROM {table_name}")
-        rows = cursor.fetchall()
+        # Ensure the body is a list of UploadLogBody
+        if not isinstance(body, list):
+            return HttpResponseBadRequest("Invalid JSON format")
 
-        for row in rows:
-            if (
-                table_name == "encounter"
-                and row[column_indices["last_combat_packet"]] < patches[-1]
-            ):
+        return body
+
+    except (gzip.BadGzipFile, json.JSONDecodeError) as e:
+        return HttpResponseBadRequest(f"Error processing request: {str(e)}")
+
+
+def format_db_data(data: List[UploadLogBody]):
+    all_formatted_data = []
+    all_player_data = []
+    local_players = []
+    encounters_info = {}
+
+    for log_entry in data:
+        # Set return message for each encounter
+        encounters_info[log_entry["localId"]] = {
+            "success": False,
+            "is_valid": False,
+            "id": None,
+        }
+
+        # If data is invalid, skip
+        if not log_entry["localPlayer"] or not log_entry["difficulty"]:
+            continue
+
+        # Check if Log is from a an accepted patch
+        if log_entry["lastCombatPacket"] < patches[-1]:
+            continue
+
+        # Check if the difficulty is one of the accepted difficulties
+        if log_entry["difficulty"] not in encounter_map.get(
+            log_entry["currentBossName"], {}
+        ).get("difficulty", []):
+            continue
+
+        encounter_damage_stats_data = log_entry["encounterDamageStats"]
+        party_info = encounter_damage_stats_data["misc"]["partyInfo"]
+
+        # Check if DB table Encounter has multiple of 4 Players (4, 8, 12, 16, etc)
+        if not party_info or not all(
+            len(party) % 4 == 0 for party in party_info.values()
+        ):
+            continue
+
+        """ buffs = encounter_damage_stats_data["buffs"]
+        debuffs = encounter_damage_stats_data["debuffs"]
+
+        # Combine buffs and debuffs into one dictionary
+        buff_dict = buffs | debuffs
+
+        # Check if (de)buffs is empty
+        if len(buff_dict.keys()) == 0:
+            continue """
+
+        npc_id = None
+        max_boss_hp = None
+        player_count = 0
+        player_data = []
+        for _, entity in log_entry["entities"].items():
+            # Check if it's a Boss
+            if entity["npcId"] > 0:
+                # If it's a boss from allowed encounters
+                if entity["name"] in encounter_map:
+                    npc_id = entity["npcId"]
+                    max_boss_hp = entity["maxHp"]
                 continue
 
-            # Determine the key (like `encounter_id`) based on the table
-            if table_name == "encounter":
-                key = row[column_indices["id"]]
-            elif table_name == "encounter_preview":
-                key = row[column_indices["id"]]
-                # If cleared
-                if row[column_indices["cleared"]] == 1:
-                    valid_encounter_cleared_ids.add(key)
+            # Check if it's a Player
+            if entity["classId"] > 0 and entity["entityType"] == "PLAYER":
+                player_count += 1
 
-            elif table_name == "entity":
-                key = row[column_indices["encounter_id"]]
+            # Determine the party_num by checking the player's name in the party_info
+            party_num = 0
+            for p_num, players in party_info.items():
+                if entity["name"] in players:
+                    party_num = int(p_num)
+                    break
 
-                if row[column_indices["entity_type"]] == "PLAYER" and (
-                    row[column_indices["character_id"]] == 0
-                    or not row[column_indices["entity_type"]]
-                ):
-                    blacklisted_encounter_ids.add(key)
-                    continue
+            is_local_player = entity["name"] == log_entry["localPlayer"]
+            if is_local_player:
+                local_players.append(
+                    {
+                        "name": entity["name"],
+                        "region": log_entry["encounterDamageStats"]["misc"]["region"],
+                    }
+                )
 
-                # If the boss is a valid one
-                if (
-                    row[column_indices["entity_type"]] == "BOSS"
-                    and row[column_indices["name"]] in encounter_map
-                    and row[column_indices["current_hp"]] <= 0
-                ):
-                    valid_encounter_ids.add(key)
-            else:
-                continue
+            """ skill_info = entity["skills"]
+            # Check if data is valid
+            if len(skill_info.keys()) == 0:
+                break
 
-            if key not in consolidated_data:
-                consolidated_data[key] = {
-                    "encounter": None,
-                    "encounter_preview": None,
-                    "entity": [],
+            player_skills, player_buffs = process_skills(skill_info, buff_dict)
+            subclass = classify_subclass(
+                entity, player_skills, player_buffs, encounter_damage_stats_data["dps"]
+            ) """
+
+            player_data.append(
+                {
+                    "name": entity["name"],
+                    "character_id": entity["characterId"],
+                    "class_id": entity["classId"],
+                    "subclass": "N/A",
+                    "dps": entity["damageStats"]["dps"],
+                    "gear_score": (
+                        None
+                        if (entity["gearScore"] == 0 or None)
+                        else entity["gearScore"]
+                    ),
+                    "is_dead": entity["isDead"],
+                    "party_num": party_num,
+                    "local_player": is_local_player,
+                    "total_damage": entity["damageStats"]["damageDealt"],
+                    "casts": entity["skillStats"]["casts"],
+                    "hits": entity["skillStats"]["hits"],
+                    "crits": entity["skillStats"]["crits"],
+                    "back_attacks": entity["skillStats"]["backAttacks"],
+                    "front_attacks": entity["skillStats"]["frontAttacks"],
+                    "counters": entity["skillStats"]["counters"],
+                    "buffs": entity["damageStats"]["buffedBy"],
+                    "debuffs": entity["damageStats"]["debuffedBy"],
+                    "skills": entity["skills"],
+                    "shields": entity["damageStats"].get("shieldsGivenBy", None),
+                    "absorbs": entity["damageStats"].get(
+                        "damageAbsorbedOnOthersBy", None
+                    ),
                 }
+            )
 
-            # Organize data according to the table
-            row_data = {}
-            for col_name, col_value, col_type in zip(columns, row, column_types):
-                if col_type == "BLOB":
-                    # Skip BLOB columns
-                    continue
-                elif isinstance(col_value, bytes):
-                    continue
-                else:
-                    row_data[col_name] = col_value
+        # Check if DB table Entity has multiple of 4 Players (4, 8, 16, etc)
+        if player_count > 0 and player_count != 12 and player_count % 4 != 0:
+            continue
 
-            if table_name == "encounter":
-                consolidated_data[key]["encounter"] = row_data
-            elif table_name == "encounter_preview":
-                consolidated_data[key]["encounter_preview"] = row_data
-            elif table_name == "entity":
-                consolidated_data[key]["entity"].append(row_data)
+        all_player_data.append(player_data)
 
-    consolidated_data = {
-        key: value
-        for key, value in consolidated_data.items()
-        if key in valid_encounter_ids
-        and key in valid_encounter_cleared_ids
-        and key not in blacklisted_encounter_ids
-    }
+        # Check if Boss is in encounter_map
+        if not npc_id or not max_boss_hp:
+            continue
 
-    # Close the connection
-    conn.close()
+        formatted_data = {
+            "region": log_entry["encounterDamageStats"]["misc"]["region"],
+            "local_id": log_entry["localId"],
+            "fight_end": log_entry["lastCombatPacket"]
+            / 1000,  # Convert from milliseconds to seconds
+            "fight_duration": log_entry["duration"],
+            "boss_name": log_entry["currentBossName"],
+            "difficulty": log_entry["difficulty"],
+            "max_hp": max_boss_hp,
+            "npc_id": npc_id,
+        }
 
-    return consolidated_data
+        all_formatted_data.append(formatted_data)
+
+    return all_formatted_data, all_player_data, local_players, encounters_info
 
 
+def associate_characters_with_user(user, character_names_regions):
+    # Get the set of existing (name, region) tuples for the user's profile
+    existing_character_tuples = set(user.characters.values_list("name", "region"))
+
+    # Filter out characters that are already associated with the user's profile
+    unassociated_character_tuples = [
+        char_info
+        for char_info in character_names_regions
+        if (char_info["name"], char_info["region"]) not in existing_character_tuples
+    ]
+
+    for char_info in unassociated_character_tuples:
+        try:
+            # Create a new character associated with the user's profile
+            Characters.objects.create(
+                profile=user,
+                region=char_info["region"],
+                name=char_info["name"],
+            )
+        except IntegrityError:
+            # Character with this name and region already exists, skip it
+            continue
+
+
+# endregion
+
+
+# region Helper Functions
 def process_skills(skill_info: dict, buff_dict: dict) -> tuple[dict, dict]:
     """
     Return a dictionary of skills with related buff information and a dictionary
@@ -165,7 +269,7 @@ def process_skills(skill_info: dict, buff_dict: dict) -> tuple[dict, dict]:
 
 
 def classify_subclass(
-    entity: dict, player_skills: dict, player_buffs: dict, encounter: dict
+    entity: EntitiesType, player_skills: dict, player_buffs: dict, overall_dps: int
 ) -> str:
     """Return the subclass of a player based on their entity entry"""
 
@@ -182,12 +286,14 @@ def classify_subclass(
         # Look for skill "18030" special "Basic 3 Chain Hits" and does high damage split
         return (
             "Gravity Training"
-            if player_skills.get("18030", {"dps": 0})["dps"] / entity["dps"] > 0.3
+            if player_skills.get("18030", {"dps": 0})["dps"]
+            / entity["damageStats"]["dps"]
+            > 0.3
             else "Rage Hammer"
         )
     elif player_class == "Gunlancer":
         # First check if they're Princess Maker
-        if entity["dps"] / encounter["dps"] < 0.05:
+        if entity["damageStats"]["dps"] / overall_dps < 0.05:
             return "Princess Maker"
         else:
             # Looking for set
@@ -199,7 +305,11 @@ def classify_subclass(
             )
     elif player_class == "Paladin":
         # Checking if this person does okay damage
-        return "Judgment" if entity["dps"] / encounter["dps"] > 0.1 else "Blessed Aura"
+        return (
+            "Judgment"
+            if entity["damageStats"]["dps"] / overall_dps > 0.1
+            else "Blessed Aura"
+        )
     elif player_class == "Slayer":
         # Looking for the "Predator" skill self buff
         return "Predator" if _check_buff("Predator") else "Punisher"
@@ -222,7 +332,7 @@ def classify_subclass(
         # Check if they're doing okay damage
         return (
             "True Courage"
-            if entity["dps"] / encounter["dps"] > 0.1
+            if entity["damageStats"]["dps"] / overall_dps > 0.1
             else "Desperate Salvation"
         )
     elif player_class == "Sorceress":
@@ -263,7 +373,9 @@ def classify_subclass(
         # Check if "25402" RE Death Trance exists and does damage
         return (
             "Remaining Energy"
-            if player_skills.get("25402", {"dps": 0})["dps"] / entity["dps"] > 0.1
+            if player_skills.get("25402", {"dps": 0})["dps"]
+            / entity["damageStats"]["dps"]
+            > 0.1
             else "Surge"
         )
     elif player_class == "Shadowhunter":
@@ -289,7 +401,9 @@ def classify_subclass(
         # Looking for "30260" Barrage: Focus Fire and doing more than 10% damage
         return (
             "Barrage Enhancement"
-            if player_skills.get("30260", {"dps": 0})["dps"] / entity["dps"] > 0.1
+            if player_skills.get("30260", {"dps": 0})["dps"]
+            / entity["damageStats"]["dps"]
+            > 0.1
             else "Firepower Enhancement"
         )
     elif player_class == "Machinist":
@@ -305,7 +419,11 @@ def classify_subclass(
 
     elif player_class == "Artist":
         # Checks if they're doing okay damage
-        return "Recurrence" if entity["dps"] / encounter["dps"] > 0.1 else "Full Bloom"
+        return (
+            "Recurrence"
+            if entity["damageStats"]["dps"] / overall_dps > 0.1
+            else "Full Bloom"
+        )
     elif player_class == "Aeromancer":
         # Check for Wind Fury buff
         return "Wind Fury" if _check_buff("Wind Fury") else "Drizzle"
@@ -313,119 +431,24 @@ def classify_subclass(
         return "Unknown"
 
 
-def format_db_data(data: dict):
-    all_formatted_data = []
-    all_player_data = []
-    local_players = set()
-
-    for key, value in data.items():
-        # If data is invalid, skip
-        if (
-            not value["encounter_preview"]["local_player"]
-            or not value["encounter_preview"]["difficulty"]
-        ):
-            continue
-
-        # Check if the difficulty is one of the accepted difficulties
-        difficulty = value["encounter_preview"]["difficulty"]
-        if difficulty not in accepted_difficulties:
-            continue
-
-        misc_data = json.loads(value["encounter"]["misc"])
-        party_info = misc_data.get("partyInfo", {})
-
-        # Parsed and combined dictionaries
-        buffs = json.loads(value["encounter"].get("buffs", "{}"))
-        debuffs = json.loads(value["encounter"].get("debuffs", "{}"))
-        buff_dict = buffs | debuffs
-
-        # Check if (de)buffs is empty
-        if len(buff_dict.keys()) == 0:
-            continue
-
-        npc_id = None
-        max_boss_hp = None
-        player_data = []
-        for entry in value["entity"]:
-            # If it's a boss, skip
-            if entry["npc_id"] > 0:
-                if entry["name"] in encounter_map:
-                    npc_id = entry["npc_id"]
-                    max_boss_hp = entry["max_hp"]
-
-                continue
-
-            # Determine the party_num by checking the player's name in the party_info
-            party_num = 0
-            for p_num, players in party_info.items():
-                if entry["name"] in players:
-                    party_num = int(p_num)
-                    break
-
-            is_local_player = (
-                entry["name"] == value["encounter_preview"]["local_player"]
-            )
-            if is_local_player:
-                local_players.add(entry["name"])
-
-            skill_info = json.loads(entry["skills"])
-            player_skills, player_buffs = process_skills(skill_info, buff_dict)
-            subclass = classify_subclass(
-                entry, player_skills, player_buffs, value["encounter"]
-            )
-
-            player_data.append(
-                {
-                    "name": entry["name"],
-                    "character_id": entry["character_id"],
-                    "class_id": (
-                        None if (entry["class_id"] == 0 or None) else entry["class_id"]
-                    ),
-                    "subclass": subclass,
-                    "dps": entry["dps"],
-                    "gear_score": (
-                        None
-                        if (entry["gear_score"] == 0 or None)
-                        else entry["gear_score"]
-                    ),
-                    "is_dead": True if entry["is_dead"] == 1 else False,
-                    "party_num": party_num,
-                    "local_player": is_local_player,
-                    "skills": player_skills,
-                    "buffs": player_buffs,
-                }
-            )
-
-        all_player_data.append(player_data)
-
-        formatted_data = {
-            "fight_end": value["encounter"]["last_combat_packet"]
-            / 1000,  # Convert from milliseconds to seconds
-            "fight_duration": value["encounter_preview"]["duration"],
-            "boss_name": value["encounter_preview"]["current_boss"],
-            "difficulty": value["encounter_preview"]["difficulty"],
-            "max_hp": max_boss_hp,
-            "max_hp_bars": boss_hp_map.get(
-                value["encounter_preview"]["current_boss"], None
-            ),
-            "npc_id": npc_id,
-        }
-
-        all_formatted_data.append(formatted_data)
-
-    return all_formatted_data, all_player_data, local_players
+def decompress_gzip(data):
+    with gzip.GzipFile(fileobj=io.BytesIO(data)) as f:
+        return f.read()
 
 
-def associate_characters_with_user(user, character_names):
-    existing_character_names = set(user.characters.values_list("name", flat=True))
-
-    # Get characters that are not associated with the user
-    unassociated_character_names = set(character_names) - existing_character_names
-
-    for char_name in unassociated_character_names:
+def parse_data(data):
+    # Check if data is of type str or bytes
+    if type(data) == str:
+        # Data is a JSON string
+        return json.loads(data)
+    elif type(data) == bytes:
         try:
-            # Create a new character associated with the user
-            Characters.objects.create(profile=user, name=char_name)
-        except IntegrityError:
-            # Character name already exists in the Characters database
-            continue
+            # Attempt to decode bytes directly as JSON
+            return json.loads(data.decode("utf-8"))
+        except UnicodeDecodeError:
+            # If decoding fails, try decompressing
+            decompressed_data = decompress_gzip(data)
+            return json.loads(decompressed_data)
+
+
+# endregion

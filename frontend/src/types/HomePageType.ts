@@ -16,7 +16,6 @@ export type RaidSummaryType = {
     clear_time: string;
     fight_end: string;
     max_boss_hp: string;
-    max_boss_hp_bars: string;
     avg_ilvl: number;
     highest_ilvl: number;
     death_count: number;

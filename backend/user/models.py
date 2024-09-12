@@ -19,9 +19,17 @@ class Characters(models.Model):
     profile = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name="characters"
     )
-    name = models.CharField(max_length=16, blank=True, null=True, unique=True)
+    region = models.CharField(max_length=10, db_index=True)
+    name = models.CharField(max_length=16, db_index=True)
     display_name = models.BooleanField(default=True)
     display_logs = models.BooleanField(default=True)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["region", "name"], name="unique_name_per_region"
+            )
+        ]
+
     def __str__(self):
-        return f"Character: {self.name} (Profile: {self.profile.name}, id: {self.profile.id})"
+        return f"Region: {self.region} Character: {self.name} (Profile: {self.profile.name}, id: {self.profile.id})"
