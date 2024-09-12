@@ -27,7 +27,9 @@ export function Player({
             className="player-row mb-1 rounded-3"
             style={{
                 borderColor: color,
-                backgroundImage: `linear-gradient(to right, ${color} ${dps_percentage}%,  transparent 0%`,
+                backgroundImage: `linear-gradient(to right, ${color} ${dps_percentage}%,  transparent ${
+                    dps_percentage + 10
+                }%`,
             }}>
             <img src={MAP_TO_IMAGE_CLASSES[iconId]} alt={`Icon ${iconId}`} />
             <small className="name fw-light">
