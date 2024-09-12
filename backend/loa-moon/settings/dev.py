@@ -22,13 +22,6 @@ INSTALLED_APPS.insert(staticfiles_index + 1, "corsheaders")
 commonmiddleware_index = MIDDLEWARE.index("django.middleware.common.CommonMiddleware")
 MIDDLEWARE.insert(commonmiddleware_index, "corsheaders.middleware.CorsMiddleware")
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOW_HEADERS = (
-    *default_headers,
-    "content-encoding",
-)
 
 CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:5173"]
 
