@@ -1,19 +1,60 @@
-.input-with-button {
+#AccessToken .input-with-button {
     position: relative;
     display: flex;
     align-items: center;
     max-width: 500px;
 }
 
-.input-with-button .form-control {
+#AccessToken .input-with-button .form-control {
     padding-right: 80px; /* Adjust based on button width */
     flex: 1;
 }
 
-.input-with-button .btn-copy {
+#AccessToken .input-with-button .btn-copy {
     position: absolute;
     right: 0;
     height: 100%;
     top: 0;
     border-radius: var(--bs-border-radius);
+}
+
+#CharacterManager {
+    max-width: 655px;
+}
+
+#CharacterManager > div {
+    background-color: #000;
+}
+
+#CharacterManager table thead {
+    font-size: 14px;
+}
+
+#CharacterManager table thead tr th,
+#CharacterManager table tbody tr td {
+    padding: 0.4rem 0.5rem;
+    text-wrap: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+#CharacterManager table tbody {
+    background-color: #282830;
+}
+
+#CharacterManager table tbody tr:first-child {
+    border-top: none !important;
+}
+
+#CharacterManager table tbody tr td button {
+    padding-top: 0.0675rem;
+    padding-bottom: 0.0675rem;
+    font-size: 14px;
+}
+
+#CharacterManager table tbody tr td .form-check-input {
+    margin-top: 0;
+    width: 1.25em;
+    height: 1.25em;
+    vertical-align: middle;
 }

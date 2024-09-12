@@ -24,7 +24,7 @@ export const getCsrfToken = async (): Promise<string | undefined> => {
     let csrfToken = getCookie("csrftoken");
 
     if (!csrfToken) {
-        const csrf_response = await api.post("/csrf");
+        const csrf_response = await api.post("/auth/csrf");
         if (csrf_response.status === 200) {
             // Check if the CSRF token is returned as a cookie
             csrfToken = getCookie("csrftoken");

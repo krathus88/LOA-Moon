@@ -132,7 +132,7 @@
 #RaidSummaryContainer .raid-summary .player-data > .containers > ul {
     min-width: 200px;
     max-width: 625px;
-    flex: 1 1 auto;
+    flex: 1 1 200px;
 }
 
 #RaidSummaryContainer .raid-summary .player-data .player-row {

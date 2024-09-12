@@ -54,7 +54,7 @@ export function SideBar() {
                     </a>
                 </li>
             </ul>
-            <ul className="nav nav-flush mt-auto">
+            <ul className="nav nav-flush mt-auto" id="SideBarProfile">
                 <li>
                     {user ? (
                         <UserProfileContainer />

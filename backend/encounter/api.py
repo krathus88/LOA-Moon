@@ -55,7 +55,6 @@ def get_home_data(
             "boss_name": f_encounter.boss_name,
             "difficulty": f_encounter.difficulty,
             "max_hp": f_encounter.max_hp,
-            "max_hp_bars": f_encounter.max_hp_bars,
             "npc_id": f_encounter.npc_id,
             "players": list(
                 players.values()
