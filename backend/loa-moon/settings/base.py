@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from corsheaders.defaults import default_headers
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -119,9 +120,6 @@ STORAGES = {
     },
 }
 
-CORS_ALLOWED_ORIGINS = ["http://127.0.0.1:5173"]
-CORS_ALLOW_CREDENTIALS = True
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -131,7 +129,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 SOCIALACCOUNT_STORE_TOKENS = True
 
 
-ALLOWED_HOSTS_env = os.getenv("ALLOWED_HOSTS", [])
-if ALLOWED_HOSTS_env:
-    ALLOWED_HOSTS_env = ALLOWED_HOSTS_env.split(",")
-ALLOWED_HOSTS = ALLOWED_HOSTS_env
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = (
+    *default_headers,
+    "content-encoding",
+)

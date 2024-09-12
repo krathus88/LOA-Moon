@@ -6,3 +6,4 @@ psycopg2-binary==2.9.9
 django-allauth==64.2.0
 whitenoise==6.7.0
 uvicorn==0.30.6
+django-cors-headers==4.4.0
