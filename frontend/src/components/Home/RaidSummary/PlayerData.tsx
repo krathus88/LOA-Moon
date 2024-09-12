@@ -101,12 +101,12 @@ export function PlayerData({
                         {chunk.map((player, playerIndex) => (
                             <Player
                                 key={`${player.character_id}-${playerIndex}`}
-                                iconId={player.class_id} // Adjust if needed
-                                engraving="N/A" // Adjust if needed
+                                iconId={player.class_id}
+                                engraving="N/A"
                                 name={player.name}
-                                dps={player.dps} // Format as needed
-                                dps_percentage={player.damage_percentage} // Example calculation
-                                type={getPlayerType(player.class_id)} // Adjust type based on conditions
+                                dps={player.dps}
+                                dps_percentage={player.damage_percentage}
+                                type={getPlayerType(player.class_id)}
                             />
                         ))}
                     </ul>
