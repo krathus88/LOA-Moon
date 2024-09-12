@@ -177,13 +177,13 @@ encounter_map = {
     },
     ## Behemoth
     # G1
-    "Behemoth, the Whirling Wings of Chaos": {
+    "Behemoth, the Storm Commander": {
         "gate": "G1",
         "instance": "Behemoth",
         "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
     },
     # G2
-    "Behemoth, the Whirling Wings of Chaos": {
+    "Behemoth, Cruel Storm Slayer": {
         "gate": "G2",
         "instance": "Behemoth",
         "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
