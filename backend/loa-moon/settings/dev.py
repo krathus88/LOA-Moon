@@ -16,13 +16,7 @@ SECRET_KEY = get_random_secret_key()
 DEBUG = True
 
 
-# CORS settings, only for development
-staticfiles_index = INSTALLED_APPS.index("django.contrib.staticfiles")
-INSTALLED_APPS.insert(staticfiles_index + 1, "corsheaders")
-commonmiddleware_index = MIDDLEWARE.index("django.middleware.common.CommonMiddleware")
-MIDDLEWARE.insert(commonmiddleware_index, "corsheaders.middleware.CorsMiddleware")
-
-
+# CSRF settings, only for development
 CSRF_TRUSTED_ORIGINS = ["http://127.0.0.1:5173"]
 
 
