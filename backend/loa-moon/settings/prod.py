@@ -23,6 +23,8 @@ NINJA_API_DOCS_ENABLED = False
 CSRF_COOKIE_SECURE = True
 CSRF_COOKIE_DOMAIN = os.getenv("ALLOWED_DOMAIN")
 
+ALLOWED_HOSTS = [os.getenv("ALLOWED_DOMAIN")]
+
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
