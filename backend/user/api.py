@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from allauth.socialaccount.models import SocialAccount
 
 from .models import Profile
+from .services import format_user_characters
 
 
 router = Router()
@@ -14,7 +15,7 @@ router = Router()
 @router.get("/")
 def user_login(request):
     user = request.user
-
+    print("user:", user)
     if user.is_authenticated:
         # Try to get the Profile instance; if it does not exist, create it
         profile = Profile.objects.filter(social_account__user=user).first()
@@ -48,9 +49,15 @@ def user_login(request):
         else:
             pass
 
+        characters_data = format_user_characters(profile)
+
         # Return the profile information
         display_name = profile.name if profile.name else user.username
-        return {"name": display_name, "avatar": profile.avatar}
+        return {
+            "name": display_name,
+            "avatar": profile.avatar,
+            "characters": characters_data,
+        }
     else:
         return JsonResponse({"message": "Unauthorized"}, status=401)
 
