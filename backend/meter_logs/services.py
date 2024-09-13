@@ -1,11 +1,10 @@
-import sqlite3
-import json
 import json
 import gzip
 import io
 
 from django.http import HttpResponseBadRequest
 from django.db import IntegrityError
+from ninja.errors import HttpError
 from typing import List
 
 from constants.encounters import encounter_map
@@ -109,8 +108,9 @@ def format_db_data(data: List[UploadLogBody]):
             if is_local_player:
                 local_players.append(
                     {
-                        "name": entity["name"],
                         "region": log_entry["encounterDamageStats"]["misc"]["region"],
+                        "name": entity["name"],
+                        "class_id": entity["classId"],
                     }
                 )
 
@@ -202,6 +202,7 @@ def associate_characters_with_user(user, character_names_regions):
                 profile=user,
                 region=char_info["region"],
                 name=char_info["name"],
+                class_id=char_info["class_id"],
             )
         except IntegrityError:
             # Character with this name and region already exists, skip it
