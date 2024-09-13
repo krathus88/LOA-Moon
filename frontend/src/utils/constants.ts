@@ -193,15 +193,22 @@ const MAP_TO_IMAGE: Readonly<{
         604: "https://i.postimg.cc/8c1wmd3b/604.png",
     },
     raids: {
+        // Legion Raids
         Valtan: "https://i.postimg.cc/PJrzwXp3/Valtan.webp",
         Vykas: "https://i.postimg.cc/Hxt9ncx8/Vykas.webp",
         "Kakul-Saydon": "https://i.postimg.cc/NjyDDjNZ/Kakul-Saydon.webp",
         Brelshaza: "https://i.postimg.cc/xTpgLzPK/Brelshaza.webp",
-        Kayangel: "https://i.postimg.cc/cJwmq5Gm/Kayangel.webp",
         Akkan: "https://i.postimg.cc/TY3Cy9nd/Akkan.webp",
-        "Ivory Tower": "https://i.postimg.cc/fR6KrQpy/Ivory-Tower.webp",
         Thaemine: "https://i.postimg.cc/764NqMxy/Thaemine.webp",
         Echidna: "https://i.postimg.cc/yd5YFnWM/Echidna.webp",
+        Behemoth: "https://i.postimg.cc/xdmDVQXs/Behemoth.webp",
+        // Abyssal Dungeons
+        Kayangel: "https://i.postimg.cc/cJwmq5Gm/Kayangel.webp",
+        "Ivory Tower": "https://i.postimg.cc/fR6KrQpy/Ivory-Tower.webp",
+        // Guardian Raids
+        Achates: "https://i.postimg.cc/Y9N5jxfY/Achates.webp",
+        Caliligos: "https://i.postimg.cc/YCZKP0CG/Caliligos.webp",
+        Hanumatan: "https://i.postimg.cc/G210cfYb/Hanumatan.webp",
     },
     other: {
         "default-avatar": "https://i.postimg.cc/WzWmmB02/default-avatar.webp",
