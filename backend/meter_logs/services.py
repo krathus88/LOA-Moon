@@ -10,6 +10,8 @@ from typing import List
 
 from constants.encounters import encounter_map
 from constants.game import patches
+from constants.skill_info import skills_dict, buffs_dict
+from constants.classes import classes_map
 from user.models import Characters
 from .schemas import UploadLogBody, EntitiesType
 
@@ -79,16 +81,6 @@ def format_db_data(data: List[UploadLogBody]):
         ):
             continue
 
-        """ buffs = encounter_damage_stats_data["buffs"]
-        debuffs = encounter_damage_stats_data["debuffs"]
-
-        # Combine buffs and debuffs into one dictionary
-        buff_dict = buffs | debuffs
-
-        # Check if (de)buffs is empty
-        if len(buff_dict.keys()) == 0:
-            continue """
-
         npc_id = None
         max_boss_hp = None
         player_count = 0
@@ -122,22 +114,23 @@ def format_db_data(data: List[UploadLogBody]):
                     }
                 )
 
-            """ skill_info = entity["skills"]
-            # Check if data is valid
-            if len(skill_info.keys()) == 0:
-                break
+            player_buffs = (
+                entity["damageStats"]["buffedBy"] | entity["damageStats"]["debuffedBy"]
+            )
 
-            player_skills, player_buffs = process_skills(skill_info, buff_dict)
             subclass = classify_subclass(
-                entity, player_skills, player_buffs, encounter_damage_stats_data["dps"]
-            ) """
+                entity,
+                entity["skills"],
+                player_buffs,
+                encounter_damage_stats_data["dps"],
+            )
 
             player_data.append(
                 {
                     "name": entity["name"],
                     "character_id": entity["characterId"],
                     "class_id": entity["classId"],
-                    "subclass": "N/A",
+                    "subclass": subclass,
                     "dps": entity["damageStats"]["dps"],
                     "gear_score": (
                         None
@@ -219,65 +212,26 @@ def associate_characters_with_user(user, character_names_regions):
 
 
 # region Helper Functions
-def process_skills(skill_info: dict, buff_dict: dict) -> tuple[dict, dict]:
-    """
-    Return a dictionary of skills with related buff information and a dictionary
-    of (de)buffs for a single entity.
-    """
-    # Filter out some irrelevant keys
-    player_skills = {
-        skill_ID: {
-            "name": info["name"],
-            "totalDamage": info["totalDamage"],
-            "maxDamageCast": info["maxDamageCast"],
-            "buffedBySupport": info["buffedBySupport"],
-            "buffedByIdentity": info["buffedByIdentity"],
-            "debuffedBySupport": info["debuffedBySupport"],
-            "casts": info["casts"],
-            "hits": info["hits"],
-            "crits": info["crits"],
-            "backAttacks": info["backAttacks"],
-            "frontAttacks": info["frontAttacks"],
-            "dps": info["dps"],
-            "buffs": info["buffedBy"] | info["debuffedBy"],
-        }
-        for (skill_ID, info) in skill_info.items()
-    }
-
-    # Get unique buff IDs
-    buff_IDs = [
-        buff_ID for skill in player_skills.values() for buff_ID in skill["buffs"]
-    ]
-    buff_IDs = list(set(buff_IDs))
-
-    player_buffs = {}
-    for buff_ID in buff_IDs:
-        if buff_ID not in buff_dict:
-            # Probably hidden (de)buff, skip
-            continue
-
-        # Get amount of damage done by each skill with this buff and sum
-        skill_damage = [
-            skill["buffs"].get(buff_ID, 0) for skill in player_skills.values()
-        ]
-        player_buffs[buff_ID] = {
-            "name": buff_dict[buff_ID]["source"]["name"],
-            "damage": sum(skill_damage),
-        }
-
-    return player_skills, player_buffs
-
-
 def classify_subclass(
     entity: EntitiesType, player_skills: dict, player_buffs: dict, overall_dps: int
 ) -> str:
     """Return the subclass of a player based on their entity entry"""
 
     def _check_buff(buff_name: str) -> bool:
-        return any([buff_name in info["name"] for info in player_buffs.values()])
+        buff_names = [
+            buffs_dict.get(buff, {"name": ""})["name"] for buff in player_buffs.keys()
+        ]
+        return any([buff_name in name for name in buff_names])
+
+    def _check_skill(skill_name: str) -> bool:
+        skill_names = [
+            skills_dict.get(skill, {"name": ""})["name"]
+            for skill in player_skills.keys()
+        ]
+        return any([skill_name in name for name in skill_names])
 
     # Figure out class
-    player_class = entity["class"]
+    player_class = classes_map[entity["classId"]]
 
     if player_class == "Berserker":
         # Check if you have the Mayhem self skill buff
@@ -315,17 +269,11 @@ def classify_subclass(
         return "Predator" if _check_buff("Predator") else "Punisher"
     elif player_class == "Arcanist":
         # Uses the "Emperor" skill to decide spec
-        return (
-            "Order of the Emperor"
-            if "19282" in player_skills.keys()
-            else "Empress's Grace"
-        )
+        return "Order of the Emperor" if _check_skill("Emperor") else "Empress's Grace"
     elif player_class == "Summoner":
         # Check if "20290" Kelsion, is in skills
         return (
-            "Communication Overflow"
-            if "20290" in player_skills.keys()
-            else "Master Summoner"
+            "Communication Overflow" if _check_skill("Kelsion") else "Master Summoner"
         )
 
     elif player_class == "Bard":
@@ -351,24 +299,32 @@ def classify_subclass(
             else "First Intention"
         )
     elif player_class == "Scrapper":
-        # This one is weird where the Shock Training buff is ID "500224" but it doesn't have a name
+        # This one is weird where the Shock Training buff is ID "500224", need to double check
         return (
             "Shock Training"
             if "500224" in player_buffs.keys()
             else "Ultimate Skill: Taijutsu"
         )
     elif player_class == "Soulfist":
-        # A weird one where the RS Hype is ID "240250" but it doesn't have a name
+        # A weird one where the RS Hype is ID "240250" but it requires a specific ID
         return "Robust Spirit" if "240250" in player_buffs.keys() else "Energy Overflow"
     elif player_class == "Glaivier":
         # Look for the "Pinnacle" skill self buff
         return "Pinnacle" if _check_buff("Pinnacle") else "Control"
     elif player_class == "Striker":
         # Looking for the skill ID "39110", Call of the Wind God
-        return "Esoteric Flurry" if "39110" in player_skills.keys() else "Deathblow"
+        return (
+            "Esoteric Flurry"
+            if _check_skill("Esoteric Skill: Call of the Wind God")
+            else "Deathblow"
+        )
     elif player_class == "Breaker":
         # Looking for the skill "47020" Asura Destruction Basic Attack
-        return "Asura's Path" if "47020" in player_skills.keys() else "Brawl King Storm"
+        return (
+            "Asura's Path"
+            if _check_skill("Asura Destruction Basic Attack")
+            else "Brawl King Storm"
+        )
     elif player_class == "Deathblade":
         # Check if "25402" RE Death Trance exists and does damage
         return (
@@ -415,7 +371,7 @@ def classify_subclass(
         )
     elif player_class == "Gunslinger":
         # Looking for Sharpshooter skill
-        return "Peacemaker" if "38110" in player_skills.keys() else "Time to Hunt"
+        return "Peacemaker" if _check_skill("Sharpshooter") else "Time to Hunt"
 
     elif player_class == "Artist":
         # Checks if they're doing okay damage
