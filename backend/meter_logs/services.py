@@ -290,12 +290,7 @@ def classify_subclass(
         # Looking for esoteric skill names
         return (
             "Esoteric Skill Enhancement"
-            if any(
-                [
-                    "Esoteric Skill: " in skill_info["name"]
-                    for skill_info in player_skills.values()
-                ]
-            )
+            if _check_skill("Esoteric Skill: Azure Dragon Supreme Fist")
             else "First Intention"
         )
     elif player_class == "Scrapper":
