@@ -106,3 +106,85 @@ class_list = [
     "Artist",
     "Aeromancer",
 ]
+
+subclass_to_shortened_subclass = {
+    "Unknown": "N/A",
+    # Berserker
+    "Mayhem": "M",
+    "Berserker's Technique": "BT",
+    # Destroyer
+    "Rage Hammer": "RH",
+    "Gravity Training": "GT",
+    # Gunlancer
+    "Lone Knight": "LK",
+    "Princess Maker": "PM",
+    # Paladin
+    "Blessed Aura": "BA",
+    "Judgment": "J",
+    # Slayer
+    "Predator": "Pre",
+    "Punisher": "Pun",
+    # Arcanist
+    "Empress's Grace": "EG",
+    "Order of the Emperor": "OE",
+    # Bard
+    "Desperate Salvation": "DS",
+    "True Courage": "TC",
+    # Sorceress
+    "Igniter": "I",
+    "Reflux": "R",
+    # Summoner
+    "Master Summoner": "MS",
+    "Communication Overflow": "CO",
+    # Glaivier
+    "Pinnacle": "P",
+    "Control": "C",
+    # Scrapper
+    "Shock Training": "ST",
+    "Ultimate Skill: Taijutsu": "T",
+    # Soulfist
+    "Energy Overflow": "EO",
+    "Robust Spirit": "RS",
+    # Wardancer
+    "Esoteric Skill Enhancement": "ESE",
+    "First Intention": "FI",
+    # Striker
+    "Esoteric Flurry": "EF",
+    "Deathblow": "D",
+    # Breaker
+    "Asura's Path": "AP",
+    "Brawl King Storm": "BKS",
+    # Artillerist
+    "Barrage Enhancement": "BE",
+    "Firepower Enhancement": "FE",
+    # Deadeye
+    "Enhanced Weapon": "EW",
+    "Pistoleer": "P",
+    # Gunslinger
+    "Peacemaker": "P",
+    "Time to Hunt": "TH",
+    # Machinist
+    "Evolutionary Legacy": "EL",
+    "Arthetinean Skill": "AS",
+    # Sharpshooter
+    "Loyal Companion": "LC",
+    "Death Strike": "DS",
+    # Deathblade
+    "Remaining Energy": "RE",
+    "Surge": "S",
+    # Reaper
+    "Lunar Voice": "LV",
+    "Hunger": "H",
+    # Shadowhunter
+    "Demonic Impulse": "DI",
+    "Perfect Suppression": "PS",
+    # Souleater
+    "Night's Edge": "NE",
+    "Full Moon Harvester": "FMH",
+    # Aeromancer
+    "Wind Fury": "WF",
+    "Drizzle": "D",
+    # Artist
+    "Recurrence": "R",
+    "Full Bloom": "FB",
+}

@@ -1,7 +1,7 @@
 export type PlayerDataType = {
     name: string;
     class_id: number;
-    subclass: string | null;
+    subclass: string;
     gear_score: number;
     dps: string;
     damage_percentage: number;

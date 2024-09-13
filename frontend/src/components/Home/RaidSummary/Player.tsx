@@ -2,7 +2,7 @@ import { MAP_TO_IMAGE_CLASSES } from "@utils/constants";
 
 type PlayerProps = {
     iconId: number;
-    engraving: string;
+    subclass: string;
     name: string;
     dps: string;
     dps_percentage: number;
@@ -11,7 +11,7 @@ type PlayerProps = {
 
 export function Player({
     iconId,
-    engraving,
+    subclass,
     name,
     dps,
     dps_percentage,
@@ -33,7 +33,7 @@ export function Player({
             }}>
             <img src={MAP_TO_IMAGE_CLASSES[iconId]} alt={`Icon ${iconId}`} />
             <small className="name fw-light">
-                {engraving} - {name}
+                {subclass} - {name}
             </small>
             <div className="ms-auto">
                 <small className="dps fw-light">{dps}/s</small>
