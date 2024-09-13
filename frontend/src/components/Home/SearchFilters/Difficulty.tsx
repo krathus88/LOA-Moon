@@ -1,6 +1,6 @@
 import { FiltersType } from "@type/HomePageType";
+import { DIFFICULTY_LEVELS } from "@utils/constants/encounters";
 import Select, { StylesConfig } from "react-select";
-import { DIFFICULTY_LEVELS } from "@utils/constants";
 
 type DifficultyProps = {
     filters: FiltersType;

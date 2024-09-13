@@ -1,5 +1,6 @@
 import { FiltersType } from "@type/HomePageType";
-import { CLASS_NAME_TO_CLASS_ID, MAP_TO_IMAGE_CLASSES } from "@utils/constants";
+import { MAP_TO_IMAGE_CLASSES } from "@utils/constants/general";
+import { CLASS_GROUPS } from "@utils/constants/classes";
 import Select, { StylesConfig } from "react-select";
 
 type ClassProps = {
@@ -9,36 +10,39 @@ type ClassProps = {
 };
 
 export function Class({ filters, selectStyle, setFilters }: ClassProps) {
-    const handleClassChange = (selectedOption: { value: string }) => {
+    const handleClassChange = (selectedOption: { value: number }) => {
         setFilters((prevFilters) => ({
             ...prevFilters,
-            p_class: selectedOption?.value || "",
+            p_class_id: selectedOption?.value || -1,
             p_spec: "",
         }));
     };
 
-    const classOptions = [...CLASS_NAME_TO_CLASS_ID.entries()].map(
-        ([className, classId]) => ({
-            value: className,
+    // Map class options with images
+    const classOptions = CLASS_GROUPS.map((group) => ({
+        ...group,
+        options: group.options.map((option) => ({
+            ...option,
             label: (
                 <div style={{ display: "flex", alignItems: "center" }}>
                     <img
-                        src={MAP_TO_IMAGE_CLASSES[classId]}
-                        alt={`${className} icon`}
+                        src={MAP_TO_IMAGE_CLASSES[option.value]} // Class Id
+                        alt={`${option.label} icon`} // Class Name
                         style={{
                             width: "24px",
                             height: "24px",
                             marginRight: "8px",
                         }}
                     />
-                    {className}
+                    {option.label}
                 </div>
             ),
-        })
-    );
+        })),
+    }));
 
-    const classSelectValue = classOptions.find(
-        (option) => option.value === filters.p_class
+    // Find the currently selected value
+    const classSelectValue = CLASS_GROUPS.flatMap((group) => group.options).find(
+        (option) => option.value === filters.p_class_id
     );
 
     return (
@@ -46,7 +50,7 @@ export function Class({ filters, selectStyle, setFilters }: ClassProps) {
             id="ClassSelect"
             options={classOptions}
             onChange={(selectedOption) =>
-                handleClassChange(selectedOption as { value: string })
+                handleClassChange(selectedOption as { value: number })
             }
             isClearable
             value={classSelectValue}

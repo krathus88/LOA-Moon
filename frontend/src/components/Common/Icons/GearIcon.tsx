@@ -1,8 +1,8 @@
 export function GearIcon() {
     return (
         <svg
-            width="12"
-            height="12"
+            width="13"
+            height="13"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 512 512">
             <path d="M0 0h512v512H0z" fill="#000" fillOpacity="1"></path>

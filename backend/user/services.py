@@ -1,4 +1,3 @@
-from constants.classes import classes_map
 from .models import Profile, Characters
 
 
@@ -14,7 +13,7 @@ def format_user_characters(profile: Profile):
             {
                 "region": character.region,
                 "name": character.name,
-                "class_id": classes_map[character.class_id],
+                "class_id": character.class_id,
                 "display_name": character.display_name,
                 "display_logs": character.display_logs,
             }

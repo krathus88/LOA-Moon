@@ -79,7 +79,7 @@ def format_raid_summary_data(data):
 
 def build_encounter_filter_query(
     p_name=None,
-    p_class=None,
+    p_class_id=None,
     p_spec=None,
     encounter=None,
     difficulty=None,
@@ -96,9 +96,8 @@ def build_encounter_filter_query(
         query &= Q(players__name__exact=p_name)
     else:
         # If Player Name NOT defined, apply these filters
-        if p_class:
-            class_id = class_name_to_class_id.get(p_class)
-            query &= Q(players__class_id__exact=class_id)
+        if p_class_id >= 0:
+            query &= Q(players__class_id__exact=p_class_id)
         if p_spec:
             # Not yet implemented, do nothing for now
             """ query &= Q(players__subclass__exact=p_spec) """

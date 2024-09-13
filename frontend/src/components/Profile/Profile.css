@@ -19,11 +19,15 @@
 }
 
 #CharacterManager {
-    max-width: 655px;
+    width: 685px;
 }
 
-#CharacterManager > div {
+#CharacterManager > div > table {
     background-color: #000;
+    white-space: nowrap;
+    overflow-y: hidden;
+    overflow-x: scroll;
+    -webkit-overflow-scrolling: touch;
 }
 
 #CharacterManager table thead {
@@ -46,6 +50,11 @@
     border-top: none !important;
 }
 
+#CharacterManager table tbody tr td img {
+    height: 28px;
+    width: 28px;
+}
+
 #CharacterManager table tbody tr td button {
     padding-top: 0.0675rem;
     padding-bottom: 0.0675rem;
@@ -57,4 +66,11 @@
     width: 1.25em;
     height: 1.25em;
     vertical-align: middle;
+}
+
+@media (max-width: 767px) {
+    main#Profile {
+        margin-left: 1rem;
+        margin-right: 1rem;
+    }
 }

@@ -25,7 +25,8 @@
             "@pages/*": ["./src/pages/*"],
             "@type/*": ["./src/types/*"],
             "@utils/*": ["./src/utils/*"],
-            "@config/*": ["./src/config/*"]
+            "@config/*": ["./src/config/*"],
+            "@icons/*": ["./src/components/Common/Icons/*"]
         }
     },
     "include": ["src"]

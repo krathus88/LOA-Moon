@@ -76,7 +76,7 @@ export function AccessToken() {
                     Copy
                 </button>
             </div>
-            <div className="mt-3">
+            <div className="ms-1 mt-3">
                 <button
                     onClick={handleGenerate}
                     disabled={hasClicked}

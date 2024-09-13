@@ -127,21 +127,103 @@ subclass_to_shortened_subclass = {
     # Arcanist
     "Empress's Grace": "EG",
     "Order of the Emperor": "OE",
+    # Summoner
+    "Master Summoner": "MS",
+    "Communication Overflow": "CO",
     # Bard
     "Desperate Salvation": "DS",
     "True Courage": "TC",
     # Sorceress
     "Igniter": "I",
     "Reflux": "R",
+    # Wardancer
+    "Esoteric Skill Enhancement": "ESE",
+    "First Intention": "FI",
+    # Scrapper
+    "Shock Training": "ST",
+    "Ultimate Skill: Taijutsu": "T",
+    # Soulfist
+    "Energy Overflow": "EO",
+    "Robust Spirit": "RS",
+    # Glaivier
+    "Pinnacle": "P",
+    "Control": "C",
+    # Striker
+    "Esoteric Flurry": "EF",
+    "Deathblow": "D",
+    # Breaker
+    "Asura's Path": "AP",
+    "Brawl King Storm": "BKS",
+    # Deathblade
+    "Remaining Energy": "RE",
+    "Surge": "S",
+    # Shadowhunter
+    "Demonic Impulse": "DI",
+    "Perfect Suppression": "PS",
+    # Reaper
+    "Lunar Voice": "LV",
+    "Hunger": "H",
+    # Souleater
+    "Night's Edge": "NE",
+    "Full Moon Harvester": "FMH",
+    # Sharpshooter
+    "Loyal Companion": "LC",
+    "Death Strike": "DS",
+    # Deadeye
+    "Enhanced Weapon": "EW",
+    "Pistoleer": "P",
+    # Artillerist
+    "Barrage Enhancement": "BE",
+    "Firepower Enhancement": "FE",
+    # Machinist
+    "Evolutionary Legacy": "EL",
+    "Arthetinean Skill": "AS",
+    # Gunslinger
+    "Peacemaker": "P",
+    "Time to Hunt": "TH",
+    # Artist
+    "Recurrence": "R",
+    "Full Bloom": "FB",
+    # Aeromancer
+    "Wind Fury": "WF",
+    "Drizzle": "D",
+}
+
+NOT_USED_subclass_to_shortened_subclass_NOT_USED = {
+    "Unknown": "N/A",
+    # Berserker
+    "Mayhem": "MAY",
+    "Berserker's Technique": "BT",
+    # Destroyer
+    "Rage Hammer": "RH",
+    "Gravity Training": "GT",
+    # Gunlancer
+    "Lone Knight": "LK",
+    "Princess Maker": "PM",
+    # Paladin
+    "Blessed Aura": "BA",
+    "Judgment": "JUD",
+    # Slayer
+    "Predator": "PRE",
+    "Punisher": "PUN",
+    # Arcanist
+    "Empress's Grace": "EG",
+    "Order of the Emperor": "OE",
+    # Bard
+    "Desperate Salvation": "DS",
+    "True Courage": "TC",
+    # Sorceress
+    "Igniter": "IGN",
+    "Reflux": "RFX",
     # Summoner
     "Master Summoner": "MS",
     "Communication Overflow": "CO",
     # Glaivier
-    "Pinnacle": "P",
-    "Control": "C",
+    "Pinnacle": "PNC",
+    "Control": "CTR",
     # Scrapper
     "Shock Training": "ST",
-    "Ultimate Skill: Taijutsu": "T",
+    "Ultimate Skill: Taijutsu": "TAI",
     # Soulfist
     "Energy Overflow": "EO",
     "Robust Spirit": "RS",
@@ -150,7 +232,7 @@ subclass_to_shortened_subclass = {
     "First Intention": "FI",
     # Striker
     "Esoteric Flurry": "EF",
-    "Deathblow": "D",
+    "Deathblow": "DBW",
     # Breaker
     "Asura's Path": "AP",
     "Brawl King Storm": "BKS",
@@ -159,10 +241,10 @@ subclass_to_shortened_subclass = {
     "Firepower Enhancement": "FE",
     # Deadeye
     "Enhanced Weapon": "EW",
-    "Pistoleer": "P",
+    "Pistoleer": "PTL",
     # Gunslinger
-    "Peacemaker": "P",
-    "Time to Hunt": "TH",
+    "Peacemaker": "PCM",
+    "Time to Hunt": "TTH",
     # Machinist
     "Evolutionary Legacy": "EL",
     "Arthetinean Skill": "AS",
@@ -171,10 +253,10 @@ subclass_to_shortened_subclass = {
     "Death Strike": "DS",
     # Deathblade
     "Remaining Energy": "RE",
-    "Surge": "S",
+    "Surge": "SRG",
     # Reaper
     "Lunar Voice": "LV",
-    "Hunger": "H",
+    "Hunger": "HUN",
     # Shadowhunter
     "Demonic Impulse": "DI",
     "Perfect Suppression": "PS",
@@ -183,8 +265,8 @@ subclass_to_shortened_subclass = {
     "Full Moon Harvester": "FMH",
     # Aeromancer
     "Wind Fury": "WF",
-    "Drizzle": "D",
+    "Drizzle": "DRZ",
     # Artist
-    "Recurrence": "R",
+    "Recurrence": "REC",
     "Full Bloom": "FB",
 }

@@ -1,8 +1,8 @@
 export function BossHpIcon() {
     return (
         <svg
-            width="12"
-            height="12"
+            width="13"
+            height="13"
             aria-hidden="true"
             focusable="false"
             data-prefix="fass"

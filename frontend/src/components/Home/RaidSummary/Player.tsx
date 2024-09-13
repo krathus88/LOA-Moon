@@ -1,4 +1,4 @@
-import { MAP_TO_IMAGE_CLASSES } from "@utils/constants";
+import { MAP_TO_IMAGE_CLASSES } from "@utils/constants/general";
 
 type PlayerProps = {
     iconId: number;
@@ -33,7 +33,10 @@ export function Player({
             }}>
             <img src={MAP_TO_IMAGE_CLASSES[iconId]} alt={`Icon ${iconId}`} />
             <small className="name fw-light">
-                {subclass} - {name}
+                <span className="fw-bold " style={{ color: "#E49B0F" }}>
+                    {subclass}
+                </span>{" "}
+                {name}
             </small>
             <div className="ms-auto">
                 <small className="dps fw-light">{dps}/s</small>

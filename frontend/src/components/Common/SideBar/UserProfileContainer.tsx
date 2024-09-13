@@ -1,5 +1,5 @@
 import { useAuth } from "@components/Authentication/useAuth";
-import { MAP_TO_IMAGE_OTHER } from "@utils/constants";
+import { MAP_TO_IMAGE_OTHER } from "@utils/constants/general";
 import { NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { LoginIcon } from "../Icons/LoginIcon";

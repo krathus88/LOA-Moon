@@ -24,6 +24,7 @@ export default defineConfig(({ mode }) => {
                 "@type": path.resolve(__dirname, "./src/types"),
                 "@utils": path.resolve(__dirname, "./src/utils"),
                 "@config": path.resolve(__dirname, "./src/config"),
+                "@icons": path.resolve(__dirname, "./src/components/Common/Icons"),
             },
         },
     };
