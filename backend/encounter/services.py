@@ -3,7 +3,7 @@ import time
 from django.db.models import Q
 from datetime import datetime
 
-from constants.classes import class_name_to_class_id
+from constants.classes import class_name_to_class_id, subclass_to_shortened_subclass
 from constants.encounters import encounter_map
 
 
@@ -40,7 +40,7 @@ def format_raid_summary_data(data):
                     "id": player_entry["id"],
                     "name": player_entry["name"],
                     "class_id": player_entry["class_id"],
-                    "subclass": player_entry["subclass"],
+                    "subclass": subclass_to_shortened_subclass.get(player_entry["subclass"], "N/A"),
                     "dps": format_damage(player_entry["dps"]),
                     "damage_percentage": (
                         round((player_entry["dps"] / total_damage) * 100, 1)
