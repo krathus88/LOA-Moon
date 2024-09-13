@@ -10,6 +10,7 @@ from typing import List
 
 from constants.encounters import encounter_map
 from constants.game import patches
+from constants.skill_info import skills, buffs
 from user.models import Characters
 from .schemas import UploadLogBody, EntitiesType
 
@@ -74,20 +75,10 @@ def format_db_data(data: List[UploadLogBody]):
         party_info = encounter_damage_stats_data["misc"]["partyInfo"]
 
         # Check if DB table Encounter has multiple of 4 Players (4, 8, 12, 16, etc)
-        if not party_info or not all(
-            len(party) % 4 == 0 for party in party_info.values()
-        ):
-            continue
-
-        """ buffs = encounter_damage_stats_data["buffs"]
-        debuffs = encounter_damage_stats_data["debuffs"]
-
-        # Combine buffs and debuffs into one dictionary
-        buff_dict = buffs | debuffs
-
-        # Check if (de)buffs is empty
-        if len(buff_dict.keys()) == 0:
-            continue """
+        # if not party_info or not all(
+        #     len(party) % 4 == 0 for party in party_info.values()
+        # ):
+        #     continue
 
         npc_id = None
         max_boss_hp = None
@@ -122,15 +113,16 @@ def format_db_data(data: List[UploadLogBody]):
                     }
                 )
 
-            """ skill_info = entity["skills"]
-            # Check if data is valid
-            if len(skill_info.keys()) == 0:
-                break
+            player_buffs = (
+                entity["damageStats"]["buffedBy"] | entity["damageStats"]["debuffedBy"]
+            )
 
-            player_skills, player_buffs = process_skills(skill_info, buff_dict)
             subclass = classify_subclass(
-                entity, player_skills, player_buffs, encounter_damage_stats_data["dps"]
-            ) """
+                entity,
+                entity["skills"],
+                player_buffs,
+                encounter_damage_stats_data["dps"],
+            )
 
             player_data.append(
                 {
