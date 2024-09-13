@@ -15,7 +15,7 @@ router = Router()
 @router.get("/")
 def user_login(request):
     user = request.user
-    print("user:", user)
+
     if user.is_authenticated:
         # Try to get the Profile instance; if it does not exist, create it
         profile = Profile.objects.filter(social_account__user=user).first()

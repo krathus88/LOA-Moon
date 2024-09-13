@@ -23,13 +23,11 @@ export type RaidSummaryType = {
 };
 
 export type FiltersType = {
-    p_name?: string;
-    p_class?: string;
-    p_spec?: string;
-    encounter?: string;
-    difficulty?: string;
-    date_from?: string;
-    date_until?: string;
-    clear_time_from?: number;
-    clear_time_until?: number;
+    p_name: string;
+    p_class_id: number;
+    p_spec: string;
+    encounter: string;
+    difficulty: string;
+    date_from: string;
+    date_until: string;
 };

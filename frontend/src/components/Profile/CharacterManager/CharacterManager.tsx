@@ -1,6 +1,11 @@
+import { UserCharacters } from "@type/CharactersType";
 import { CharacterRow } from "./CharacterRow";
 
-export function CharacterManager() {
+type CharacterManagerProps = {
+    characters: UserCharacters[];
+};
+
+export function CharacterManager({ characters }: CharacterManagerProps) {
     return (
         <div className="mb-5" id="CharacterManager">
             <h5>Character Manager</h5>
@@ -9,7 +14,7 @@ export function CharacterManager() {
                     <colgroup>
                         <col width="85"></col>
                         <col width="150"></col>
-                        <col width="125"></col>
+                        <col width="155"></col>
                         <col width="105"></col>
                         <col width="105"></col>
                         <col width="85"></col>
@@ -25,15 +30,20 @@ export function CharacterManager() {
                         </tr>
                     </thead>
                     <tbody>
-                        <CharacterRow />
-                        <CharacterRow />
-                        <CharacterRow />
-                        <CharacterRow />
-                        <CharacterRow />
-                        <CharacterRow />
+                        {characters.map((character, index) => (
+                            <CharacterRow
+                                key={index} // or use a unique identifier like character.name if it's unique
+                                region={character.region}
+                                name={character.name}
+                                class_id={character.class_id}
+                                display_name={character.display_name}
+                                display_logs={character.display_logs}
+                            />
+                        ))}
                     </tbody>
                 </table>
             </div>
+            <button className="ms-1 mt-2 btn btn-success">Save</button>
         </div>
     );
 }

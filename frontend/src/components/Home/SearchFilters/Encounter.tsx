@@ -1,6 +1,6 @@
 import { FiltersType } from "@type/HomePageType";
+import { ENCOUNTER_GROUPS } from "@utils/constants/encounters";
 import Select, { StylesConfig } from "react-select";
-import { ENCOUNTER_GROUPS } from "@utils/constants";
 
 type EncounterProps = {
     filters: FiltersType;

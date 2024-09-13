@@ -1,6 +1,6 @@
 import { api } from "@config/axios";
 import { FiltersType, RaidSummaryType } from "@type/HomePageType";
-import { CLASS_SPECS } from "@utils/constants";
+import { CLASS_ID_TO_CLASS_NAME, SUBCLASS_GROUPS } from "@utils/constants/classes";
 import { toQueryString } from "@utils/functions";
 import { useEffect, useState } from "react";
 import { StylesConfig } from "react-select";
@@ -90,38 +90,30 @@ export function SearchFiltersContainer({
 }: SearchFiltersContainerProps) {
     const [filters, setFilters] = useState<FiltersType>({
         p_name: "",
-        p_class: "",
+        p_class_id: -1,
         p_spec: "",
         encounter: "",
         difficulty: "",
         date_from: "",
         date_until: "",
-        clear_time_from: -1,
-        clear_time_until: -1,
     });
 
-    const [specializationOptions, setSpecializationOptions] = useState<
-        { value: string; label: string }[]
-    >([]);
+    const [specializationGroups, setSpecializationGroups] = useState(SUBCLASS_GROUPS);
 
     useEffect(() => {
-        // Update specialization options when class changes
-        if (filters.p_class) {
-            const specs = CLASS_SPECS[filters.p_class] || [];
-            setSpecializationOptions(
-                specs.map((spec) => ({ value: spec, label: spec }))
+        const className = CLASS_ID_TO_CLASS_NAME.get(filters.p_class_id);
+
+        if (className) {
+            // Filter SUBCLASS_GROUPS based on the selected class name
+            const filteredGroups = SUBCLASS_GROUPS.filter(
+                (group) => group.label === className
             );
+            setSpecializationGroups(filteredGroups);
         } else {
-            // If no class is selected, show all specializations
-            const allSpecs = Object.values(CLASS_SPECS).reduce(
-                (acc, val) => acc.concat(val),
-                []
-            );
-            setSpecializationOptions(
-                allSpecs.map((spec) => ({ value: spec, label: spec }))
-            );
+            // Show all specializations if no class is selected
+            setSpecializationGroups(SUBCLASS_GROUPS);
         }
-    }, [filters.p_class]);
+    }, [filters.p_class_id]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -159,7 +151,7 @@ export function SearchFiltersContainer({
                     setFilters={setFilters}
                 />
                 <Specialization
-                    specializationOptions={specializationOptions}
+                    specializationGroups={specializationGroups}
                     filters={filters}
                     selectStyle={SelectStyle}
                     setFilters={setFilters}

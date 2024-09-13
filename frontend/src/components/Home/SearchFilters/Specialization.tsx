@@ -2,14 +2,17 @@ import { FiltersType } from "@type/HomePageType";
 import Select, { StylesConfig } from "react-select";
 
 type SpecializationProps = {
-    specializationOptions: { value: string; label: string }[];
+    specializationGroups: {
+        label: string;
+        options: { value: string; label: string }[];
+    }[];
     filters: FiltersType;
     selectStyle: StylesConfig;
     setFilters: React.Dispatch<React.SetStateAction<FiltersType>>;
 };
 
 export function Specialization({
-    specializationOptions,
+    specializationGroups,
     filters,
     selectStyle,
     setFilters,
@@ -21,14 +24,14 @@ export function Specialization({
         }));
     };
 
-    const specializationSelectValue = specializationOptions.find(
-        (option) => option.value === filters.p_spec
-    );
+    const specializationSelectValue = specializationGroups
+        .flatMap((group) => group.options)
+        .find((option) => option.value === filters.p_spec);
 
     return (
         <Select
             id="SpecSelect"
-            options={specializationOptions}
+            options={specializationGroups}
             onChange={(selectedOption) =>
                 handleSpecChange(selectedOption as { value: string })
             }

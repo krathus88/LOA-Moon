@@ -15,7 +15,7 @@ def get_home_data(
     request,
     page: int = 1,
     p_name: str = "",
-    p_class: str = "",
+    p_class_id: int = -1,
     p_spec: str = "",
     encounter: str = "",
     difficulty: str = "",
@@ -28,7 +28,7 @@ def get_home_data(
     # Apply filters based on request parameters
     encounter_query = build_encounter_filter_query(
         p_name=p_name,
-        p_class=p_class,
+        p_class_id=p_class_id,
         p_spec=p_spec,
         encounter=encounter,
         difficulty=difficulty,

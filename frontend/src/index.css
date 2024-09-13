@@ -26,6 +26,7 @@ body {
     font-weight: 500;
     font-style: normal;
     height: 100dvh;
+    width: 100vw;
 }
 
 main {
@@ -48,6 +49,10 @@ main {
 
 .fw-bold {
     font-weight: 700;
+}
+
+.no-text-shadow {
+    text-shadow: none;
 }
 
 .not-selectable {
