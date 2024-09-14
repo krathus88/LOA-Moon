@@ -2,7 +2,7 @@
     position: relative;
     display: flex;
     align-items: center;
-    max-width: 500px;
+    max-width: 325px;
 }
 
 #AccessToken .input-with-button .form-control {
@@ -18,16 +18,26 @@
     border-radius: var(--bs-border-radius);
 }
 
+#AccessToken .gen-rev-container > button {
+    width: 90px;
+    height: 37px;
+}
+
 #CharacterManager {
     width: 685px;
 }
 
-#CharacterManager > div > table {
+#CharacterManager > div {
     background-color: #000;
     white-space: nowrap;
     overflow-y: hidden;
     overflow-x: scroll;
     -webkit-overflow-scrolling: touch;
+}
+
+#CharacterManager > button {
+    width: 90px;
+    height: 37px;
 }
 
 #CharacterManager table thead {
@@ -46,6 +56,21 @@
     background-color: #282830;
 }
 
+#CharacterManager table tbody .to-delete {
+    position: relative;
+}
+
+#CharacterManager table tbody .to-delete::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    width: 86%;
+    height: 1px;
+    background-color: red; /* Line color */
+    transform: translateY(-50%);
+}
+
 #CharacterManager table tbody tr:first-child {
     border-top: none !important;
 }
@@ -56,8 +81,8 @@
 }
 
 #CharacterManager table tbody tr td button {
-    padding-top: 0.0675rem;
-    padding-bottom: 0.0675rem;
+    width: 68px;
+    padding: 0.0675rem 0.5rem;
     font-size: 14px;
 }
 

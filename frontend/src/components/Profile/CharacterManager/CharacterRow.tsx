@@ -1,23 +1,23 @@
+import { UserCharacters } from "@type/CharactersType";
 import { CLASS_ID_TO_CLASS_NAME } from "@utils/constants/classes";
 import { MAP_TO_IMAGE_CLASSES } from "@utils/constants/general";
+import { Button } from "@mui/material";
 
 type CharacterRowProps = {
-    region: string;
-    name: string;
-    class_id: number;
-    display_name: boolean;
-    display_logs: boolean;
+    character: UserCharacters & {
+        markedForDeletion: boolean;
+    };
+    onUpdateCharacter: (
+        updatedCharacter: Partial<CharacterRowProps["character"]>
+    ) => void;
 };
 
-export function CharacterRow({
-    region,
-    name,
-    class_id,
-    display_name,
-    display_logs,
-}: CharacterRowProps) {
+export function CharacterRow({ character, onUpdateCharacter }: CharacterRowProps) {
+    const { region, name, class_id, display_name, display_logs, markedForDeletion } =
+        character;
+
     return (
-        <tr className="border-top">
+        <tr className={`border-top ${markedForDeletion ? "to-delete" : ""}`}>
             <td className="text-center">{region}</td>
             <td className="">{name}</td>
             <td className="">
@@ -28,20 +28,31 @@ export function CharacterRow({
                 <input
                     className="form-check-input"
                     type="checkbox"
-                    defaultChecked={display_name}
-                    id="checkName"
+                    checked={display_name}
+                    onChange={(e) =>
+                        onUpdateCharacter({ display_name: e.target.checked })
+                    }
                 />
             </td>
             <td className="text-center">
                 <input
                     className="form-check-input"
                     type="checkbox"
-                    defaultChecked={display_logs}
-                    id="checkLogs"
+                    checked={display_logs}
+                    onChange={(e) =>
+                        onUpdateCharacter({ display_logs: e.target.checked })
+                    }
                 />
             </td>
             <td className="text-center">
-                <button className="btn btn-danger">X</button>
+                <Button
+                    variant="contained"
+                    color={markedForDeletion ? "warning" : "error"}
+                    onClick={() =>
+                        onUpdateCharacter({ markedForDeletion: !markedForDeletion })
+                    }>
+                    {markedForDeletion ? "Undo" : "Delete"}
+                </Button>
             </td>
         </tr>
     );
