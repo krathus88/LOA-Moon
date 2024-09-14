@@ -31,8 +31,8 @@ def upload_log(request):
     for i, entry in enumerate(parsed_encounter_preview_data):
         fight_end_time = entry["fight_end"]
 
-        time_range_start = fight_end_time - 1800  # seconds before
-        time_range_end = fight_end_time + 1800  # seconds after
+        time_range_start = fight_end_time - 180  # seconds before
+        time_range_end = fight_end_time + 180  # seconds after
 
         # Find potential matches within the time range
         potential_matches = Encounter.objects.filter(

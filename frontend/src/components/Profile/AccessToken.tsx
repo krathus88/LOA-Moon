@@ -1,6 +1,7 @@
 import { api } from "@config/axios";
 import { getCsrfToken } from "@utils/functions";
 import { useState } from "react";
+import { Button } from "@mui/material";
 
 export function AccessToken() {
     const [value, setValue] = useState("");
@@ -76,19 +77,34 @@ export function AccessToken() {
                     Copy
                 </button>
             </div>
-            <div className="ms-1 mt-3">
-                <button
+            <div className="gen-rev-container ms-1 mt-2">
+                <Button
+                    variant="contained"
+                    color="success"
                     onClick={handleGenerate}
                     disabled={hasClicked}
-                    className="btn btn-success me-2">
+                    className="me-2"
+                    sx={{
+                        "&:disabled": {
+                            backgroundColor: "#004d00",
+                            color: "rgba(255, 255, 255, 0.6)",
+                        },
+                    }}>
                     Generate
-                </button>
-                <button
+                </Button>
+                <Button
+                    variant="contained"
+                    color="error"
                     onClick={handleRevoke}
                     disabled={hasClicked}
-                    className="btn btn-danger">
+                    sx={{
+                        "&.Mui-disabled": {
+                            backgroundColor: "#791a1a",
+                            color: "rgba(255, 255, 255, 0.6)",
+                        },
+                    }}>
                     Revoke
-                </button>
+                </Button>
             </div>
         </div>
     );

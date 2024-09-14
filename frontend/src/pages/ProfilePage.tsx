@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { CharacterManager } from "@components/Profile/CharacterManager/CharacterManager";
 
 export function Component() {
-    const { user, fetchUser, loading } = useAuth();
+    const { user, setUser, fetchUser, loading } = useAuth();
     const [hasFetchedUser, setHasFetchedUser] = useState(false);
 
     useEffect(() => {
@@ -31,7 +31,10 @@ export function Component() {
                 {user && (
                     <>
                         <AccessToken />
-                        <CharacterManager characters={user.characters} />
+                        <CharacterManager
+                            characters={user.characters}
+                            setUser={setUser}
+                        />
                     </>
                 )}
             </div>
