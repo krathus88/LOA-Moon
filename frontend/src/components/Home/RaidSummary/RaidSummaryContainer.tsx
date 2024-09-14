@@ -127,6 +127,7 @@ export function RaidSummaryContainer({
         observer.current = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting && !isLoading) {
+                    setIsLoading(true);
                     loadMoreData();
                 }
             },
@@ -141,7 +142,7 @@ export function RaidSummaryContainer({
                 observer.current.disconnect();
             }
         };
-    }, [isLoading, noResults, setNoResults, loadMoreData]);
+    }, [isLoading, noResults, setIsLoading, setNoResults, loadMoreData]);
 
     if (isLoading && data.length <= 0 && displayedData.length <= 0) return <Loading />;
 
@@ -167,7 +168,7 @@ export function RaidSummaryContainer({
                     />
                 </li>
             ))}
-            {isLoading && data.length >= 0 && displayedData.length >= 0 && (
+            {isLoading && displayedData.length >= 0 && (
                 <li>
                     <Loading />
                 </li>
