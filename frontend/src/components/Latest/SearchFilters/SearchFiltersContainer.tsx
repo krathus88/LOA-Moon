@@ -11,6 +11,7 @@ import { Encounter } from "./Encounter";
 import { PlayerName } from "./PlayerName";
 import "./SearchFilters.css";
 import { Specialization } from "./Specialization";
+import Accordion from "react-bootstrap/Accordion";
 
 const SelectStyle: StylesConfig = {
     control: (base, state) => ({
@@ -71,7 +72,7 @@ const SelectStyle: StylesConfig = {
 
 type SearchFiltersContainerProps = {
     isLoading: boolean;
-    onFilterChange?: (filters: FiltersType) => void;
+    onFilterChange: (filters: FiltersType) => void;
     setIsLoading: (loading: boolean) => void;
     setData: (data: RaidSummaryType[]) => void;
     setDataLength: (dataLength: number) => void;
@@ -142,7 +143,7 @@ export function SearchFiltersContainer({
     };
 
     return (
-        <form className="form-label m-1" id="FilterContainer" onSubmit={handleSubmit}>
+        <form className="form-label m-1 " id="FilterContainer" onSubmit={handleSubmit}>
             <div id="FilterPlayers">
                 <PlayerName filters={filters} setFilters={setFilters} />
                 <Class
@@ -157,37 +158,40 @@ export function SearchFiltersContainer({
                     setFilters={setFilters}
                 />
             </div>
+            <Accordion className="">
+                <Accordion.Item eventKey="0">
+                    <Accordion.Header></Accordion.Header>
+                    <Accordion.Body>
+                        <div id="FilterEncounters">
+                            <Encounter
+                                filters={filters}
+                                selectStyle={SelectStyle}
+                                setFilters={setFilters}
+                            />
+                            <Difficulty
+                                filters={filters}
+                                selectStyle={SelectStyle}
+                                setFilters={setFilters}
+                            />
+                        </div>
 
-            <hr />
-
-            <div id="FilterEncounters">
-                <Encounter
-                    filters={filters}
-                    selectStyle={SelectStyle}
-                    setFilters={setFilters}
-                />
-                <Difficulty
-                    filters={filters}
-                    selectStyle={SelectStyle}
-                    setFilters={setFilters}
-                />
-            </div>
-
-            <div id="FilterDates">
-                <Date
-                    label="From"
-                    type="date_from"
-                    filters={filters}
-                    setFilters={setFilters}
-                />
-                <Date
-                    label="To"
-                    type="date_until"
-                    filters={filters}
-                    setFilters={setFilters}
-                />
-            </div>
-
+                        <div id="FilterDates">
+                            <Date
+                                label="From"
+                                type="date_from"
+                                filters={filters}
+                                setFilters={setFilters}
+                            />
+                            <Date
+                                label="To"
+                                type="date_until"
+                                filters={filters}
+                                setFilters={setFilters}
+                            />
+                        </div>
+                    </Accordion.Body>
+                </Accordion.Item>
+            </Accordion>
             <button type="submit" className="btn btn-secondary" disabled={isLoading}>
                 Apply Filters
             </button>

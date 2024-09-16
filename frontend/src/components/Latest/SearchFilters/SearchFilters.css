@@ -1,10 +1,30 @@
-#RaidOverallContainer #FilterContainer {
+#FilterContainer {
     white-space: normal;
     text-overflow: clip;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: end;
     gap: 1rem;
+}
+
+#FilterContainer > .accordion,
+#FilterContainer > .accordion > .accordion-item {
+    border: none !important;
+}
+
+#FilterContainer > .accordion > .accordion-item > .accordion-header {
+    width: 85%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#FilterContainer
+    > .accordion
+    > .accordion-item
+    > .accordion-header
+    > .accordion-button {
+    padding-top: 0.125rem;
+    padding-bottom: 0.125rem;
 }
 
 #FilterContainer > hr {
@@ -38,12 +58,16 @@
 
 @media (min-width: 1501px) {
     #FilterContainer {
-        flex: 0 0 auto;
+        flex: 1 0 auto;
         width: 20%;
     }
 }
 
 @media (max-width: 1500px) {
+    #FilterContainer {
+        align-items: center;
+    }
+
     #FilterContainer > hr {
         margin-top: 0;
         margin-bottom: 0;

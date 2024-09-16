@@ -5,11 +5,21 @@ import { ClassRankingsIcon } from "../Icons/ClassRankingsIcon";
 import { PartyRankingsIcon } from "../Icons/PartyRankingsIcon";
 import { FaqIcon } from "../Icons/FaqIcon";
 import { UserProfileContainer } from "./UserProfileContainer";
+import { RecentIcon } from "../Icons/RecentIcon";
 
 export function SideBar() {
     return (
         <div className="d-flex flex-column flex-shrink-0" id="SideNavigationBar">
             <ul className="nav nav-flush flex-column text-center">
+                <li>
+                    <Link
+                        to="/latest"
+                        className="nav-link py-3 border-bottom rounded-0 no-link"
+                        aria-label="Class Rankings"
+                        data-bs-original-title="Class Rankings">
+                        <RecentIcon />
+                    </Link>
+                </li>
                 <li>
                     <Link
                         to="/class-rankings"

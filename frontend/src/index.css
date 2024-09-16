@@ -29,7 +29,8 @@ body {
     width: 100vw;
 }
 
-main {
+main,
+header {
     margin-left: var(--side-navigation-width);
 }
 
@@ -89,7 +90,8 @@ main {
 }
 
 @media (max-width: 767px) {
-    main {
+    main,
+    header {
         margin-left: 0px;
     }
 }

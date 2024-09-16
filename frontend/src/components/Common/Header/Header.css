@@ -2,16 +2,22 @@ header > nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 }
 
-header > nav .navbar-brand {
+header > nav #Logo {
     flex: 1;
     color: var(--bs-body-color);
     margin-right: 0 !important;
 }
 
-header > nav .navbar-brand:hover {
+header > nav #Logo:hover {
     color: var(--bs-body-color);
+}
+
+header > nav #Logo h1 {
+    font-size: 40px;
+    vertical-align: middle;
 }
 
 header > nav #Logo {
@@ -31,6 +37,10 @@ header h1 {
 
 header #themeSwitch {
     margin-top: 5px;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-60%);
 }
 
 @media (min-width: 768px) {
@@ -42,5 +52,28 @@ header #themeSwitch {
 @media (max-width: 767px) {
     header {
         display: block;
+    }
+
+    header #themeSwitch {
+        position: static;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 450px) {
+    header > nav > div.mx-auto {
+        margin-left: 0 !important;
+    }
+
+    header > nav #Logo img {
+        display: none;
+    }
+
+    header > nav #Logo h1 {
+        font-size: 36px;
+    }
+
+    header #themeSwitch {
+        margin-right: 0.5rem !important;
     }
 }
