@@ -9,6 +9,12 @@ const HomePage = lazy(() =>
     }))
 );
 
+const LatestPage = lazy(() =>
+    import("@pages/LatestPage").then((module) => ({
+        default: module.Component,
+    }))
+);
+
 const ClassRankingsPage = lazy(() =>
     import("@pages/ClassRankingsPage").then((module) => ({
         default: module.Component,
@@ -50,6 +56,10 @@ const router = createBrowserRouter([
             {
                 path: "/",
                 element: <HomePage />,
+            },
+            {
+                path: "/latest",
+                element: <LatestPage />,
             },
             {
                 path: "/class-rankings",
