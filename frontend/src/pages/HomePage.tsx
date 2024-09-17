@@ -1,6 +1,5 @@
 import "@components/Home/Home.css";
 import { Button } from "@mui/material";
-import "@components/Latest/SearchFilters/SearchFilters.css";
 
 export function Component() {
     return (

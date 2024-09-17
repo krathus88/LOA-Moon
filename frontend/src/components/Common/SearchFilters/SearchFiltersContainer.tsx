@@ -1,8 +1,8 @@
-import { api } from "@config/axios";
-import { FiltersType, RaidSummaryType } from "@type/HomePageType";
+import { FiltersType } from "@type/HomePageType";
 import { CLASS_ID_TO_CLASS_NAME, SUBCLASS_GROUPS } from "@utils/constants/classes";
-import { toQueryString } from "@utils/functions";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import Accordion from "react-bootstrap/Accordion";
+import { useLocation } from "react-router-dom";
 import { StylesConfig } from "react-select";
 import { Class } from "./Class";
 import { Date } from "./Date";
@@ -11,7 +11,6 @@ import { Encounter } from "./Encounter";
 import { PlayerName } from "./PlayerName";
 import "./SearchFilters.css";
 import { Specialization } from "./Specialization";
-import Accordion from "react-bootstrap/Accordion";
 
 const SelectStyle: StylesConfig = {
     control: (base, state) => ({
@@ -71,25 +70,19 @@ const SelectStyle: StylesConfig = {
 };
 
 type SearchFiltersContainerProps = {
+    containerClassName: string;
     isLoading: boolean;
-    onFilterChange: (filters: FiltersType) => void;
-    setIsLoading: (loading: boolean) => void;
-    setData: (data: RaidSummaryType[]) => void;
-    setDataLength: (dataLength: number) => void;
-    setDisplayedData: (displayedData: RaidSummaryType[]) => void;
-    setNoResults: (noResults: boolean) => void;
+    onSubmit: (filters: Partial<FiltersType>) => void;
 };
 
 export function SearchFiltersContainer({
+    containerClassName,
     isLoading,
-    onFilterChange,
-    setIsLoading,
-    setData,
-    setDataLength,
-    setDisplayedData,
-    setNoResults,
+    onSubmit,
 }: SearchFiltersContainerProps) {
-    const [filters, setFilters] = useState<FiltersType>({
+    const location = useLocation();
+
+    const [formFilters, setFormFilters] = useState<FiltersType>({
         p_name: "",
         p_class_id: -1,
         p_spec: "",
@@ -98,64 +91,76 @@ export function SearchFiltersContainer({
         date_from: "",
         date_until: "",
     });
-
     const [specializationGroups, setSpecializationGroups] = useState(SUBCLASS_GROUPS);
 
+    // Parse query parameters from the URL
     useEffect(() => {
-        const className = CLASS_ID_TO_CLASS_NAME.get(filters.p_class_id);
+        const queryParams = new URLSearchParams(location.search);
+
+        const filters: FiltersType = {
+            p_name: queryParams.get("p_name") || "",
+            p_class_id: parseInt(queryParams.get("p_class_id") || "-1"),
+            p_spec: queryParams.get("p_spec") || "",
+            encounter: queryParams.get("encounter") || "",
+            difficulty: queryParams.get("difficulty") || "",
+            date_from: queryParams.get("date_from") || "",
+            date_until: queryParams.get("date_until") || "",
+        };
+
+        // Update state with validated filters
+        setFormFilters(filters);
+    }, [location.search]);
+
+    const memoizedSpecializationGroups = useMemo(() => {
+        if (!formFilters.p_class_id) return SUBCLASS_GROUPS;
+
+        const className = CLASS_ID_TO_CLASS_NAME.get(formFilters.p_class_id);
 
         if (className) {
             // Filter SUBCLASS_GROUPS based on the selected class name
-            const filteredGroups = SUBCLASS_GROUPS.filter(
-                (group) => group.label === className
-            );
-            setSpecializationGroups(filteredGroups);
-        } else {
-            // Show all specializations if no class is selected
-            setSpecializationGroups(SUBCLASS_GROUPS);
+            return SUBCLASS_GROUPS.filter((group) => group.label === className);
         }
-    }, [filters.p_class_id]);
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        setData([]);
-        setIsLoading(true);
-        setDisplayedData([]);
-        setNoResults(false);
+        return SUBCLASS_GROUPS;
+    }, [formFilters.p_class_id]);
 
-        try {
-            const queryString = filters ? `&${toQueryString(filters)}` : "";
+    useEffect(() => {
+        setSpecializationGroups(memoizedSpecializationGroups);
+    }, [memoizedSpecializationGroups]);
 
-            const result = await api.get(`/encounter/?${queryString}`);
-
-            if (result.data.length <= 0) {
-                setNoResults(true);
-            }
-            setDataLength(result.data.length);
-            setData(result.data);
-
-            if (onFilterChange) {
-                onFilterChange(filters);
-            }
-        } finally {
-            setIsLoading(false);
-        }
+    const handleFilterChange = (fieldName: string, newValue: string | number) => {
+        setFormFilters((prevFilters) => ({
+            ...prevFilters,
+            [fieldName]: newValue,
+        }));
     };
 
+    const handleSubmit = useCallback(
+        (e: React.FormEvent<HTMLFormElement>) => {
+            e.preventDefault();
+
+            onSubmit(formFilters); // Notify parent to handle data fetching
+        },
+        [onSubmit, formFilters]
+    );
+
     return (
-        <form className="form-label m-1 " id="FilterContainer" onSubmit={handleSubmit}>
+        <form
+            className={`form-label m-1 ${containerClassName}`}
+            id="FilterContainer"
+            onSubmit={handleSubmit}>
             <div id="FilterPlayers">
-                <PlayerName filters={filters} setFilters={setFilters} />
+                <PlayerName value={formFilters.p_name} onChange={handleFilterChange} />
                 <Class
-                    filters={filters}
                     selectStyle={SelectStyle}
-                    setFilters={setFilters}
+                    value={formFilters.p_class_id}
+                    onChange={handleFilterChange}
                 />
                 <Specialization
                     specializationGroups={specializationGroups}
-                    filters={filters}
                     selectStyle={SelectStyle}
-                    setFilters={setFilters}
+                    value={formFilters.p_spec}
+                    onChange={handleFilterChange}
                 />
             </div>
             <Accordion className="">
@@ -164,14 +169,14 @@ export function SearchFiltersContainer({
                     <Accordion.Body>
                         <div id="FilterEncounters">
                             <Encounter
-                                filters={filters}
                                 selectStyle={SelectStyle}
-                                setFilters={setFilters}
+                                value={formFilters.encounter}
+                                onChange={handleFilterChange}
                             />
                             <Difficulty
-                                filters={filters}
                                 selectStyle={SelectStyle}
-                                setFilters={setFilters}
+                                value={formFilters.difficulty}
+                                onChange={handleFilterChange}
                             />
                         </div>
 
@@ -179,14 +184,14 @@ export function SearchFiltersContainer({
                             <Date
                                 label="From"
                                 type="date_from"
-                                filters={filters}
-                                setFilters={setFilters}
+                                value={formFilters.date_from}
+                                onChange={handleFilterChange}
                             />
                             <Date
                                 label="To"
                                 type="date_until"
-                                filters={filters}
-                                setFilters={setFilters}
+                                value={formFilters.date_until}
+                                onChange={handleFilterChange}
                             />
                         </div>
                     </Accordion.Body>

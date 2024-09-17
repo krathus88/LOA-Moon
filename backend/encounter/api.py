@@ -8,9 +8,10 @@ from .services import format_raid_summary_data, build_encounter_filter_query
 
 router = Router()
 
+""" @decorate_view(cache_page(2 * 60)) """
+
 
 @router.get("/")
-@decorate_view(cache_page(2 * 60))
 def get_home_data(
     request,
     page: int = 1,
@@ -39,23 +40,24 @@ def get_home_data(
     latest_encounters = (
         Encounter.objects.filter(encounter_query)
         .prefetch_related("players")
-        .order_by("-fight_end")[offset : (offset + page_size)]
+        .order_by("-fight_end")
+        .distinct()[offset : (offset + page_size)]
     )
 
     data = []
-    for f_encounter in latest_encounters:
+    for encounter in latest_encounters:
         # Accessing related players
-        players = f_encounter.players.all()
+        players = encounter.players.all()
 
         # Add encounter and related players data to the list
         encounter_data = {
-            "encounter_id": f_encounter.id,
-            "fight_end": f_encounter.fight_end,
-            "fight_duration": f_encounter.fight_duration,
-            "boss_name": f_encounter.boss_name,
-            "difficulty": f_encounter.difficulty,
-            "max_hp": f_encounter.max_hp,
-            "npc_id": f_encounter.npc_id,
+            "encounter_id": encounter.id,
+            "fight_end": encounter.fight_end,
+            "fight_duration": encounter.fight_duration,
+            "boss_name": encounter.boss_name,
+            "difficulty": encounter.difficulty,
+            "max_hp": encounter.max_hp,
+            "npc_id": encounter.npc_id,
             "players": list(
                 players.values()
             ),  # Convert related players to a list of dicts

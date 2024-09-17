@@ -52,7 +52,13 @@ export const getCsrfToken = async (): Promise<string | undefined> => {
     return csrfToken;
 };
 
-export const toQueryString = (filters: FiltersType): string => {
+export const cleanFilters = (filters: Partial<FiltersType>) => {
+    return Object.fromEntries(
+        Object.entries(filters).filter(([, value]) => value !== "" && value !== -1)
+    );
+};
+
+export const toQueryString = (filters: Partial<FiltersType>): string => {
     // Convert all filter values to strings
     const query = new URLSearchParams(
         Object.entries(filters).reduce<Record<string, string>>((acc, [key, value]) => {
