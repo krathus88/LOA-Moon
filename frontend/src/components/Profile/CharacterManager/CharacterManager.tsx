@@ -96,7 +96,6 @@ export function CharacterManager({ characters, setUser }: CharacterManagerProps)
                         <col width="150"></col>
                         <col width="155"></col>
                         <col width="105"></col>
-                        <col width="105"></col>
                         <col width="85"></col>
                     </colgroup>
                     <thead className="text-center">
@@ -105,7 +104,6 @@ export function CharacterManager({ characters, setUser }: CharacterManagerProps)
                             <th className="border-end">Name</th>
                             <th className="border-end">Class</th>
                             <th className="border-end">Display Name</th>
-                            <th className="border-end">Display Logs</th>
                             <th>Delete</th>
                         </tr>
                     </thead>

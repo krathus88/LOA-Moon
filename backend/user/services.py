@@ -15,7 +15,6 @@ def format_user_characters(profile: Profile):
                 "name": character.name,
                 "class_id": character.class_id,
                 "display_name": character.display_name,
-                "display_logs": character.display_logs,
             }
         )
 

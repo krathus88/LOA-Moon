@@ -3,8 +3,19 @@
     text-overflow: clip;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: end;
     gap: 1rem;
+}
+
+#FilterContainer > .button-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#FilterContainer > .button-container > button {
+    width: 100%;
+    max-width: 250px;
 }
 
 #FilterContainer > .accordion,

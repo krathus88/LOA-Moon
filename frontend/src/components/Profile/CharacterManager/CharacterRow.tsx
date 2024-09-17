@@ -13,8 +13,7 @@ type CharacterRowProps = {
 };
 
 export function CharacterRow({ character, onUpdateCharacter }: CharacterRowProps) {
-    const { region, name, class_id, display_name, display_logs, markedForDeletion } =
-        character;
+    const { region, name, class_id, display_name, markedForDeletion } = character;
 
     return (
         <tr className={`border-top ${markedForDeletion ? "to-delete" : ""}`}>
@@ -31,16 +30,6 @@ export function CharacterRow({ character, onUpdateCharacter }: CharacterRowProps
                     checked={display_name}
                     onChange={(e) =>
                         onUpdateCharacter({ display_name: e.target.checked })
-                    }
-                />
-            </td>
-            <td className="text-center">
-                <input
-                    className="form-check-input"
-                    type="checkbox"
-                    checked={display_logs}
-                    onChange={(e) =>
-                        onUpdateCharacter({ display_logs: e.target.checked })
                     }
                 />
             </td>

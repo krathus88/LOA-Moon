@@ -51,6 +51,7 @@ def get_home_data(
 
         # Add encounter and related players data to the list
         encounter_data = {
+            "region": encounter.region,
             "encounter_id": encounter.id,
             "fight_end": encounter.fight_end,
             "fight_duration": encounter.fight_duration,
