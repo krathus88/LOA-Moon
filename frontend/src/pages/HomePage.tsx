@@ -1,7 +1,14 @@
 import "@components/Home/Home.css";
 import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 export function Component() {
+    const navigate = useNavigate();
+
+    const handleGuidesClick = () => {
+        navigate("/faq");
+    };
+
     return (
         <main>
             <div className="container text-center my-5">
@@ -13,6 +20,10 @@ export function Component() {
                     players
                 </p>
                 <Button
+                    component="a"
+                    href="https://github.com/krathus88/loa-logs/releases/tag/Latest"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     variant="contained"
                     sx={{
                         backgroundColor: "#dd8050",
@@ -34,7 +45,8 @@ export function Component() {
                         fontSize: "1.125rem",
                         marginTop: "2.5rem",
                         marginLeft: "1.5rem",
-                    }}>
+                    }}
+                    onClick={handleGuidesClick}>
                     Guides
                 </Button>
                 <div style={{ marginTop: "5rem" }}></div>

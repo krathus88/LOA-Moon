@@ -3,7 +3,7 @@
     text-overflow: clip;
     display: flex;
     flex-direction: column;
-    align-items: end;
+    align-items: center;
     gap: 1rem;
 }
 
