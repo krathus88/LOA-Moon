@@ -197,9 +197,14 @@ export function SearchFiltersContainer({
                     </Accordion.Body>
                 </Accordion.Item>
             </Accordion>
-            <button type="submit" className="btn btn-secondary" disabled={isLoading}>
-                Apply Filters
-            </button>
+            <div className="button-container">
+                <button
+                    type="submit"
+                    className="btn btn-secondary"
+                    disabled={isLoading}>
+                    Apply Filters
+                </button>
+            </div>
         </form>
     );
 }

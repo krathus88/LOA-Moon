@@ -3,7 +3,6 @@ export type UserCharacters = {
     name: string;
     class_id: number;
     display_name: boolean;
-    display_logs: boolean;
 };
 
 export type User = {

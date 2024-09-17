@@ -125,6 +125,15 @@ def format_db_data(data: List[UploadLogBody]):
                 encounter_damage_stats_data["dps"],
             )
 
+            # Calculate death timer
+            if entity["damageStats"]["deathTime"] > 0:
+                death_timer = round(
+                    (log_entry["lastCombatPacket"] - entity["damageStats"]["deathTime"])
+                    / 1000
+                )
+            else:
+                death_timer = 0
+
             player_data.append(
                 {
                     "name": entity["name"],
@@ -137,6 +146,8 @@ def format_db_data(data: List[UploadLogBody]):
                         if (entity["gearScore"] == 0 or None)
                         else entity["gearScore"]
                     ),
+                    "death_timer": death_timer,
+                    "death_count": entity["damageStats"]["deaths"],
                     "is_dead": entity["isDead"],
                     "party_num": party_num,
                     "local_player": is_local_player,

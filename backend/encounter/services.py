@@ -5,6 +5,7 @@ from datetime import datetime
 
 from constants.classes import class_name_to_class_id, subclass_to_shortened_subclass
 from constants.encounters import encounter_map
+from user.models import Characters
 
 
 
@@ -25,8 +26,7 @@ def format_raid_summary_data(data):
             total_damage += player_entry["dps"]
 
         for player_entry in entry["players"]:
-            if player_entry["is_dead"]:
-                death_count += 1
+            death_count += player_entry["death_count"]
 
             gear_score = player_entry.get("gear_score")
             if gear_score:
@@ -34,13 +34,20 @@ def format_raid_summary_data(data):
                 if gear_score > highest_ilvl:
                     highest_ilvl = gear_score
 
+            # Check if the player's name should be displayed
+            try:
+                character = Characters.objects.get(name=player_entry["name"], region=entry["region"])
+                display_name = character.display_name
+            except Characters.DoesNotExist:
+                display_name = False  # Default to False if the character doesn't exist
+
             # Add player data to the all_players list
             all_players.append(
                 {
                     "id": player_entry["id"],
-                    "name": player_entry["name"],
+                    "name": player_entry["name"] if display_name else None,
                     "class_id": player_entry["class_id"],
-                    "subclass": subclass_to_shortened_subclass.get(player_entry["subclass"], "N/A"),
+                    "subclass": subclass_to_shortened_subclass.get(player_entry["subclass"], "N/A") if display_name else player_entry["subclass"],
                     "dps": format_damage(player_entry["dps"]),
                     "damage_percentage": (
                         round((player_entry["dps"] / total_damage) * 100, 1)
@@ -48,7 +55,8 @@ def format_raid_summary_data(data):
                         else 0.0
                     ),
                     "gear_score": player_entry["gear_score"],
-                    "is_dead": player_entry["is_dead"],
+                    "death_timer": player_entry["death_timer"],
+                    "death_count": player_entry["death_count"],
                     "party_num": player_entry["party_num"],
                 }
             )

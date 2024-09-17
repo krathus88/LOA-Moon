@@ -99,11 +99,9 @@ def user_characters(request, body: UserCharacterBody):
                 char = current_characters[key]
                 char.class_id = char_data.class_id
                 char.display_name = char_data.display_name
-                char.display_logs = char_data.display_logs
                 char.save()
 
     # Fetch updated characters
-    # updated_profile = Profile.objects.get(social_account__user=user)
     characters_data = format_user_characters(profile)
 
     return JsonResponse(

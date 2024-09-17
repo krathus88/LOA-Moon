@@ -7,7 +7,6 @@ class CharactersType(Schema):
     name: str
     class_id: int
     display_name: bool
-    display_logs: bool
     markedForDeletion: bool
 
 
