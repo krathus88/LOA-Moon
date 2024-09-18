@@ -9,6 +9,7 @@ import "./RaidSummary.css";
 type RaidSummaryContainerProps = {
     filters: Partial<FiltersType>;
     isLoading: boolean;
+    hasError: boolean;
     data: RaidSummaryType[];
     dataLength: number;
     displayedData: RaidSummaryType[];
@@ -27,6 +28,7 @@ type RaidSummaryContainerProps = {
 export function RaidSummaryContainer({
     filters,
     isLoading,
+    hasError,
     data,
     dataLength,
     displayedData,
@@ -140,7 +142,13 @@ export function RaidSummaryContainer({
                     <Loading />
                 </li>
             )}
-            {noResults && <li className="text-center">No more data to show.</li>}
+            {hasError ? (
+                <li className="text-center">
+                    Oops! An error occurred while fetching data.
+                </li>
+            ) : (
+                noResults && <li className="text-center">No more data to show.</li>
+            )}
             <div id="scrollTarget"></div>
         </>
     );
