@@ -60,10 +60,6 @@ const router = createBrowserRouter([
             {
                 path: "/latest",
                 element: <LatestPage />,
-                async lazy() {
-                    const { Component } = await import("@pages/LatestPage");
-                    return { loader: Component.loader, Component };
-                },
             },
             {
                 path: "/class-rankings",

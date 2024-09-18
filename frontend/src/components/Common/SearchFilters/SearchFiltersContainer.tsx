@@ -197,12 +197,14 @@ export function SearchFiltersContainer({
                                 onChange={handleFilterChange}
                             />
                         </div>
-                        <ExpandToggle eventKey="1">
-                            Advanced Filters <DoubleArrowDown />
-                        </ExpandToggle>
-                        <Accordion.Collapse eventKey="1">
-                            <div>Hello</div>
-                        </Accordion.Collapse>
+                        <div id="ToggleAdvancedFilters">
+                            <ExpandToggle eventKey="1">
+                                Advanced Filters <DoubleArrowDown />
+                            </ExpandToggle>
+                            <Accordion.Collapse eventKey="1">
+                                <div>Hello</div>
+                            </Accordion.Collapse>
+                        </div>
                     </div>
                 </Accordion.Collapse>
             </Accordion>

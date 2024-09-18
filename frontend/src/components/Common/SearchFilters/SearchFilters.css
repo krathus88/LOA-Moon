@@ -45,7 +45,9 @@
 }
 
 #FilterContainer #FilterEncounters,
-#FilterContainer #FilterDates {
+#FilterContainer #FilterDates,
+#FilterContainer #ToggleAdvancedFilters {
+    width: 100%;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
