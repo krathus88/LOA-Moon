@@ -5,8 +5,11 @@ import { MAP_TO_IMAGE_OTHER, SITE_NAME } from "@utils/constants/general";
 import "./Header.css";
 import { PageTab } from "./PageTab";
 import { ThemeSwitch } from "./ThemeSwitch";
+import { useAuth } from "@components/Authentication/useAuth";
 
 export function Header() {
+    const { user, login } = useAuth();
+
     const [expanded, setExpanded] = useState(false);
 
     return (
@@ -33,18 +36,30 @@ export function Header() {
                     id="responsive-navbar-nav"
                     className="justify-content-end text-center">
                     <ul className="navbar-nav mb-2 mb-md-0 rounded">
-                        <PageTab url="/tab1" setExpanded={setExpanded}>
-                            Tab1
+                        <PageTab url="/latest" setExpanded={setExpanded}>
+                            Latest
                         </PageTab>
-                        <PageTab url="/tab2" setExpanded={setExpanded}>
-                            Tab2
+                        <PageTab url="/class-rankings" setExpanded={setExpanded}>
+                            Class Rankings
                         </PageTab>
-                        <PageTab url="/tab3" setExpanded={setExpanded}>
-                            Tab3
+                        <PageTab url="/party-rankings" setExpanded={setExpanded}>
+                            Party Rankings
                         </PageTab>
-                        <PageTab url="/tab4" setExpanded={setExpanded}>
-                            Tab4
+                        <PageTab url="/faq" setExpanded={setExpanded}>
+                            FAQ
                         </PageTab>
+                        <hr />
+                        {user ? (
+                            <PageTab url="/profile" setExpanded={setExpanded}>
+                                Profile
+                            </PageTab>
+                        ) : (
+                            <a
+                                onClick={login}
+                                className="d-flex align-items-center justify-content-center nav-link no-link mt-2">
+                                Login
+                            </a>
+                        )}
                     </ul>
                 </Navbar.Collapse>
             </Navbar>

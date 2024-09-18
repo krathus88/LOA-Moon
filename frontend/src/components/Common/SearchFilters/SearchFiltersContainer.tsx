@@ -11,6 +11,8 @@ import { Encounter } from "./Encounter";
 import { PlayerName } from "./PlayerName";
 import "./SearchFilters.css";
 import { Specialization } from "./Specialization";
+import { ExpandToggle } from "./ExpandToggle";
+import { DoubleArrowDown } from "@icons/DoubleArrowDown";
 
 const SelectStyle: StylesConfig = {
     control: (base, state) => ({
@@ -163,10 +165,12 @@ export function SearchFiltersContainer({
                     onChange={handleFilterChange}
                 />
             </div>
-            <Accordion className="">
-                <Accordion.Item eventKey="0">
-                    <Accordion.Header></Accordion.Header>
-                    <Accordion.Body>
+            <Accordion alwaysOpen>
+                <ExpandToggle eventKey="0">
+                    Extra Filters <DoubleArrowDown />
+                </ExpandToggle>
+                <Accordion.Collapse eventKey="0">
+                    <div>
                         <div id="FilterEncounters">
                             <Encounter
                                 selectStyle={SelectStyle}
@@ -193,10 +197,16 @@ export function SearchFiltersContainer({
                                 onChange={handleFilterChange}
                             />
                         </div>
-                    </Accordion.Body>
-                </Accordion.Item>
+                        <ExpandToggle eventKey="1">
+                            Advanced Filters <DoubleArrowDown />
+                        </ExpandToggle>
+                        <Accordion.Collapse eventKey="1">
+                            <div>Hello</div>
+                        </Accordion.Collapse>
+                    </div>
+                </Accordion.Collapse>
             </Accordion>
-            <div className="button-container">
+            <div className="apply-filters-container mt-2">
                 <button
                     type="submit"
                     className="btn btn-secondary"

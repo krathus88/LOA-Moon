@@ -1,4 +1,5 @@
 import { MAP_TO_IMAGE_CLASSES } from "@utils/constants/general";
+import { DeathIcon } from "@components/Common/Icons/DeathIcon";
 
 type PlayerProps = {
     iconId: number;
@@ -6,6 +7,7 @@ type PlayerProps = {
     name: string;
     dps: string;
     dps_percentage: number;
+    is_dead: boolean;
     type: string;
 };
 
@@ -15,6 +17,7 @@ export function Player({
     name,
     dps,
     dps_percentage,
+    is_dead,
     type,
 }: PlayerProps) {
     let color = "#5b2128";
@@ -36,6 +39,7 @@ export function Player({
                 <span className="fw-bold">{subclass}</span> {name}
             </small>
             <div className="ms-auto">
+                {is_dead && <DeathIcon />}
                 <small className="dps fw-light">{dps}/s</small>
                 <small className="dps-percentage fw-light">{dps_percentage}%</small>
             </div>

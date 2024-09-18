@@ -15,8 +15,8 @@ export function SideBar() {
                     <Link
                         to="/latest"
                         className="nav-link py-3 border-bottom rounded-0 no-link"
-                        aria-label="Class Rankings"
-                        data-bs-original-title="Class Rankings">
+                        aria-label="Latest"
+                        data-bs-original-title="Latest">
                         <RecentIcon />
                     </Link>
                 </li>
@@ -44,8 +44,8 @@ export function SideBar() {
                         className="nav-link py-3 rounded-0 no-link"
                         data-bs-toggle="tooltip"
                         data-bs-placement="right"
-                        aria-label="Customers"
-                        data-bs-original-title="Customers">
+                        aria-label="FAQ"
+                        data-bs-original-title="FAQ">
                         <FaqIcon />
                     </Link>
                 </li>
