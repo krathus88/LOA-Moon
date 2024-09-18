@@ -134,6 +134,17 @@ def format_db_data(data: List[UploadLogBody]):
             else:
                 death_timer = 0
 
+            # Check if the player exists in the Characters model and get their display_name status
+            try:
+                character = Characters.objects.get(
+                    region=log_entry["encounterDamageStats"]["misc"]["region"],
+                    name=entity["name"],
+                )
+                should_display_name = character.display_name
+            # If character does not exist, set display_name to False
+            except Characters.DoesNotExist:
+                should_display_name = False
+
             player_data.append(
                 {
                     "name": entity["name"],
@@ -146,10 +157,11 @@ def format_db_data(data: List[UploadLogBody]):
                         if (entity["gearScore"] == 0 or None)
                         else entity["gearScore"]
                     ),
+                    "is_dead": entity["isDead"],
                     "death_timer": death_timer,
                     "death_count": entity["damageStats"]["deaths"],
-                    "is_dead": entity["isDead"],
                     "party_num": party_num,
+                    "display_name": should_display_name,
                     "local_player": is_local_player,
                     "total_damage": entity["damageStats"]["damageDealt"],
                     "casts": entity["skillStats"]["casts"],

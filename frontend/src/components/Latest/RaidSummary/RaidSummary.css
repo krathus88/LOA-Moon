@@ -156,6 +156,10 @@
     text-overflow: ellipsis;
 }
 
+#RaidSummaryContainer .raid-summary .player-data .player-row .name span {
+    color: #ffd580;
+}
+
 #RaidSummaryContainer .raid-summary .player-data .player-row .dps {
     display: inline-block;
     width: 60px;

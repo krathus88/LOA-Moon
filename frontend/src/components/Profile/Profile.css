@@ -24,7 +24,7 @@
 }
 
 #CharacterManager {
-    width: 580px;
+    width: 755px;
 }
 
 #CharacterManager > div {
@@ -44,10 +44,17 @@
     font-size: 14px;
 }
 
+#CharacterManager table thead tr th {
+    text-wrap: wrap;
+}
+
+#CharacterManager table tbody tr td {
+    text-wrap: nowrap;
+}
+
 #CharacterManager table thead tr th,
 #CharacterManager table tbody tr td {
     padding: 0.4rem 0.5rem;
-    text-wrap: nowrap;
     overflow: hidden;
     vertical-align: middle;
 }

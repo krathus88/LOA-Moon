@@ -15,13 +15,28 @@ export function CharacterManager({ characters, setUser }: CharacterManagerProps)
     const [saveStatus, setSaveStatus] = useState<"idle" | "success" | "error">("idle");
     const [buttonDisabled, setButtonDisabled] = useState(false);
     const [modifiedCharacters, setModifiedCharacters] = useState(
-        characters.map((char) => ({ ...char, markedForDeletion: false }))
+        characters.map((char) => ({
+            ...char,
+            display_name_in_all_previous_logs: false,
+            markedForDeletion: false,
+        }))
     );
 
     // Sync modifiedCharacters state with characters prop
     useEffect(() => {
+        const savedCharacterData = localStorage.getItem("character_data");
+        const characterDataState = savedCharacterData
+            ? JSON.parse(savedCharacterData)
+            : {};
+
         setModifiedCharacters(
-            characters.map((char) => ({ ...char, markedForDeletion: false }))
+            characters.map((char) => ({
+                ...char,
+                display_name_in_all_previous_logs:
+                    characterDataState[char.name]?.display_name_in_all_previous_logs ||
+                    false,
+                markedForDeletion: false,
+            }))
         );
     }, [characters]);
 
@@ -36,6 +51,23 @@ export function CharacterManager({ characters, setUser }: CharacterManagerProps)
                 ...updatedCharacters[index],
                 ...updatedCharacter,
             };
+
+            // Save only the display_name_in_all_previous_logs field in local storage
+            if ("display_name_in_all_previous_logs" in updatedCharacter) {
+                const currentCharacterData = localStorage.getItem("character_data");
+                const characterDataState = currentCharacterData
+                    ? JSON.parse(currentCharacterData)
+                    : {};
+                characterDataState[updatedCharacters[index].name] = {
+                    display_name_in_all_previous_logs:
+                        updatedCharacter.display_name_in_all_previous_logs,
+                };
+                localStorage.setItem(
+                    "character_data",
+                    JSON.stringify(characterDataState)
+                );
+            }
+
             return updatedCharacters;
         });
     };
@@ -47,10 +79,33 @@ export function CharacterManager({ characters, setUser }: CharacterManagerProps)
         setButtonDisabled(true);
 
         // Filter and map out only the relevant fields for the backend
-        const payload = modifiedCharacters.map(({ markedForDeletion, ...char }) => ({
-            ...char,
-            markedForDeletion,
-        }));
+        const payload = modifiedCharacters.map(
+            ({ display_name_in_all_previous_logs, markedForDeletion, ...char }) => ({
+                ...char,
+                display_name_in_all_previous_logs,
+                markedForDeletion,
+            })
+        );
+
+        // Remove characters marked for deletion from local storage
+        const currentCharacterData = localStorage.getItem("character_data");
+        const characterDataState = currentCharacterData
+            ? JSON.parse(currentCharacterData)
+            : {};
+
+        // Remove marked for deletion characters from local storage
+        modifiedCharacters.forEach((char) => {
+            if (char.markedForDeletion) {
+                delete characterDataState[char.name];
+            }
+        });
+
+        // If no characters remain, clear the local storage entry
+        if (Object.keys(characterDataState).length === 0) {
+            localStorage.removeItem("character_data");
+        } else {
+            localStorage.setItem("character_data", JSON.stringify(characterDataState));
+        }
 
         try {
             const csrfToken = await getCsrfToken();
@@ -95,7 +150,8 @@ export function CharacterManager({ characters, setUser }: CharacterManagerProps)
                         <col width="85"></col>
                         <col width="150"></col>
                         <col width="155"></col>
-                        <col width="105"></col>
+                        <col width="125"></col>
+                        <col width="155"></col>
                         <col width="85"></col>
                     </colgroup>
                     <thead className="text-center">
@@ -103,7 +159,10 @@ export function CharacterManager({ characters, setUser }: CharacterManagerProps)
                             <th className="border-end">Region</th>
                             <th className="border-end">Name</th>
                             <th className="border-end">Class</th>
-                            <th className="border-end">Display Name</th>
+                            <th className="border-end">Display Name on Log Upload</th>
+                            <th className="border-end">
+                                Display Name in ALL previous Logs
+                            </th>
                             <th>Delete</th>
                         </tr>
                     </thead>

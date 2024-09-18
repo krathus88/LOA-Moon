@@ -179,7 +179,6 @@ export function SearchFiltersContainer({
                                 onChange={handleFilterChange}
                             />
                         </div>
-
                         <div id="FilterDates">
                             <Date
                                 label="From"

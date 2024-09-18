@@ -5,6 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from allauth.socialaccount.models import SocialAccount
 
+from encounter.models import EncounterPlayers
 from .models import Profile, Characters
 from .services import format_user_characters
 from .schemas import UserCharacterBody
@@ -93,13 +94,23 @@ def user_characters(request, body: UserCharacterBody):
         if key in current_characters:
             # Delete Character
             if char_data.markedForDeletion:
+                EncounterPlayers.objects.filter(
+                    name=char_data.name, encounter__region=char_data.region
+                ).update(display_name=False)
+
                 current_characters[key].delete()
+
             # Update Character
             else:
                 char = current_characters[key]
                 char.class_id = char_data.class_id
                 char.display_name = char_data.display_name
                 char.save()
+
+                # Update past encounters
+                EncounterPlayers.objects.filter(
+                    name=char_data.name, encounter__region=char_data.region
+                ).update(display_name=char_data.display_name_in_all_previous_logs)
 
     # Fetch updated characters
     characters_data = format_user_characters(profile)

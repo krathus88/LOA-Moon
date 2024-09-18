@@ -33,10 +33,7 @@ export function Player({
             }}>
             <img src={MAP_TO_IMAGE_CLASSES[iconId]} alt={`Icon ${iconId}`} />
             <small className="name fw-light">
-                <span className="fw-bold" style={{ color: "#87CEEB" }}>
-                    {subclass}
-                </span>{" "}
-                {name}
+                <span className="fw-bold">{subclass}</span> {name}
             </small>
             <div className="ms-auto">
                 <small className="dps fw-light">{dps}/s</small>

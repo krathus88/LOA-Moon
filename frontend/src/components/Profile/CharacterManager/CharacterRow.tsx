@@ -5,6 +5,7 @@ import { Button } from "@mui/material";
 
 type CharacterRowProps = {
     character: UserCharacters & {
+        display_name_in_all_previous_logs: boolean;
         markedForDeletion: boolean;
     };
     onUpdateCharacter: (
@@ -13,7 +14,14 @@ type CharacterRowProps = {
 };
 
 export function CharacterRow({ character, onUpdateCharacter }: CharacterRowProps) {
-    const { region, name, class_id, display_name, markedForDeletion } = character;
+    const {
+        region,
+        name,
+        class_id,
+        display_name,
+        display_name_in_all_previous_logs,
+        markedForDeletion,
+    } = character;
 
     return (
         <tr className={`border-top ${markedForDeletion ? "to-delete" : ""}`}>
@@ -30,6 +38,18 @@ export function CharacterRow({ character, onUpdateCharacter }: CharacterRowProps
                     checked={display_name}
                     onChange={(e) =>
                         onUpdateCharacter({ display_name: e.target.checked })
+                    }
+                />
+            </td>
+            <td className="text-center">
+                <input
+                    className="form-check-input"
+                    type="checkbox"
+                    checked={display_name_in_all_previous_logs}
+                    onChange={(e) =>
+                        onUpdateCharacter({
+                            display_name_in_all_previous_logs: e.target.checked,
+                        })
                     }
                 />
             </td>

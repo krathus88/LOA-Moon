@@ -27,7 +27,7 @@ export function Component() {
 
     return (
         <main id="Profile">
-            <div className="container-md my-5">
+            <div className="container-lg container-fluid my-5">
                 {user && (
                     <>
                         <AccessToken />
