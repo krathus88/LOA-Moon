@@ -10,81 +10,6 @@ from user.models import Characters
 
 
 # region Raid Summary
-def format_raid_summary_data(data):
-    formatted_data = []
-
-    for entry in data:
-        total_ilvl = 0
-        death_count = 0
-        total_damage = 0
-        highest_ilvl = 0
-
-        # Initialize a list to store processed player data
-        all_players = []
-
-        for player_entry in entry["players"]:
-            total_damage += player_entry["dps"]
-
-        for player_entry in entry["players"]:
-            death_count += player_entry["death_count"]
-
-            gear_score = player_entry.get("gear_score")
-            if gear_score:
-                total_ilvl += gear_score
-                if gear_score > highest_ilvl:
-                    highest_ilvl = gear_score
-
-            # Check if the player's name should be displayed
-            try:
-                character = Characters.objects.get(name=player_entry["name"], region=entry["region"])
-                display_name = character.display_name
-            except Characters.DoesNotExist:
-                display_name = False  # Default to False if the character doesn't exist
-
-            # Add player data to the all_players list
-            all_players.append(
-                {
-                    "id": player_entry["id"],
-                    "name": player_entry["name"] if display_name else None,
-                    "class_id": player_entry["class_id"],
-                    "subclass": subclass_to_shortened_subclass.get(player_entry["subclass"], "N/A") if display_name else player_entry["subclass"],
-                    "dps": format_damage(player_entry["dps"]),
-                    "damage_percentage": (
-                        round((player_entry["dps"] / total_damage) * 100, 1)
-                        if total_damage > 0
-                        else 0.0
-                    ),
-                    "gear_score": player_entry["gear_score"],
-                    "death_timer": player_entry["death_timer"],
-                    "death_count": player_entry["death_count"],
-                    "party_num": player_entry["party_num"],
-                }
-            )
-
-        avg_ilvl = round(total_ilvl / len(all_players), 2)
-
-        encounter_info = encounter_map.get(entry["boss_name"], {})
-        gate = encounter_info.get("gate")
-
-        formatted_data.append(
-            {
-                "encounter_id": entry["encounter_id"],
-                "instance_name": encounter_info.get("instance", None),
-                "gate": gate,
-                "difficulty": entry["difficulty"],
-                "clear_time": convert_clear_time_to_minutes(entry["fight_duration"]),
-                "fight_end": time_since_fight_ended(entry["fight_end"]),
-                "max_boss_hp": format_damage(entry["max_hp"]),
-                "avg_ilvl": avg_ilvl,
-                "highest_ilvl": round(highest_ilvl, 1),
-                "death_count": death_count,
-                "player_data": sort_players_in_chunks(all_players),
-            }
-        )
-
-    return formatted_data
-
-
 def build_encounter_filter_query(
     p_name=None,
     p_class_id=None,
@@ -98,10 +23,10 @@ def build_encounter_filter_query(
     Build a Q object for filtering encounters based on provided parameters.
     """
     query = Q()
-    # Player --- Need to fix on frontend. Only yield results for said class
-    #        --- no need for all classes in an encounter, only said class
+    # Player
     if p_name:
-        query &= Q(players__name__exact=p_name)
+        # Only include encounters where display_name=True for the player
+        query &= Q(players__name__exact=p_name, players__display_name=True)
     else:
         # If Player Name NOT defined, apply these filters
         if p_class_id >= 0:
@@ -134,6 +59,82 @@ def build_encounter_filter_query(
         query &= Q(fight_end__lte=timestamp)
 
     return query
+
+
+def format_raid_summary_data(data):
+    formatted_data = []
+
+    for entry in data:
+        total_ilvl = 0
+        death_count = 0
+        total_damage = 0
+        highest_ilvl = 0
+
+        # Initialize a list to store processed player data
+        all_players = []
+
+        for player_entry in entry["players"]:
+            total_damage += player_entry["dps"]
+
+        for player_entry in entry["players"]:
+            death_count += player_entry["death_count"]
+
+            gear_score = player_entry.get("gear_score")
+            if gear_score:
+                total_ilvl += gear_score
+                if gear_score > highest_ilvl:
+                    highest_ilvl = gear_score
+
+            """ # Check if the player's name should be displayed
+            try:
+                character = Characters.objects.get(name=player_entry["name"], region=entry["region"])
+                display_name = character.display_name
+            except Characters.DoesNotExist:
+                display_name = False  # Default to False if the character doesn't exist """
+
+            # Add player data to the all_players list
+            all_players.append(
+                {
+                    "name": player_entry["name"] if player_entry["display_name"] else None,
+                    "class_id": player_entry["class_id"],
+                    "subclass": subclass_to_shortened_subclass.get(player_entry["subclass"], "N/A") if player_entry["display_name"] else player_entry["subclass"],
+                    "dps": format_damage(player_entry["dps"]),
+                    "damage_percentage": (
+                        round((player_entry["dps"] / total_damage) * 100, 1)
+                        if total_damage > 0
+                        else 0.0
+                    ),
+                    "gear_score": player_entry["gear_score"],
+                    "is_dead": player_entry["is_dead"],
+                    "death_timer": player_entry["death_timer"],
+                    "death_count": player_entry["death_count"],
+                    "party_num": player_entry["party_num"],
+                }
+            )
+
+        avg_ilvl = round(total_ilvl / len(all_players), 2)
+
+        encounter_info = encounter_map.get(entry["boss_name"], {})
+        gate = encounter_info.get("gate")
+
+        formatted_data.append(
+            {
+                "encounter_id": entry["encounter_id"],
+                "instance_name": encounter_info.get("instance", None),
+                "gate": gate,
+                "difficulty": entry["difficulty"],
+                "clear_time": convert_clear_time_to_minutes(entry["fight_duration"]),
+                "fight_end": time_since_fight_ended(entry["fight_end"]),
+                "max_boss_hp": format_damage(entry["max_hp"]),
+                "avg_ilvl": avg_ilvl,
+                "highest_ilvl": round(highest_ilvl, 1),
+                "death_count": death_count,
+                "player_data": sort_players_in_chunks(all_players),
+            }
+        )
+
+    return formatted_data
+
 
 
 # endregion

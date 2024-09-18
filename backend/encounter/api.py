@@ -8,10 +8,9 @@ from .services import format_raid_summary_data, build_encounter_filter_query
 
 router = Router()
 
-""" @decorate_view(cache_page(2 * 60)) """
-
 
 @router.get("/")
+@decorate_view(cache_page(2 * 60))
 def get_home_data(
     request,
     page: int = 1,

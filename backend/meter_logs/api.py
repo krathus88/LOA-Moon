@@ -89,9 +89,11 @@ def upload_log(request):
                     subclass=player_entry["subclass"],
                     dps=player_entry["dps"],
                     gear_score=player_entry["gear_score"],
+                    is_dead=player_entry["is_dead"],
                     death_timer=player_entry["death_timer"],
                     death_count=player_entry["death_count"],
                     party_num=player_entry["party_num"],
+                    display_name=player_entry["display_name"],
                 )
 
             except IntegrityError:

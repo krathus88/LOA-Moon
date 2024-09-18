@@ -2,10 +2,13 @@ export type PlayerDataType = {
     name: string;
     class_id: number;
     subclass: string;
-    gear_score: number;
     dps: string;
     damage_percentage: number;
-    character_id: number;
+    gear_score: number;
+    is_dead: boolean;
+    death_timer: number;
+    death_count: number;
+    party_num: number;
 };
 
 export type RaidSummaryType = {
