@@ -14,7 +14,7 @@
     z-index: -1;
     height: 500px;
     width: 100%;
-    clip-path: inset(10px round 20px);
+    clip-path: inset(round 20px);
     -webkit-mask-image: radial-gradient(
         circle,
         rgba(0, 0, 0, 1) 70%,
@@ -117,7 +117,7 @@
 @media (max-width: 767px) {
     #HomePage #HomeHeader > img {
         width: calc(100% + 20px);
-        clip-path: inset(10px);
+        clip-path: none;
         -webkit-mask-image: none;
         mask-image: none;
     }
