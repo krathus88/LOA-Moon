@@ -70,6 +70,10 @@ const MAP_TO_IMAGE: Readonly<{
     other: {
         "default-avatar": "https://i.postimg.cc/WzWmmB02/default-avatar.webp",
         logo: "https://i.postimg.cc/Pf2Mkw9B/logo.png",
+        wallpaper: "https://i.postimg.cc/nzQPDjfB/BG-Wallpaper.jpg",
+        latest: "https://i.postimg.cc/NjWVfjmV/BG-Aegir.webp",
+        "class-rankings": "https://i.postimg.cc/wTFgvLjr/BG-Aeromancer.webp",
+        "party-rankings": "https://i.postimg.cc/d0w2BMY3/BG-Berserker.webp",
     },
 };
 

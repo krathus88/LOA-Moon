@@ -55,8 +55,9 @@ export function Header() {
                             </PageTab>
                         ) : (
                             <a
+                                href="#"
                                 onClick={login}
-                                className="d-flex align-items-center justify-content-center nav-link no-link mt-2">
+                                className="d-flex align-items-center justify-content-center nav-link no-link">
                                 Login
                             </a>
                         )}

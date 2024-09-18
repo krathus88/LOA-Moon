@@ -97,7 +97,7 @@
     }
 
     #FilterContainer > #FilterPlayers > * {
-        flex: 1 1 calc(33.333% - 1rem);
+        flex: 1 1 calc(33.333% - 0.5rem);
     }
 
     #FilterContainer .accordion .accordion-collapse > div {
