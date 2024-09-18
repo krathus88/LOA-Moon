@@ -53,12 +53,13 @@ export function PlayerData({
                     <ul key={index}>
                         {chunk.map((player, playerIndex) => (
                             <Player
-                                key={`${player.character_id}-${playerIndex}`}
+                                key={playerIndex}
                                 iconId={player.class_id}
                                 subclass={player.subclass}
                                 name={player.name}
                                 dps={player.dps}
                                 dps_percentage={player.damage_percentage}
+                                is_dead={player.is_dead}
                                 type={getPlayerType(player.class_id)}
                             />
                         ))}

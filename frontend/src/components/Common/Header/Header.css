@@ -43,6 +43,11 @@ header #themeSwitch {
     transform: translateY(-60%);
 }
 
+header nav .navbar-collapse ul hr {
+    margin: 0.25rem auto;
+    width: 80%;
+}
+
 @media (min-width: 768px) {
     header #responsive-navbar-nav {
         display: none !important;

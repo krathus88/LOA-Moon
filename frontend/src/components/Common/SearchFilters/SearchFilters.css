@@ -4,42 +4,7 @@
     display: flex;
     flex-direction: column;
     align-items: end;
-    gap: 1rem;
-}
-
-#FilterContainer > .button-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#FilterContainer > .button-container > button {
-    width: 100%;
-    max-width: 250px;
-}
-
-#FilterContainer > .accordion,
-#FilterContainer > .accordion > .accordion-item {
-    border: none !important;
-}
-
-#FilterContainer > .accordion > .accordion-item > .accordion-header {
-    width: 85%;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-#FilterContainer
-    > .accordion
-    > .accordion-item
-    > .accordion-header
-    > .accordion-button {
-    padding-top: 0.125rem;
-    padding-bottom: 0.125rem;
-}
-
-#FilterContainer > hr {
-    width: 275px;
+    gap: 0.5rem;
 }
 
 #FilterContainer > div {
@@ -48,7 +13,12 @@
     width: 100%;
     max-width: 300px;
     min-width: 250px;
-    gap: 1rem;
+    gap: 0.5rem;
+}
+
+#FilterContainer label {
+    color: #adb5bd;
+    font-weight: 400;
 }
 
 #FilterContainer .form-control:focus,
@@ -57,14 +27,40 @@
     border-color: rgba(255, 255, 255, 0.5);
 }
 
-#FilterContainer > div > div > label {
-    color: #adb5bd;
-    font-weight: 400;
+/* Filter Players */
+#FilterContainer #FilterPlayers {
+    gap: 0.5rem;
 }
 
-#FilterContainer > #FilterDates > input {
-    height: 60px;
-    padding-top: 1.9rem;
+/* Accordion */
+#FilterContainer .expand-button {
+    color: #adb5bd;
+    padding: 0.1rem;
+}
+
+#FilterContainer .accordion > .accordion-collapse > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#FilterContainer #FilterEncounters,
+#FilterContainer #FilterDates {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Apply Filters Button */
+#FilterContainer > .apply-filters-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#FilterContainer > .apply-filters-container > button {
+    width: 100%;
+    max-width: 250px;
 }
 
 @media (min-width: 1501px) {
@@ -89,28 +85,50 @@
     #FilterContainer > div {
         max-width: 1000px;
         min-width: none;
+    }
+
+    #FilterContainer #FilterPlayers {
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-between;
-        gap: 1.5rem;
     }
 
-    #FilterContainer > div > * {
+    #FilterContainer > #FilterPlayers > * {
         flex: 1 1 calc(33.333% - 1rem);
-        min-width: 200px;
+    }
+
+    #FilterContainer .accordion .accordion-collapse > div {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    #FilterContainer .accordion #FilterEncounters,
+    #FilterContainer .accordion #FilterDates {
+        flex-direction: row;
+        flex: 1 1 calc(50% - 0.5rem);
+    }
+
+    #FilterContainer .accordion #FilterEncounters > *,
+    #FilterContainer .accordion #FilterDates > * {
+        flex: 1 1 calc(25% - 0.5rem);
     }
 }
 
-@media (max-width: 850px) {
-    #FilterContainer > div {
-        max-width: 1000px;
-        min-width: none;
-        display: flex;
+@media (max-width: 1000px) {
+    #FilterContainer .accordion .accordion-collapse > div {
+        flex-direction: column;
+    }
+
+    #FilterContainer .accordion #FilterEncounters,
+    #FilterContainer .accordion #FilterDates {
         flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 0.5rem;
+        flex: 1 1 calc(50% - 0.5rem);
+    }
+
+    #FilterContainer .accordion #FilterEncounters > *,
+    #FilterContainer .accordion #FilterDates > * {
+        flex: 1 1 calc(25% - 0.5rem);
     }
 }
 
