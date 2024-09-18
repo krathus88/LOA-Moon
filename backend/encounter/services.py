@@ -8,7 +8,6 @@ from constants.encounters import encounter_map
 from user.models import Characters
 
 
-
 # region Raid Summary
 def build_encounter_filter_query(
     p_name=None,
@@ -32,14 +31,16 @@ def build_encounter_filter_query(
         if p_class_id >= 0:
             query &= Q(players__class_id__exact=p_class_id)
         if p_spec:
-            # Not yet implemented, do nothing for now
-            """ query &= Q(players__subclass__exact=p_spec) """
+            query &= Q(players__subclass__exact=p_spec)
 
     # Encounter
     if encounter:
-        boss_key, gate = encounter.split('_', 1)
+        boss_key, gate = encounter.split("_", 1)
         for boss_name, details in encounter_map.items():
-            if details["gate"].lower() == gate and details["instance"].lower() == boss_key:
+            if (
+                details["gate"].lower() == gate
+                and details["instance"].lower() == boss_key
+            ):
                 query &= Q(boss_name__exact=boss_name)
                 break
 
@@ -95,9 +96,17 @@ def format_raid_summary_data(data):
             # Add player data to the all_players list
             all_players.append(
                 {
-                    "name": player_entry["name"] if player_entry["display_name"] else None,
+                    "name": (
+                        player_entry["name"] if player_entry["display_name"] else None
+                    ),
                     "class_id": player_entry["class_id"],
-                    "subclass": subclass_to_shortened_subclass.get(player_entry["subclass"], "N/A") if player_entry["display_name"] else player_entry["subclass"],
+                    "subclass": (
+                        subclass_to_shortened_subclass.get(
+                            player_entry["subclass"], "N/A"
+                        )
+                        if player_entry["display_name"]
+                        else player_entry["subclass"]
+                    ),
                     "dps": format_damage(player_entry["dps"]),
                     "damage_percentage": (
                         round((player_entry["dps"] / total_damage) * 100, 1)
@@ -134,7 +143,6 @@ def format_raid_summary_data(data):
         )
 
     return formatted_data
-
 
 
 # endregion
