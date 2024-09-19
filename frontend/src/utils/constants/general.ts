@@ -3,6 +3,7 @@ export const SITE_NAME = "LOA Moon";
 const MAP_TO_IMAGE: Readonly<{
     classes: Readonly<Record<number, string>>;
     raids: Readonly<Record<string, string>>;
+    faq: Readonly<Record<string, string>>;
     other: Readonly<Record<string, string>>;
 }> = {
     classes: {
@@ -67,6 +68,16 @@ const MAP_TO_IMAGE: Readonly<{
         Caliligos: "https://i.postimg.cc/YCZKP0CG/Caliligos.webp",
         Hanumatan: "https://i.postimg.cc/G210cfYb/Hanumatan.webp",
     },
+    faq: {
+        login: "https://i.postimg.cc/T1ZLL7mq/FAQ-Login.webp",
+        profile: "https://i.postimg.cc/43BYbNV3/FAQ-Profile.webp",
+        access_token: "https://i.postimg.cc/mDjKgJvJ/FAQ-Access-Token.webp",
+        settings: "https://i.postimg.cc/FHPZ1mzj/FAQ-Settings.webp",
+        sync: "https://i.postimg.cc/vTL7ywCx/FAQ-Sync.webp",
+        encounter_logs: "https://i.postimg.cc/8z0T4Jss/FAQ-Encounter-Logs.webp",
+        sync_encounter: "https://i.postimg.cc/xdNn4fb5/FAQ-Sync-Encounter.webp",
+        character_manager: "https://i.postimg.cc/5ynhtTCj/FAQ-Character-Manager.webp",
+    },
     other: {
         "default-avatar": "https://i.postimg.cc/WzWmmB02/default-avatar.webp",
         logo: "https://i.postimg.cc/Pf2Mkw9B/logo.png",
@@ -80,5 +91,7 @@ const MAP_TO_IMAGE: Readonly<{
 export const MAP_TO_IMAGE_CLASSES = MAP_TO_IMAGE.classes;
 
 export const MAP_TO_IMAGE_RAIDS = MAP_TO_IMAGE.raids;
+
+export const MAP_TO_IMAGE_FAQ = MAP_TO_IMAGE.faq;
 
 export const MAP_TO_IMAGE_OTHER = MAP_TO_IMAGE.other;

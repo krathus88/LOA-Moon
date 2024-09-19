@@ -1,6 +1,7 @@
 import Accordion from "react-bootstrap/Accordion";
 import { useAuth } from "@components/Authentication/useAuth";
 import { Link } from "react-router-dom";
+import { MAP_TO_IMAGE_FAQ } from "@utils/constants/general";
 
 export function Setup() {
     const { login } = useAuth();
@@ -15,7 +16,7 @@ export function Setup() {
                         <p>
                             <span className="fw-bold">Note: </span>You have the option
                             between making the displayed name of the logs you upload
-                            public or private. For more info refer to{" "}
+                            public or private. For more information, please refer to{" "}
                             <a href="#CharacterManagement">
                                 Character Management section
                             </a>
@@ -41,6 +42,11 @@ export function Setup() {
                                     Login
                                 </a>{" "}
                                 on this Website with your Discord account.
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["login"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
                             </li>
                             <li>
                                 On this Website, navigate to{" "}
@@ -48,6 +54,11 @@ export function Setup() {
                                     Profile
                                 </Link>
                                 .
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["profile"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
                             </li>
                             <li>
                                 Generate an Access Token{" "}
@@ -55,11 +66,26 @@ export function Setup() {
                                     (KEEP IT PRIVATE)
                                 </span>
                                 .
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["access_token"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
                             </li>
                             <li>Copy the Access Token.</li>
                             <li>Run the DPS Meter.</li>
                             <li>
                                 On the DPS Meter, navigate to Settings --{">"} Sync Tab.
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["settings"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["sync"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
                             </li>
                             <li>Paste the Access Token you generated earlier.</li>
                             <li>Enable Sync (LOA Moon).</li>
@@ -109,12 +135,26 @@ export function Setup() {
                         You can manually upload individual logs.
                         <ol>
                             <li>Run the DPS Meter.</li>
-                            <li>On the DPS Meter, navigate to Encounter Logs.</li>
+                            <li>
+                                On the DPS Meter, navigate to Encounter Logs.
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["encounter_logs"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
+                            </li>
                             <li>
                                 Select a <span className="fw-bold">cleared</span>{" "}
                                 encounter you wish to upload.
                             </li>
-                            <li>On the top tabs, click the Icon "Sync to LOA Moon".</li>
+                            <li>
+                                On the top tabs, click the Icon "Sync to LOA Moon".
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["sync_encounter"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
+                            </li>
                         </ol>
                     </Accordion.Body>
                 </Accordion.Item>
@@ -131,6 +171,11 @@ export function Setup() {
                                     Login
                                 </a>{" "}
                                 on this Website with your Discord account.
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["login"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
                             </li>
                             <li>
                                 On this Website, navigate to{" "}
@@ -138,6 +183,11 @@ export function Setup() {
                                     Profile
                                 </Link>
                                 .
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["profile"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
                             </li>
                             <li>
                                 Generate an Access Token{" "}
@@ -145,11 +195,26 @@ export function Setup() {
                                     (KEEP IT PRIVATE)
                                 </span>
                                 .
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["access_token"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
                             </li>
                             <li>Copy the Access Token.</li>
                             <li>Run the DPS Meter.</li>
                             <li>
                                 On the DPS Meter, navigate to Settings --{">"} Sync Tab.
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["settings"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["sync"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
                             </li>
                             <li>Paste the Access Token you generated earlier.</li>
                             <li>Enable Sync (LOA Moon).</li>
