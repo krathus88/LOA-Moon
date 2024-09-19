@@ -40,6 +40,7 @@
     height: 100%;
     object-fit: cover;
     z-index: -1;
+    user-select: none;
     pointer-events: none;
     clip-path: polygon(0 0, 79% 0, 100% 100%, 0 100%);
 }
