@@ -13,14 +13,73 @@
 }
 
 #SideNavigationBar {
-    height: 85dvh;
+    height: 100dvh;
     position: fixed;
-    margin-top: 80px;
     width: var(--side-navigation-width);
+    background-color: var(--bs-body-bg);
+    transition: width 0.3s;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+    text-overflow: ellipsis;
+    text-wrap: nowrap;
+    z-index: 1000;
 }
 
-#SideNavigationBar a.nav-link {
-    fill: #fff;
+#SideNavigationBar.expanded {
+    width: 200px; /* Set the expanded width */
+}
+
+#SideNavigationBar .nav-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: justify-content 0.3s, background-color 0.3s;
+}
+
+#SideNavigationBar .nav-link:hover {
+    background-color: #333;
+}
+
+#SideNavigationBar.expanded .nav-link {
+    justify-content: flex-start;
+}
+
+#SideNavigationBar .label-text {
+    display: none;
+    margin-left: 8px;
+    padding: 0 5px;
+    border-radius: 5px;
+}
+
+#SideNavigationBar.expanded .label-text {
+    display: inline-block;
+}
+
+#SideNavigationBar .toggle-button {
+    align-self: start;
+    margin: 10px 19px;
+    background-color: #333;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 5px;
+}
+
+#SideNavigationBar .toggle-button:hover {
+    background-color: #555;
+}
+
+#SideNavigationBar #SideBarProfile #profile-dropdown {
+    padding-right: 0;
+    padding-left: 0.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+}
+
+#SideNavigationBar.expanded #SideBarProfile #profile-dropdown {
+    padding-left: 1rem;
+}
+
+#SideNavigationBar #SideBarProfile img {
+    border: 1px solid rgba(255, 255, 255, 0.6);
 }
 
 @media (max-width: 767px) {

@@ -1,23 +1,24 @@
-import { FiltersType } from "@type/HomePageType";
+import { DIFFICULTY_LEVELS } from "@utils/constants/encounters";
+import { useCallback, useMemo } from "react";
 import Select, { StylesConfig } from "react-select";
-import { DIFFICULTY_LEVELS } from "@utils/constants";
 
 type DifficultyProps = {
-    filters: FiltersType;
     selectStyle: StylesConfig;
-    setFilters: React.Dispatch<React.SetStateAction<FiltersType>>;
+    value: string | null;
+    onChange: (fieldName: string, newValue: string) => void;
 };
 
-export function Difficulty({ filters, selectStyle, setFilters }: DifficultyProps) {
-    const handleDifficultyChange = (selectedOption: { value: string }) => {
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            difficulty: selectedOption?.value || "",
-        }));
-    };
+export function Difficulty({ selectStyle, value, onChange }: DifficultyProps) {
+    const handleDifficultyChange = useCallback(
+        (selectedOption: { value: string } | null) => {
+            onChange("difficulty", selectedOption ? selectedOption.value : "");
+        },
+        [onChange]
+    );
 
-    const difficultySelectValue =
-        DIFFICULTY_LEVELS.find((option) => option.value === filters.difficulty) || null;
+    const difficultySelectValue = useMemo(() => {
+        return DIFFICULTY_LEVELS.find((option) => option.value === value) || null;
+    }, [value]);
 
     return (
         <Select

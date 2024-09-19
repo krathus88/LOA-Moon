@@ -1,11 +1,14 @@
 export type PlayerDataType = {
     name: string;
     class_id: number;
-    subclass: string | null;
-    gear_score: number;
+    subclass: string;
     dps: string;
     damage_percentage: number;
-    character_id: number;
+    gear_score: number;
+    is_dead: boolean;
+    death_timer: number;
+    death_count: number;
+    party_num: number;
 };
 
 export type RaidSummaryType = {
@@ -23,13 +26,11 @@ export type RaidSummaryType = {
 };
 
 export type FiltersType = {
-    p_name?: string;
-    p_class?: string;
-    p_spec?: string;
-    encounter?: string;
-    difficulty?: string;
-    date_from?: string;
-    date_until?: string;
-    clear_time_from?: number;
-    clear_time_until?: number;
+    p_name: string;
+    p_class_id: number;
+    p_spec: string;
+    encounter: string;
+    difficulty: string;
+    date_from: string;
+    date_until: string;
 };

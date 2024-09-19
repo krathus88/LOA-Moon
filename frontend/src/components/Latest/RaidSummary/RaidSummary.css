@@ -2,11 +2,11 @@
     display: flex;
     flex-direction: column;
     gap: 1rem;
-    align-items: center;
+    align-items: start;
     list-style-type: none;
     margin-bottom: 0;
     padding-left: 0;
-    flex: 1 0 0%;
+    flex: 1 1 1200px;
 }
 
 #RaidSummaryContainer > li {
@@ -40,6 +40,7 @@
     height: 100%;
     object-fit: cover;
     z-index: -1;
+    user-select: none;
     pointer-events: none;
     clip-path: polygon(0 0, 79% 0, 100% 100%, 0 100%);
 }
@@ -156,6 +157,10 @@
     text-overflow: ellipsis;
 }
 
+#RaidSummaryContainer .raid-summary .player-data .player-row .name span {
+    color: #ffd580;
+}
+
 #RaidSummaryContainer .raid-summary .player-data .player-row .dps {
     display: inline-block;
     width: 60px;
@@ -172,6 +177,7 @@
 @media (max-width: 1500px) {
     #RaidSummaryContainer {
         margin-top: 1rem;
+        align-items: center;
     }
 }
 
@@ -225,11 +231,11 @@
         right: 0;
         left: auto;
         clip-path: polygon(21% 0, 100% 0, 100% 100%, 0 100%);
-        width: 275px;
+        width: 350px;
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 450px) {
     #RaidSummaryContainer .raid-summary .raid-summary-background {
         width: 100%;
         clip-path: none;

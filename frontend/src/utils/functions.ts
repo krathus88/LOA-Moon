@@ -1,5 +1,5 @@
 import { FiltersType } from "@type/HomePageType";
-import { SUPP_MAP } from "./constants";
+import { SUPP_MAP } from "@utils/constants/classes";
 import { api } from "@config/axios";
 
 export const getCookie = (name: string): string | undefined => {
@@ -52,8 +52,20 @@ export const getCsrfToken = async (): Promise<string | undefined> => {
     return csrfToken;
 };
 
-export const toQueryString = (filters: FiltersType): string => {
-    const query = new URLSearchParams(filters as Record<string, string>);
+export const cleanFilters = (filters: Partial<FiltersType>) => {
+    return Object.fromEntries(
+        Object.entries(filters).filter(([, value]) => value !== "" && value !== -1)
+    );
+};
+
+export const toQueryString = (filters: Partial<FiltersType>): string => {
+    // Convert all filter values to strings
+    const query = new URLSearchParams(
+        Object.entries(filters).reduce<Record<string, string>>((acc, [key, value]) => {
+            acc[key] = String(value);
+            return acc;
+        }, {})
+    );
     return query.toString();
 };
 

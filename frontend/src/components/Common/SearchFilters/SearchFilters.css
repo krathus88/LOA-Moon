@@ -1,0 +1,142 @@
+#FilterContainer {
+    white-space: normal;
+    text-overflow: clip;
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+    gap: 0.5rem;
+}
+
+#FilterContainer > div {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    min-width: 250px;
+    gap: 0.5rem;
+}
+
+#FilterContainer label {
+    color: #adb5bd;
+    font-weight: 400;
+}
+
+#FilterContainer .form-control:focus,
+#FilterContainer .form-control:hover {
+    box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Filter Players */
+#FilterContainer #FilterPlayers {
+    gap: 0.5rem;
+}
+
+/* Accordion */
+#FilterContainer .expand-button {
+    color: #adb5bd;
+    padding: 0.1rem;
+}
+
+#FilterContainer .accordion > .accordion-collapse > div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+#FilterContainer #FilterEncounters,
+#FilterContainer #FilterDates,
+#FilterContainer #ToggleAdvancedFilters {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+/* Apply Filters Button */
+#FilterContainer > .apply-filters-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#FilterContainer > .apply-filters-container > button {
+    width: 100%;
+    max-width: 250px;
+}
+
+@media (min-width: 1501px) {
+    #FilterContainer {
+        flex: 1 0 auto;
+        width: 20%;
+    }
+}
+
+@media (max-width: 1500px) {
+    #FilterContainer {
+        align-items: center;
+    }
+
+    #FilterContainer > hr {
+        margin-top: 0;
+        margin-bottom: 0;
+        width: 100%;
+        max-width: 750px;
+    }
+
+    #FilterContainer > div {
+        max-width: 1000px;
+        min-width: none;
+    }
+
+    #FilterContainer #FilterPlayers {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+    }
+
+    #FilterContainer > #FilterPlayers > * {
+        flex: 1 1 calc(33.333% - 0.5rem);
+    }
+
+    #FilterContainer .accordion .accordion-collapse > div {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    #FilterContainer .accordion #FilterEncounters,
+    #FilterContainer .accordion #FilterDates {
+        flex-direction: row;
+        flex: 1 1 calc(50% - 0.5rem);
+    }
+
+    #FilterContainer .accordion #FilterEncounters > *,
+    #FilterContainer .accordion #FilterDates > * {
+        flex: 1 1 calc(25% - 0.5rem);
+    }
+}
+
+@media (max-width: 1000px) {
+    #FilterContainer .accordion .accordion-collapse > div {
+        flex-direction: column;
+    }
+
+    #FilterContainer .accordion #FilterEncounters,
+    #FilterContainer .accordion #FilterDates {
+        flex-direction: row;
+        flex: 1 1 calc(50% - 0.5rem);
+    }
+
+    #FilterContainer .accordion #FilterEncounters > *,
+    #FilterContainer .accordion #FilterDates > * {
+        flex: 1 1 calc(25% - 0.5rem);
+    }
+}
+
+@media (max-width: 682px) {
+    #FilterContainer #NameInput {
+        flex: 1 1 100%; /* Makes the NameInput take full width */
+        min-width: 100%;
+    }
+}

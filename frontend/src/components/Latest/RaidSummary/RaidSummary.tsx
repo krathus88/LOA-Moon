@@ -1,5 +1,5 @@
 import { PlayerDataType } from "@type/HomePageType";
-import { MAP_TO_IMAGE_RAIDS } from "@utils/constants";
+import { MAP_TO_IMAGE_RAIDS } from "@utils/constants/general";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Info } from "./Info";

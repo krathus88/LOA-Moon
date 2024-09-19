@@ -1,50 +1,45 @@
 import "@components/Home/Home.css";
-import { RaidSummaryContainer } from "@components/Home/RaidSummary/RaidSummaryContainer";
-import { SearchFiltersContainer } from "@components/Home/SearchFilters/SearchFiltersContainer";
-import { useState } from "react";
-import { FiltersType } from "@type/HomePageType";
-import { RaidSummaryType } from "@type/HomePageType";
+import { Button } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { ContentsContainer } from "@components/Home/ContentsContainer";
+import { MAP_TO_IMAGE_OTHER } from "@utils/constants/general";
 
 export function Component() {
-    const [data, setData] = useState<RaidSummaryType[]>([]); // Fetched Data
-    const [dataLength, setDataLength] = useState<number>(0); // Fetched Data Length (handles reloads)
-    const [displayedData, setDisplayedData] = useState<RaidSummaryType[]>([]); // Displayed Data
-    const [filters, setFilters] = useState<FiltersType>({}); // Filters
-    const [isLoading, setIsLoading] = useState(true); // If data is loading, fetching or not
-    const [noResults, setNoResults] = useState(false); // If no results found after fetch
+    const navigate = useNavigate();
 
-    const handleFilterChange = (newFilters: FiltersType) => {
-        setFilters(newFilters);
+    const handleGuidesClick = () => {
+        navigate("/faq");
     };
 
     return (
-        <main>
-            <div className="my-4 mx-3 mx-md-4 gap-4" id="RaidOverallContainer">
-                <SearchFiltersContainer
-                    isLoading={isLoading}
-                    onFilterChange={handleFilterChange}
-                    setIsLoading={setIsLoading}
-                    setData={setData}
-                    setDataLength={setDataLength}
-                    setDisplayedData={setDisplayedData}
-                    setNoResults={setNoResults}
-                />
-                <ul id="RaidSummaryContainer">
-                    <RaidSummaryContainer
-                        filters={filters}
-                        isLoading={isLoading}
-                        data={data}
-                        dataLength={dataLength}
-                        displayedData={displayedData}
-                        noResults={noResults}
-                        setIsLoading={setIsLoading}
-                        setData={setData}
-                        setDataLength={setDataLength}
-                        setDisplayedData={setDisplayedData}
-                        setNoResults={setNoResults}
-                    />
-                </ul>
+        <main id="HomePage">
+            <div
+                className="container-xl container-fluid-md text-center"
+                id="HomeHeader">
+                <img className="shadow-lg" src={MAP_TO_IMAGE_OTHER["wallpaper"]} />
+                <div>
+                    <h2 className="">Welcome to LOA Moon</h2>
+                    <p>
+                        Lost Ark's unofficial logs website
+                        <br />
+                        <br />
+                        In here you can upload your logs and see how you fare against
+                        other players
+                    </p>
+                </div>
+                <Button
+                    component="a"
+                    href="https://github.com/krathus88/loa-logs/releases"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    variant="contained">
+                    Download
+                </Button>
+                <Button variant="contained" onClick={handleGuidesClick}>
+                    Guides
+                </Button>
             </div>
+            <ContentsContainer />
         </main>
     );
 }

@@ -15,7 +15,7 @@ def get_home_data(
     request,
     page: int = 1,
     p_name: str = "",
-    p_class: str = "",
+    p_class_id: int = -1,
     p_spec: str = "",
     encounter: str = "",
     difficulty: str = "",
@@ -28,7 +28,7 @@ def get_home_data(
     # Apply filters based on request parameters
     encounter_query = build_encounter_filter_query(
         p_name=p_name,
-        p_class=p_class,
+        p_class_id=p_class_id,
         p_spec=p_spec,
         encounter=encounter,
         difficulty=difficulty,
@@ -39,23 +39,25 @@ def get_home_data(
     latest_encounters = (
         Encounter.objects.filter(encounter_query)
         .prefetch_related("players")
-        .order_by("-fight_end")[offset : (offset + page_size)]
+        .order_by("-fight_end")
+        .distinct()[offset : (offset + page_size)]
     )
 
     data = []
-    for f_encounter in latest_encounters:
+    for encounter in latest_encounters:
         # Accessing related players
-        players = f_encounter.players.all()
+        players = encounter.players.all()
 
         # Add encounter and related players data to the list
         encounter_data = {
-            "encounter_id": f_encounter.id,
-            "fight_end": f_encounter.fight_end,
-            "fight_duration": f_encounter.fight_duration,
-            "boss_name": f_encounter.boss_name,
-            "difficulty": f_encounter.difficulty,
-            "max_hp": f_encounter.max_hp,
-            "npc_id": f_encounter.npc_id,
+            "region": encounter.region,
+            "encounter_id": encounter.id,
+            "fight_end": encounter.fight_end,
+            "fight_duration": encounter.fight_duration,
+            "boss_name": encounter.boss_name,
+            "difficulty": encounter.difficulty,
+            "max_hp": encounter.max_hp,
+            "npc_id": encounter.npc_id,
             "players": list(
                 players.values()
             ),  # Convert related players to a list of dicts
