@@ -11,3 +11,11 @@
     box-shadow: 0 0 0 0.2rem rgba(255, 255, 255, 0.15);
     border-color: rgba(255, 255, 255, 0.5);
 }
+
+#FAQ .accordion-collapse img {
+    display: block;
+    width: 100%;
+    max-width: 750px;
+    height: auto;
+    border: 1px solid rgba(255, 255, 255, 0.075);
+}

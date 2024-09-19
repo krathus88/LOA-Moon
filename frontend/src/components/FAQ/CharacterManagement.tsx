@@ -1,6 +1,7 @@
 import Accordion from "react-bootstrap/Accordion";
 import { useAuth } from "@components/Authentication/useAuth";
 import { Link } from "react-router-dom";
+import { MAP_TO_IMAGE_FAQ } from "@utils/constants/general";
 
 export function CharacterManagement() {
     const { login } = useAuth();
@@ -21,6 +22,11 @@ export function CharacterManagement() {
                                     Login
                                 </a>{" "}
                                 on this Website with your Discord account.
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["login"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
                             </li>
                             <li>
                                 On this Website, navigate to{" "}
@@ -28,14 +34,21 @@ export function CharacterManagement() {
                                     Profile
                                 </Link>
                                 .
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["profile"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
                             </li>
                             <li>
                                 On the Character Manager, enable "Display Name on Log
-                                Upload" for the characters you want.
-                            </li>
-                            <li>
-                                On the Character Manager, enable "Display Name in ALL
-                                previous Logs" for the characters you want.
+                                Upload" and/or "Display Name in ALL previous Logs" for
+                                the characters you want.
+                                <img
+                                    src={MAP_TO_IMAGE_FAQ["character_manager"]}
+                                    className="rounded mb-1"
+                                    loading="lazy"
+                                />
                             </li>
                             <li>On the Character Manager, click the "Save" button.</li>
                         </ol>

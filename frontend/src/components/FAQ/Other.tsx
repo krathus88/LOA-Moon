@@ -24,7 +24,7 @@ export function Other() {
                             interesting concept to share make a Pull Request!
                         </p>
                         <p>
-                            Can also reach out to us through our{" "}
+                            You can also reach out to us through our{" "}
                             <a href="https://discord.gg/dVNBVNJUh5" target="_blank">
                                 Discord
                             </a>
