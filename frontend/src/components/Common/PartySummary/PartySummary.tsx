@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { Info } from "./Info";
 import { PlayerData } from "./PlayerData";
 
-type RaidSummaryProps = {
+type PartySummaryProps = {
     encounter_id: number;
     instance_name: string;
     gate: string;
@@ -19,7 +19,7 @@ type RaidSummaryProps = {
     player_data: PlayerDataType[];
 };
 
-export function RaidSummary({
+export function PartySummary({
     encounter_id,
     instance_name,
     gate,
@@ -31,7 +31,7 @@ export function RaidSummary({
     highest_ilvl,
     death_count,
     player_data,
-}: RaidSummaryProps) {
+}: PartySummaryProps) {
     const [isHeightLarge, setIsHeightLarge] = useState(false);
     const [isWidthLarge, setIsWidthLarge] = useState(true);
     const raidSummaryRef = useRef<HTMLAnchorElement | null>(null);

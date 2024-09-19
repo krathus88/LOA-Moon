@@ -20,23 +20,29 @@ export function Player({
     is_dead,
     type,
 }: PlayerProps) {
-    let color = "#5b2128";
+    /*   let color = "#5b2128";
     if (type === "supp") {
         color = "#184332";
+    } */
+    let color = "rgba(91, 33, 40, 0.85)";
+    let borderColor = "rgba(91, 33, 40, 0.75)";
+    if (type === "supp") {
+        color = "rgba(255, 227, 201, 0.5)";
+        borderColor = "rgba(255,227,201,0.2)";
     }
 
     return (
         <li
             className="player-row mb-1 rounded-3"
             style={{
-                borderColor: color,
+                borderColor: borderColor,
                 backgroundImage: `linear-gradient(to right, ${color} ${dps_percentage}%,  transparent ${
                     dps_percentage + 10
                 }%`,
             }}>
             <img src={MAP_TO_IMAGE_CLASSES[iconId]} alt={`Icon ${iconId}`} />
             <small className="name fw-light">
-                <span className="fw-bold">{subclass}</span> {name}
+                <span className="">{subclass}</span> {name}
             </small>
             <div className="ms-auto">
                 {is_dead && <DeathIcon />}

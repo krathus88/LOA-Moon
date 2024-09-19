@@ -1,7 +1,7 @@
 import { Loading } from "@components/Common/Loading";
 import { SearchFiltersContainer } from "@components/Common/SearchFilters/SearchFiltersContainer";
 import "@components/Latest/Latest.css";
-import { RaidSummaryContainer } from "@components/Latest/RaidSummary/RaidSummaryContainer";
+import { PartySummaryContainer } from "@components/Common/PartySummary/PartySummaryContainer";
 import { api } from "@config/axios";
 import { FiltersType, RaidSummaryType } from "@type/HomePageType";
 import { cleanFilters, toQueryString } from "@utils/functions";
@@ -11,6 +11,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 export function Component() {
     const navigate = useNavigate();
     const location = useLocation();
+
+    const source = "p-latest";
+    const defaultEncounter = "";
+    const defaultDifficulty = "";
+    const defaultOrderBy = "";
 
     const [data, setData] = useState<RaidSummaryType[]>([]); // Fetched Data
     const [dataLength, setDataLength] = useState<number>(0); // Fetched Data Length (handles reloads)
@@ -32,17 +37,20 @@ export function Component() {
                 p_name: queryParams.get("p_name") || "",
                 p_class_id: parseInt(queryParams.get("p_class_id") || "-1"),
                 p_spec: queryParams.get("p_spec") || "",
-                encounter: queryParams.get("encounter") || "",
-                difficulty: queryParams.get("difficulty") || "",
+                encounter: queryParams.get("encounter") || defaultEncounter,
+                difficulty: queryParams.get("difficulty") || defaultDifficulty,
                 date_from: queryParams.get("date_from") || "",
                 date_until: queryParams.get("date_until") || "",
+                order_by: defaultOrderBy,
             });
             setFilters(cleanedFilters);
 
             const queryString = toQueryString(cleanedFilters);
 
             try {
-                const result = await api.get(`/encounter/?${queryString}`);
+                const result = await api.get(
+                    `/encounter/?${queryString}&source=${source}`
+                );
                 const fetchedData = result.data;
 
                 setData(fetchedData);
@@ -65,34 +73,45 @@ export function Component() {
         (filters: Partial<FiltersType>) => {
             setIsLoading(true);
             setHasError(false); // Reset error state back to none for new data fetch
-            setData([]);
-            setDataLength(0);
-            setDisplayedData([]);
-            setNoResults(false);
 
             const cleanedFilters = cleanFilters(filters);
-            setFilters(cleanedFilters);
-
             const queryString = filters ? `?${toQueryString(cleanedFilters)}` : "";
+            const queryParams = new URLSearchParams(location.search);
+            const currentQueryString = `?${queryParams.toString()}`;
 
-            navigate(`/latest${queryString}`);
+            // If new params, fetch new data
+            if (queryString !== currentQueryString) {
+                setFilters(cleanedFilters);
+                setData([]);
+                setDataLength(0);
+                setDisplayedData([]);
+                setNoResults(false);
+
+                navigate(`/latest${queryString}`);
+            } else {
+                setIsLoading(false);
+            }
         },
-        [navigate]
+        [navigate, location.search]
     );
 
     return (
         <main>
-            <div className="my-4 mx-3 mx-md-4" id="RaidOverallContainer">
+            <div className="my-4 mx-3 mx-md-4" id="RaidLatestContainer">
                 <SearchFiltersContainer
-                    containerClassName="p-latest"
+                    source={source}
+                    defaultEncounter={defaultEncounter}
+                    defaultDifficulty={defaultDifficulty}
+                    defaultOrderBy={defaultOrderBy}
                     isLoading={isLoading}
                     onSubmit={onFilterSubmit}
                 />
-                <ul id="RaidSummaryContainer">
+                <ul id="PartySummaryContainer">
                     {isLoading && data.length <= 0 ? (
                         <Loading />
                     ) : (
-                        <RaidSummaryContainer
+                        <PartySummaryContainer
+                            source={source}
                             filters={filters}
                             isLoading={isLoading}
                             hasError={hasError}

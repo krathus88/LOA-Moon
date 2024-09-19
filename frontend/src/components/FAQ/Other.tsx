@@ -7,7 +7,7 @@ export function Other() {
             <Accordion>
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>
-                        I want to contribute to this project. How can i start?
+                        I want to contribute to this project. How can I start?
                     </Accordion.Header>
                     <Accordion.Body className="fw-light">
                         <p>
@@ -34,7 +34,7 @@ export function Other() {
                 </Accordion.Item>
                 <Accordion.Item eventKey="1">
                     <Accordion.Header>
-                        Cool concept. I want to keep this project going. How can i help?
+                        Cool concept. I want to keep this project going. How can I help?
                     </Accordion.Header>
                     <Accordion.Body className="fw-light">
                         <p>Coming soon...</p>

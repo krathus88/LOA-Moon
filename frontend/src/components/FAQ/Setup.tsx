@@ -24,7 +24,7 @@ export function Setup() {
                         </p>
                         <ol>
                             <li>
-                                Download the latest modified version of the DPS Meter{" "}
+                                Download the latest modified version of LOA Logs{" "}
                                 <a
                                     href="https://github.com/krathus88/loa-logs/releases"
                                     target="_blank"
@@ -34,8 +34,8 @@ export function Setup() {
                                 .
                             </li>
                             <li>
-                                Install it (either override the old meter or install in
-                                a different path).
+                                Install it (you can keep the default LOA Logs meter in a
+                                separate folder or replace it completely).
                             </li>
                             <li>
                                 <a onClick={login} className="hover-pointer">
@@ -73,9 +73,9 @@ export function Setup() {
                                 />
                             </li>
                             <li>Copy the Access Token.</li>
-                            <li>Run the DPS Meter.</li>
+                            <li>Run LOA Logs.</li>
                             <li>
-                                On the DPS Meter, navigate to Settings --{">"} Sync Tab.
+                                On LOA Logs, navigate to Settings --{">"} Sync Tab.
                                 <img
                                     src={MAP_TO_IMAGE_FAQ["settings"]}
                                     className="rounded mb-1"
@@ -202,9 +202,9 @@ export function Setup() {
                                 />
                             </li>
                             <li>Copy the Access Token.</li>
-                            <li>Run the DPS Meter.</li>
+                            <li>Run LOA Logs.</li>
                             <li>
-                                On the DPS Meter, navigate to Settings --{">"} Sync Tab.
+                                On LOA Logs, navigate to Settings --{">"} Sync Tab.
                                 <img
                                     src={MAP_TO_IMAGE_FAQ["settings"]}
                                     className="rounded mb-1"

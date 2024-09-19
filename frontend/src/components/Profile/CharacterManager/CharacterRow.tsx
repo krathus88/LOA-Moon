@@ -26,8 +26,8 @@ export function CharacterRow({ character, onUpdateCharacter }: CharacterRowProps
     return (
         <tr className={`border-top ${markedForDeletion ? "to-delete" : ""}`}>
             <td className="text-center">{region}</td>
-            <td className="">{name}</td>
-            <td className="">
+            <td className="text-center">{name}</td>
+            <td className="text-center">
                 <img src={MAP_TO_IMAGE_CLASSES[class_id]} alt={`Class ${class_id}`} />{" "}
                 {CLASS_ID_TO_CLASS_NAME.get(class_id)}
             </td>

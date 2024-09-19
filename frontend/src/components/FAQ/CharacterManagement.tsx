@@ -12,7 +12,7 @@ export function CharacterManagement() {
             <Accordion id="CharacterManagement">
                 <Accordion.Item eventKey="0">
                     <Accordion.Header>
-                        I want to make the name in my character logs public. How do i do
+                        I want to make the name in my character logs public. How do I do
                         this?
                     </Accordion.Header>
                     <Accordion.Body className="fw-light">

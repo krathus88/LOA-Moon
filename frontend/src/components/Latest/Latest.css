@@ -1,4 +1,4 @@
-#RaidOverallContainer {
+#RaidLatestContainer {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -6,7 +6,8 @@
 }
 
 @media (max-width: 1500px) {
-    #RaidOverallContainer {
+    #RaidLatestContainer {
         flex-direction: column;
+        gap: 0.5rem;
     }
 }

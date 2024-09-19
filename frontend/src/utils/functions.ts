@@ -54,7 +54,10 @@ export const getCsrfToken = async (): Promise<string | undefined> => {
 
 export const cleanFilters = (filters: Partial<FiltersType>) => {
     return Object.fromEntries(
-        Object.entries(filters).filter(([, value]) => value !== "" && value !== -1)
+        Object.entries(filters).filter(
+            ([, value]) =>
+                value !== "" && value !== -1 && value !== "high" && value !== "fast" // Clean Filters for default values
+        )
     );
 };
 

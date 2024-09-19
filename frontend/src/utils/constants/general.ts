@@ -83,6 +83,7 @@ const MAP_TO_IMAGE: Readonly<{
         logo: "https://i.postimg.cc/Pf2Mkw9B/logo.png",
         wallpaper: "https://i.postimg.cc/nzQPDjfB/BG-Wallpaper.jpg",
         latest: "https://i.postimg.cc/NjWVfjmV/BG-Aegir.webp",
+        latest2: "https://i.postimg.cc/C1XyddJf/BG-Echidna.webp",
         "class-rankings": "https://i.postimg.cc/wTFgvLjr/BG-Aeromancer.webp",
         "party-rankings": "https://i.postimg.cc/d0w2BMY3/BG-Berserker.webp",
     },
