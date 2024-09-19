@@ -2,8 +2,8 @@ export function RecentIcon() {
     return (
         <svg
             fill="currentColor"
-            width="36"
-            height="36"
+            width="32"
+            height="32"
             viewBox="0 0 24 24"
             data-name="24x24/On Light/Recent"
             xmlns="http://www.w3.org/2000/svg">

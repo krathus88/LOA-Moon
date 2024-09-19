@@ -4,7 +4,11 @@ import { NavDropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { LoginIcon } from "../Icons/LoginIcon";
 
-export function UserProfileContainer() {
+type UserProfileContainerProps = {
+    isExpanded: boolean;
+};
+
+export function UserProfileContainer({ isExpanded }: UserProfileContainerProps) {
     const { user, login, logout } = useAuth();
 
     // Check if user is null or undefined
@@ -12,8 +16,9 @@ export function UserProfileContainer() {
         return (
             <a
                 onClick={login}
-                className="d-flex align-items-center justify-content-center nav-link no-link mt-2">
+                className="nav-link py-3 rounded-0 no-link mt-2 hover-pointer">
                 <LoginIcon />
+                {isExpanded && <span className="label-text">Login</span>}
             </a>
         );
     }
@@ -21,13 +26,16 @@ export function UserProfileContainer() {
     return (
         <NavDropdown
             title={
-                <img
-                    src={user?.avatar || MAP_TO_IMAGE_OTHER["default-avatar"]}
-                    alt="mdo"
-                    width="32"
-                    height="32"
-                    className="rounded-circle"
-                />
+                <>
+                    <img
+                        src={user?.avatar || MAP_TO_IMAGE_OTHER["default-avatar"]}
+                        alt="mdo"
+                        width="32"
+                        height="32"
+                        className="rounded-circle"
+                    />
+                    {isExpanded && <span className="label-text">Profile</span>}
+                </>
             }
             id="profile-dropdown"
             align="end">

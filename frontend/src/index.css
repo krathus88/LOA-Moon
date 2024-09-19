@@ -67,6 +67,10 @@ header {
     color: inherit;
 }
 
+.hover-pointer {
+    cursor: pointer;
+}
+
 .hidden {
     display: none;
 }
