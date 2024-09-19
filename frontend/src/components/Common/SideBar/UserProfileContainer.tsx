@@ -38,8 +38,7 @@ export function UserProfileContainer({ isExpanded }: UserProfileContainerProps) 
                 </>
             }
             id="profile-dropdown"
-            align="end"
-            className="py-3">
+            align="end">
             <NavDropdown.Item as={Link} to="/profile">
                 Profile
             </NavDropdown.Item>

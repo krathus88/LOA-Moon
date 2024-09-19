@@ -70,6 +70,8 @@
 #SideNavigationBar #SideBarProfile #profile-dropdown {
     padding-right: 0;
     padding-left: 0.5rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
 }
 
 #SideNavigationBar.expanded #SideBarProfile #profile-dropdown {
