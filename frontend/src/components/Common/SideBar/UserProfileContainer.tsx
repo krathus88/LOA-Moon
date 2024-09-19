@@ -16,7 +16,7 @@ export function UserProfileContainer({ isExpanded }: UserProfileContainerProps) 
         return (
             <a
                 onClick={login}
-                className="nav-link py-3 rounded-0 no-link mt-2 hover-pointer">
+                className="nav-link py-3 ps-2 rounded-0 no-link hover-pointer">
                 <LoginIcon />
                 {isExpanded && <span className="label-text">Login</span>}
             </a>
@@ -38,7 +38,8 @@ export function UserProfileContainer({ isExpanded }: UserProfileContainerProps) 
                 </>
             }
             id="profile-dropdown"
-            align="end">
+            align="end"
+            className="py-3">
             <NavDropdown.Item as={Link} to="/profile">
                 Profile
             </NavDropdown.Item>
