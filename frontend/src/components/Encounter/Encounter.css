@@ -1,0 +1,25 @@
+#ControllersContainer {
+    display: flex;
+}
+
+#EncounterHeader .encounter-info > button,
+#EncounterHeader .encounter-info > h4 {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0rem;
+    margin-top: 0rem;
+}
+#EncounterTable {
+    --bs-table-bg: none;
+    margin-top: 5px;
+}
+
+#EncounterTable > thead {
+    background-color: #282830;
+}
+
+#EncounterTable tr img {
+    width: 25px;
+    height: 25px;
+    margin-right: 0.5rem;
+}
