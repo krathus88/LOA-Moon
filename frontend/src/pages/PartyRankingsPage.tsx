@@ -5,6 +5,7 @@ export function Component() {
         <main>
             <div className="container my-5">
                 <p>Party Rankings</p>
+                <p>Coming soon...</p>
             </div>
         </main>
     );
