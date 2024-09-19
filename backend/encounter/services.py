@@ -3,12 +3,65 @@ import time
 from django.db.models import Q
 from datetime import datetime
 
-from constants.classes import class_name_to_class_id
+from constants.classes import class_name_to_class_id, subclass_to_shortened_subclass
 from constants.encounters import encounter_map
-
+from user.models import Characters
 
 
 # region Raid Summary
+def build_encounter_filter_query(
+    p_name=None,
+    p_class_id=None,
+    p_spec=None,
+    encounter=None,
+    difficulty=None,
+    date_from=None,
+    date_until=None,
+):
+    """
+    Build a Q object for filtering encounters based on provided parameters.
+    """
+    query = Q()
+    # Player
+    if p_name:
+        # Only include encounters where display_name=True for the player
+        query &= Q(players__name__exact=p_name, players__display_name=True)
+    else:
+        # If Player Name NOT defined, apply these filters
+        if p_class_id >= 0:
+            query &= Q(players__class_id__exact=p_class_id)
+        if p_spec:
+            query &= Q(players__subclass__exact=p_spec)
+
+    # Encounter
+    if encounter:
+        boss_key, gate = encounter.split("_", 1)
+        for boss_name, details in encounter_map.items():
+            if (
+                details["gate"].lower() == gate
+                and details["instance"].lower() == boss_key
+            ):
+                query &= Q(boss_name__exact=boss_name)
+                break
+
+    if difficulty:
+        query &= Q(difficulty__icontains=difficulty)
+
+    # Date
+    if date_from:
+        date_obj = datetime.strptime(date_from, "%Y-%m-%d")
+        timestamp = int(time.mktime(date_obj.timetuple()))
+
+        query &= Q(fight_end__gte=timestamp)
+    if date_until:
+        date_obj = datetime.strptime(date_until, "%Y-%m-%d")
+        timestamp = int(time.mktime(date_obj.timetuple()))
+
+        query &= Q(fight_end__lte=timestamp)
+
+    return query
+
+
 def format_raid_summary_data(data):
     formatted_data = []
 
@@ -25,8 +78,7 @@ def format_raid_summary_data(data):
             total_damage += player_entry["dps"]
 
         for player_entry in entry["players"]:
-            if player_entry["is_dead"]:
-                death_count += 1
+            death_count += player_entry["death_count"]
 
             gear_score = player_entry.get("gear_score")
             if gear_score:
@@ -34,13 +86,27 @@ def format_raid_summary_data(data):
                 if gear_score > highest_ilvl:
                     highest_ilvl = gear_score
 
+            """ # Check if the player's name should be displayed
+            try:
+                character = Characters.objects.get(name=player_entry["name"], region=entry["region"])
+                display_name = character.display_name
+            except Characters.DoesNotExist:
+                display_name = False  # Default to False if the character doesn't exist """
+
             # Add player data to the all_players list
             all_players.append(
                 {
-                    "id": player_entry["id"],
-                    "name": player_entry["name"],
+                    "name": (
+                        player_entry["name"] if player_entry["display_name"] else None
+                    ),
                     "class_id": player_entry["class_id"],
-                    "subclass": player_entry["subclass"],
+                    "subclass": (
+                        subclass_to_shortened_subclass.get(
+                            player_entry["subclass"], "N/A"
+                        )
+                        if player_entry["display_name"]
+                        else player_entry["subclass"]
+                    ),
                     "dps": format_damage(player_entry["dps"]),
                     "damage_percentage": (
                         round((player_entry["dps"] / total_damage) * 100, 1)
@@ -49,6 +115,8 @@ def format_raid_summary_data(data):
                     ),
                     "gear_score": player_entry["gear_score"],
                     "is_dead": player_entry["is_dead"],
+                    "death_timer": player_entry["death_timer"],
+                    "death_count": player_entry["death_count"],
                     "party_num": player_entry["party_num"],
                 }
             )
@@ -75,58 +143,6 @@ def format_raid_summary_data(data):
         )
 
     return formatted_data
-
-
-def build_encounter_filter_query(
-    p_name=None,
-    p_class=None,
-    p_spec=None,
-    encounter=None,
-    difficulty=None,
-    date_from=None,
-    date_until=None,
-):
-    """
-    Build a Q object for filtering encounters based on provided parameters.
-    """
-    query = Q()
-    # Player --- Need to fix on frontend. Only yield results for said class
-    #        --- no need for all classes in an encounter, only said class
-    if p_name:
-        query &= Q(players__name__exact=p_name)
-    else:
-        # If Player Name NOT defined, apply these filters
-        if p_class:
-            class_id = class_name_to_class_id.get(p_class)
-            query &= Q(players__class_id__exact=class_id)
-        if p_spec:
-            # Not yet implemented, do nothing for now
-            """ query &= Q(players__subclass__exact=p_spec) """
-
-    # Encounter
-    if encounter:
-        boss_key, gate = encounter.split('_', 1)
-        for boss_name, details in encounter_map.items():
-            if details["gate"].lower() == gate and details["instance"].lower() == boss_key:
-                query &= Q(boss_name__exact=boss_name)
-                break
-
-    if difficulty:
-        query &= Q(difficulty__icontains=difficulty)
-
-    # Date
-    if date_from:
-        date_obj = datetime.strptime(date_from, "%Y-%m-%d")
-        timestamp = int(time.mktime(date_obj.timetuple()))
-
-        query &= Q(fight_end__gte=timestamp)
-    if date_until:
-        date_obj = datetime.strptime(date_until, "%Y-%m-%d")
-        timestamp = int(time.mktime(date_obj.timetuple()))
-
-        query &= Q(fight_end__lte=timestamp)
-
-    return query
 
 
 # endregion

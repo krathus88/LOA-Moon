@@ -21,8 +21,8 @@ class Characters(models.Model):
     )
     region = models.CharField(max_length=10, db_index=True)
     name = models.CharField(max_length=16, db_index=True)
-    display_name = models.BooleanField(default=True)
-    display_logs = models.BooleanField(default=True)
+    class_id = models.IntegerField(db_index=True)
+    display_name = models.BooleanField(default=False)
 
     class Meta:
         constraints = [

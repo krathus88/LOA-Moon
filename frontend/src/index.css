@@ -26,9 +26,11 @@ body {
     font-weight: 500;
     font-style: normal;
     height: 100dvh;
+    width: 100vw;
 }
 
-main {
+main,
+header {
     margin-left: var(--side-navigation-width);
 }
 
@@ -50,6 +52,10 @@ main {
     font-weight: 700;
 }
 
+.no-text-shadow {
+    text-shadow: none;
+}
+
 .not-selectable {
     user-select: none;
     pointer-events: none;
@@ -59,6 +65,10 @@ main {
 .no-link {
     text-decoration: none !important;
     color: inherit;
+}
+
+.hover-pointer {
+    cursor: pointer;
 }
 
 .hidden {
@@ -84,7 +94,8 @@ main {
 }
 
 @media (max-width: 767px) {
-    main {
+    main,
+    header {
         margin-left: 0px;
     }
 }

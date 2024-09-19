@@ -1,20 +1,23 @@
-import { MAP_TO_IMAGE_CLASSES } from "@utils/constants";
+import { MAP_TO_IMAGE_CLASSES } from "@utils/constants/general";
+import { DeathIcon } from "@components/Common/Icons/DeathIcon";
 
 type PlayerProps = {
     iconId: number;
-    engraving: string;
+    subclass: string;
     name: string;
     dps: string;
     dps_percentage: number;
+    is_dead: boolean;
     type: string;
 };
 
 export function Player({
     iconId,
-    engraving,
+    subclass,
     name,
     dps,
     dps_percentage,
+    is_dead,
     type,
 }: PlayerProps) {
     let color = "#5b2128";
@@ -33,9 +36,10 @@ export function Player({
             }}>
             <img src={MAP_TO_IMAGE_CLASSES[iconId]} alt={`Icon ${iconId}`} />
             <small className="name fw-light">
-                {engraving} - {name}
+                <span className="fw-bold">{subclass}</span> {name}
             </small>
             <div className="ms-auto">
+                {is_dead && <DeathIcon />}
                 <small className="dps fw-light">{dps}/s</small>
                 <small className="dps-percentage fw-light">{dps_percentage}%</small>
             </div>

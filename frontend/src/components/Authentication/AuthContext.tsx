@@ -2,11 +2,7 @@ import { getCsrfToken } from "@utils/functions";
 import React, { createContext, ReactNode, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { api } from "../../config/axios";
-
-export type User = {
-    name: string;
-    avatar: string;
-};
+import { User } from "@type/CharactersType";
 
 export type AuthContextType = {
     user: User | null;

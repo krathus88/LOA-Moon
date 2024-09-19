@@ -27,8 +27,10 @@ class EncounterPlayers(models.Model):
     dps = models.IntegerField(db_index=True)
     gear_score = models.FloatField(db_index=True)
     is_dead = models.BooleanField(db_index=True)
+    death_timer = models.IntegerField(db_index=True)
+    death_count = models.IntegerField(db_index=True)
     party_num = models.IntegerField()
-    display_name = models.BooleanField(db_index=True, default=True)
+    display_name = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Encounter: {self.encounter.id} - Player: {self.name}"

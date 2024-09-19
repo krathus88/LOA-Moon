@@ -1,34 +1,41 @@
-import { FiltersType } from "@type/HomePageType";
+import { useCallback, useMemo } from "react";
 import Select, { StylesConfig } from "react-select";
 
 type SpecializationProps = {
-    specializationOptions: { value: string; label: string }[];
-    filters: FiltersType;
+    specializationGroups: {
+        label: string;
+        options: { value: string; label: string }[];
+    }[];
     selectStyle: StylesConfig;
-    setFilters: React.Dispatch<React.SetStateAction<FiltersType>>;
+    value: string | null;
+    onChange: (fieldName: string, newValue: string) => void;
 };
 
 export function Specialization({
-    specializationOptions,
-    filters,
+    specializationGroups,
     selectStyle,
-    setFilters,
+    value,
+    onChange,
 }: SpecializationProps) {
-    const handleSpecChange = (selectedOption: { value: string }) => {
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            p_spec: selectedOption?.value || "",
-        }));
-    };
-
-    const specializationSelectValue = specializationOptions.find(
-        (option) => option.value === filters.p_spec
+    const handleSpecChange = useCallback(
+        (selectedOption: { value: string } | null) => {
+            onChange("p_spec", selectedOption ? selectedOption.value : "");
+        },
+        [onChange]
     );
+
+    const specializationSelectValue = useMemo(() => {
+        return (
+            specializationGroups
+                .flatMap((group) => group.options)
+                .find((option) => option.value === value) || null
+        );
+    }, [specializationGroups, value]);
 
     return (
         <Select
             id="SpecSelect"
-            options={specializationOptions}
+            options={specializationGroups}
             onChange={(selectedOption) =>
                 handleSpecChange(selectedOption as { value: string })
             }

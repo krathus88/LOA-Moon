@@ -1,12 +1,8 @@
-import os
-import json
-
 from ninja import Router
 from django.db import IntegrityError
 from django.http import HttpResponse
 from django.db.models import Q
 from django.views.decorators.csrf import csrf_exempt
-from django.core.files.storage import default_storage
 
 from authentication.services import TokenAuth
 from encounter.models import Encounter, EncounterPlayers, EncounterPlayerData
@@ -34,8 +30,9 @@ def upload_log(request):
 
     for i, entry in enumerate(parsed_encounter_preview_data):
         fight_end_time = entry["fight_end"]
-        time_range_start = fight_end_time - 30  # seconds before
-        time_range_end = fight_end_time + 30  # seconds after
+
+        time_range_start = fight_end_time - 180  # seconds before
+        time_range_end = fight_end_time + 180  # seconds after
 
         # Find potential matches within the time range
         potential_matches = Encounter.objects.filter(
@@ -93,7 +90,10 @@ def upload_log(request):
                     dps=player_entry["dps"],
                     gear_score=player_entry["gear_score"],
                     is_dead=player_entry["is_dead"],
+                    death_timer=player_entry["death_timer"],
+                    death_count=player_entry["death_count"],
                     party_num=player_entry["party_num"],
+                    display_name=player_entry["display_name"],
                 )
 
             except IntegrityError:

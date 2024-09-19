@@ -1,15 +1,15 @@
 import { Loading } from "@components/Common/Loading";
+import { api } from "@config/axios";
 import { FiltersType, RaidSummaryType } from "@type/HomePageType";
-import { useEffect, useRef, useState } from "react";
+import { toQueryString } from "@utils/functions";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { RaidSummary } from "./RaidSummary";
 import "./RaidSummary.css";
-import { toQueryString } from "@utils/functions";
-import { api } from "@config/axios";
-import { useCallback } from "react";
 
 type RaidSummaryContainerProps = {
-    filters: FiltersType;
+    filters: Partial<FiltersType>;
     isLoading: boolean;
+    hasError: boolean;
     data: RaidSummaryType[];
     dataLength: number;
     displayedData: RaidSummaryType[];
@@ -28,6 +28,7 @@ type RaidSummaryContainerProps = {
 export function RaidSummaryContainer({
     filters,
     isLoading,
+    hasError,
     data,
     dataLength,
     displayedData,
@@ -38,84 +39,52 @@ export function RaidSummaryContainer({
     setDisplayedData,
     setNoResults,
 }: RaidSummaryContainerProps) {
-    const [page, setPage] = useState(1);
+    const [page, setPage] = useState(2);
     const observer = useRef<IntersectionObserver | null>(null);
 
-    const fetchDataFromAPI = useCallback(
-        async (page: number = 1): Promise<RaidSummaryType[]> => {
-            try {
-                const queryString = filters ? `&${toQueryString(filters)}` : "";
-
-                const result = await api.get(`/encounter/?page=${page}${queryString}`);
-                return result.data;
-            } catch {
-                return [];
-            }
-        },
-        [filters]
-    );
-
+    // Load more data after all data retrieved from the backend is shown
     const loadMoreData = useCallback(async () => {
         if (!noResults && !isLoading && dataLength == displayedData.length) {
-            const result = await fetchDataFromAPI(page);
+            try {
+                const queryString = filters ? `&${toQueryString(filters)}` : "";
+                const result = await api.get(`/encounter/?page=${page}${queryString}`);
 
-            if (result.length == 0) {
+                const newData = result.data;
+
+                // If no more data was sent
+                if (newData.length == 0) {
+                    setNoResults(true);
+                    setIsLoading(false);
+                    return;
+                }
+
+                // Update state with new data
+                setDataLength((prevDataLength) => prevDataLength + newData.length);
+                setData([...data, ...newData]);
+                setPage(page + 1);
+            } catch {
                 setNoResults(true);
-                setIsLoading(false);
-
-                return;
             }
-            setDataLength((prevDataLength) => prevDataLength + result.length);
-            setData([...data, ...result]);
-            setPage(page + 1);
         }
 
+        // Update displayed data
         const nextBatch = data.slice(displayedData.length, displayedData.length + 5);
         setDisplayedData((prevDisplayedData) => [...prevDisplayedData, ...nextBatch]);
 
         setIsLoading(false);
     }, [
+        filters,
         dataLength,
         isLoading,
         displayedData,
         page,
         data,
         noResults,
-        fetchDataFromAPI,
         setData,
         setDataLength,
         setDisplayedData,
         setNoResults,
         setIsLoading,
-    ]);
-
-    useEffect(() => {
-        const fetchDataAsync = async () => {
-            setIsLoading(true);
-
-            const result = await fetchDataFromAPI();
-
-            if (result.length <= 0) {
-                setNoResults(true);
-                setIsLoading(false);
-                return;
-            }
-
-            setData(result);
-            setDisplayedData(result.slice(0, 10));
-            setIsLoading(false);
-            setDataLength(result.length);
-            setPage(2);
-        };
-
-        fetchDataAsync();
-    }, [
-        fetchDataFromAPI,
-        setData,
-        setDataLength,
-        setDisplayedData,
-        setIsLoading,
-        setNoResults,
     ]);
 
     /* Intersection Observer */
@@ -127,6 +96,7 @@ export function RaidSummaryContainer({
         observer.current = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting && !isLoading) {
+                    setIsLoading(true);
                     loadMoreData();
                 }
             },
@@ -141,7 +111,7 @@ export function RaidSummaryContainer({
                 observer.current.disconnect();
             }
         };
-    }, [isLoading, noResults, setNoResults, loadMoreData]);
+    }, [isLoading, noResults, setIsLoading, setNoResults, loadMoreData]);
 
     if (isLoading && data.length <= 0 && displayedData.length <= 0) return <Loading />;
 
@@ -167,12 +137,18 @@ export function RaidSummaryContainer({
                     />
                 </li>
             ))}
-            {isLoading && data.length >= 0 && displayedData.length >= 0 && (
+            {isLoading && displayedData.length >= 0 && (
                 <li>
                     <Loading />
                 </li>
             )}
-            {noResults && <li className="text-center">No more data to show.</li>}
+            {hasError ? (
+                <li className="text-center">
+                    Oops! An error occurred while fetching data.
+                </li>
+            ) : (
+                noResults && <li className="text-center">No more data to show.</li>
+            )}
             <div id="scrollTarget"></div>
         </>
     );

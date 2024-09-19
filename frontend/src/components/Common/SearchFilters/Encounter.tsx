@@ -1,24 +1,28 @@
-import { FiltersType } from "@type/HomePageType";
+import { ENCOUNTER_GROUPS } from "@utils/constants/encounters";
+import { useCallback, useMemo } from "react";
 import Select, { StylesConfig } from "react-select";
-import { ENCOUNTER_GROUPS } from "@utils/constants";
 
 type EncounterProps = {
-    filters: FiltersType;
     selectStyle: StylesConfig;
-    setFilters: React.Dispatch<React.SetStateAction<FiltersType>>;
+    value: string | null;
+    onChange: (fieldName: string, newValue: string) => void;
 };
 
-export function Encounter({ filters, selectStyle, setFilters }: EncounterProps) {
-    const handleEncounterChange = (selectedOption: { value: string }) => {
-        setFilters((prevFilters) => ({
-            ...prevFilters,
-            encounter: selectedOption?.value || "",
-        }));
-    };
+export function Encounter({ selectStyle, value, onChange }: EncounterProps) {
+    const handleEncounterChange = useCallback(
+        (selectedOption: { value: string } | null) => {
+            onChange("encounter", selectedOption ? selectedOption.value : "");
+        },
+        [onChange]
+    );
 
-    const encounterSelectValue = ENCOUNTER_GROUPS.flatMap(
-        (group) => group.options
-    ).find((option) => option.value === filters.encounter);
+    const encounterSelectValue = useMemo(() => {
+        return (
+            ENCOUNTER_GROUPS.flatMap((group) => group.options).find(
+                (option) => option.value === value
+            ) || null
+        );
+    }, [value]);
 
     return (
         <Select

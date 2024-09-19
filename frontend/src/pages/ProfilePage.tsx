@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { CharacterManager } from "@components/Profile/CharacterManager/CharacterManager";
 
 export function Component() {
-    const { fetchUser, loading } = useAuth();
+    const { user, setUser, fetchUser, loading } = useAuth();
     const [hasFetchedUser, setHasFetchedUser] = useState(false);
 
     useEffect(() => {
@@ -26,10 +26,17 @@ export function Component() {
     if (!hasFetchedUser) return <Loading />;
 
     return (
-        <main>
-            <div className="container my-5">
-                <AccessToken />
-                <CharacterManager />
+        <main id="Profile">
+            <div className="container-lg container-fluid my-5">
+                {user && (
+                    <>
+                        <AccessToken />
+                        <CharacterManager
+                            characters={user.characters}
+                            setUser={setUser}
+                        />
+                    </>
+                )}
             </div>
         </main>
     );
