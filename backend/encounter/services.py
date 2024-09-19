@@ -10,6 +10,7 @@ from user.models import Characters
 
 # region Raid Summary
 def build_encounter_filter_query(
+    source=None,
     p_name=None,
     p_class_id=None,
     p_spec=None,
@@ -17,6 +18,7 @@ def build_encounter_filter_query(
     difficulty=None,
     date_from=None,
     date_until=None,
+    order_by=None,
 ):
     """
     Build a Q object for filtering encounters based on provided parameters.
@@ -59,7 +61,20 @@ def build_encounter_filter_query(
 
         query &= Q(fight_end__lte=timestamp)
 
-    return query
+    # Setup Ordering
+    ordering = "-fight_end"  # Default ordering
+
+    # Adjust ordering based on source
+    if source == "p-party":
+        ordering = "fight_duration"  # Lowest Time
+        if order_by == "slow":
+            ordering = "-fight_duration"  # Highest Time
+    elif source == "p-class":
+        ordering = "-max_dps"  # Highest DPS
+        if order_by == "low":
+            ordering = "max_dps"  # Lowest DPS
+
+    return query, ordering
 
 
 def format_raid_summary_data(data):

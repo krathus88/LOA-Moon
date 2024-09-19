@@ -3,10 +3,11 @@ import { api } from "@config/axios";
 import { FiltersType, RaidSummaryType } from "@type/HomePageType";
 import { toQueryString } from "@utils/functions";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { RaidSummary } from "./RaidSummary";
-import "./RaidSummary.css";
+import { PartySummary } from "./PartySummary";
+import "./PartySummary.css";
 
-type RaidSummaryContainerProps = {
+type PartySummaryContainerProps = {
+    source: string;
     filters: Partial<FiltersType>;
     isLoading: boolean;
     hasError: boolean;
@@ -25,7 +26,8 @@ type RaidSummaryContainerProps = {
     setNoResults: (noResults: boolean) => void;
 };
 
-export function RaidSummaryContainer({
+export function PartySummaryContainer({
+    source,
     filters,
     isLoading,
     hasError,
@@ -38,7 +40,7 @@ export function RaidSummaryContainer({
     setDataLength,
     setDisplayedData,
     setNoResults,
-}: RaidSummaryContainerProps) {
+}: PartySummaryContainerProps) {
     const [page, setPage] = useState(2);
     const observer = useRef<IntersectionObserver | null>(null);
 
@@ -47,7 +49,9 @@ export function RaidSummaryContainer({
         if (!noResults && !isLoading && dataLength == displayedData.length) {
             try {
                 const queryString = filters ? `&${toQueryString(filters)}` : "";
-                const result = await api.get(`/encounter/?page=${page}${queryString}`);
+                const result = await api.get(
+                    `/encounter/?page=${page}${queryString}&source=${source}`
+                );
 
                 const newData = result.data;
 
@@ -73,6 +77,7 @@ export function RaidSummaryContainer({
 
         setIsLoading(false);
     }, [
+        source,
         filters,
         dataLength,
         isLoading,
@@ -122,7 +127,7 @@ export function RaidSummaryContainer({
         <>
             {displayedData.map((entry) => (
                 <li key={entry.encounter_id}>
-                    <RaidSummary
+                    <PartySummary
                         encounter_id={entry.encounter_id}
                         instance_name={entry.instance_name}
                         gate={entry.gate}

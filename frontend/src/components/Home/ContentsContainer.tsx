@@ -1,7 +1,7 @@
-import { Contents } from "./Contents";
 import { MAP_TO_IMAGE_OTHER } from "@utils/constants/general";
-import { LatestBackground } from "./LatestBackground";
 import { ClassBackground } from "./ClassBackground";
+import { Contents } from "./Contents";
+import { LatestBackground2 } from "./LatestBackground2";
 import { PartyBackground } from "./PartyBackground";
 
 export function ContentsContainer() {
@@ -10,8 +10,8 @@ export function ContentsContainer() {
             <Contents
                 label="Recent Uploads"
                 url="/latest"
-                imgUrl={MAP_TO_IMAGE_OTHER["latest"]}>
-                <LatestBackground />
+                imgUrl={MAP_TO_IMAGE_OTHER["latest2"]}>
+                <LatestBackground2 />
             </Contents>
             <Contents
                 label="Class Rankings"

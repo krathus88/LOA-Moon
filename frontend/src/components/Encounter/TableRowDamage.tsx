@@ -1,4 +1,4 @@
-import { MAP_TO_IMAGE_CLASSES } from "@utils/constants";
+import { MAP_TO_IMAGE_CLASSES } from "@utils/constants/general";
 
 type TableRowProps = {
     iconId: number;

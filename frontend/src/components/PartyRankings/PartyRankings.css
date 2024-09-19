@@ -1,0 +1,13 @@
+#RaidPartyContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2.25rem;
+}
+
+@media (max-width: 1500px) {
+    #RaidPartyContainer {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}

@@ -33,4 +33,5 @@ export type FiltersType = {
     difficulty: string;
     date_from: string;
     date_until: string;
+    order_by: string;
 };

@@ -1,18 +1,13 @@
+import { Button } from "@mui/material";
 import { FiltersType } from "@type/HomePageType";
 import { CLASS_ID_TO_CLASS_NAME, SUBCLASS_GROUPS } from "@utils/constants/classes";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import Accordion from "react-bootstrap/Accordion";
 import { useLocation } from "react-router-dom";
 import { StylesConfig } from "react-select";
-import { Class } from "./Class";
-import { Date } from "./Date";
-import { Difficulty } from "./Difficulty";
-import { Encounter } from "./Encounter";
-import { PlayerName } from "./PlayerName";
+import { ClassFiltersContainer } from "./ClassFiltersContainer";
+import { LatestFiltersContainer } from "./LatestFiltersContainer";
+import { PartyFiltersContainer } from "./PartyFiltersContainer";
 import "./SearchFilters.css";
-import { Specialization } from "./Specialization";
-import { ExpandToggle } from "./ExpandToggle";
-import { DoubleArrowDown } from "@icons/DoubleArrowDown";
 
 const SelectStyle: StylesConfig = {
     control: (base, state) => ({
@@ -72,13 +67,19 @@ const SelectStyle: StylesConfig = {
 };
 
 type SearchFiltersContainerProps = {
-    containerClassName: string;
+    source: "p-latest" | "p-party" | "p-class";
+    defaultEncounter: string;
+    defaultDifficulty: string;
+    defaultOrderBy: string;
     isLoading: boolean;
     onSubmit: (filters: Partial<FiltersType>) => void;
 };
 
 export function SearchFiltersContainer({
-    containerClassName,
+    source,
+    defaultEncounter,
+    defaultDifficulty,
+    defaultOrderBy,
     isLoading,
     onSubmit,
 }: SearchFiltersContainerProps) {
@@ -88,30 +89,33 @@ export function SearchFiltersContainer({
         p_name: "",
         p_class_id: -1,
         p_spec: "",
-        encounter: "",
-        difficulty: "",
+        encounter: defaultEncounter,
+        difficulty: defaultDifficulty,
         date_from: "",
         date_until: "",
+        order_by: defaultOrderBy,
     });
     const [specializationGroups, setSpecializationGroups] = useState(SUBCLASS_GROUPS);
 
-    // Parse query parameters from the URL
+    // Refreshing Page or navigating to page
     useEffect(() => {
+        // Parse query parameters from the URL
         const queryParams = new URLSearchParams(location.search);
 
         const filters: FiltersType = {
             p_name: queryParams.get("p_name") || "",
             p_class_id: parseInt(queryParams.get("p_class_id") || "-1"),
             p_spec: queryParams.get("p_spec") || "",
-            encounter: queryParams.get("encounter") || "",
-            difficulty: queryParams.get("difficulty") || "",
+            encounter: queryParams.get("encounter") || defaultEncounter,
+            difficulty: queryParams.get("difficulty") || defaultDifficulty,
             date_from: queryParams.get("date_from") || "",
             date_until: queryParams.get("date_until") || "",
+            order_by: queryParams.get("order_by") || defaultOrderBy,
         };
 
         // Update state with validated filters
         setFormFilters(filters);
-    }, [location.search]);
+    }, [location.search, defaultOrderBy, defaultEncounter, defaultDifficulty]);
 
     const memoizedSpecializationGroups = useMemo(() => {
         if (!formFilters.p_class_id) return SUBCLASS_GROUPS;
@@ -148,73 +152,36 @@ export function SearchFiltersContainer({
 
     return (
         <form
-            className={`form-label m-1 ${containerClassName}`}
+            className={`form-label m-1 ${source}`}
             id="FilterContainer"
             onSubmit={handleSubmit}>
-            <div id="FilterPlayers">
-                <PlayerName value={formFilters.p_name} onChange={handleFilterChange} />
-                <Class
-                    selectStyle={SelectStyle}
-                    value={formFilters.p_class_id}
-                    onChange={handleFilterChange}
-                />
-                <Specialization
+            {source === "p-latest" && (
+                <LatestFiltersContainer
+                    formFilters={formFilters}
+                    SelectStyle={SelectStyle}
                     specializationGroups={specializationGroups}
-                    selectStyle={SelectStyle}
-                    value={formFilters.p_spec}
-                    onChange={handleFilterChange}
+                    handleFilterChange={handleFilterChange}
                 />
-            </div>
-            <Accordion alwaysOpen>
-                <ExpandToggle eventKey="0">
-                    Extra Filters <DoubleArrowDown />
-                </ExpandToggle>
-                <Accordion.Collapse eventKey="0">
-                    <div>
-                        <div id="FilterEncounters">
-                            <Encounter
-                                selectStyle={SelectStyle}
-                                value={formFilters.encounter}
-                                onChange={handleFilterChange}
-                            />
-                            <Difficulty
-                                selectStyle={SelectStyle}
-                                value={formFilters.difficulty}
-                                onChange={handleFilterChange}
-                            />
-                        </div>
-                        <div id="FilterDates">
-                            <Date
-                                label="From"
-                                type="date_from"
-                                value={formFilters.date_from}
-                                onChange={handleFilterChange}
-                            />
-                            <Date
-                                label="To"
-                                type="date_until"
-                                value={formFilters.date_until}
-                                onChange={handleFilterChange}
-                            />
-                        </div>
-                        <div id="ToggleAdvancedFilters">
-                            <ExpandToggle eventKey="1">
-                                Advanced Filters <DoubleArrowDown />
-                            </ExpandToggle>
-                            <Accordion.Collapse eventKey="1">
-                                <div>Hello</div>
-                            </Accordion.Collapse>
-                        </div>
-                    </div>
-                </Accordion.Collapse>
-            </Accordion>
+            )}
+            {source === "p-class" && (
+                <ClassFiltersContainer
+                    formFilters={formFilters}
+                    SelectStyle={SelectStyle}
+                    specializationGroups={specializationGroups}
+                    handleFilterChange={handleFilterChange}
+                />
+            )}
+            {source === "p-party" && (
+                <PartyFiltersContainer
+                    formFilters={formFilters}
+                    SelectStyle={SelectStyle}
+                    handleFilterChange={handleFilterChange}
+                />
+            )}
             <div className="apply-filters-container mt-2">
-                <button
-                    type="submit"
-                    className="btn btn-secondary"
-                    disabled={isLoading}>
+                <Button variant="contained" type="submit" disabled={isLoading}>
                     Apply Filters
-                </button>
+                </Button>
             </div>
         </form>
     );
