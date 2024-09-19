@@ -29,7 +29,7 @@ export function Component() {
                 </div>
                 <Button
                     component="a"
-                    href="https://github.com/krathus88/loa-logs/releases/tag/Latest"
+                    href="https://github.com/krathus88/loa-logs/releases"
                     target="_blank"
                     rel="noopener noreferrer"
                     variant="contained">
