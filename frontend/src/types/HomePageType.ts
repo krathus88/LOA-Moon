@@ -1,14 +1,17 @@
 export type PlayerDataType = {
-    name: string;
+    name: string | null;
     class_id: number;
     subclass: string;
+    s_subclass: string | null;
     dps: string;
+    dps_raw: number;
     damage_percentage: number;
     gear_score: number;
     is_dead: boolean;
     death_timer: number;
     death_count: number;
     party_num: number;
+    flagged: boolean;
 };
 
 export type RaidSummaryType = {
@@ -35,3 +38,5 @@ export type FiltersType = {
     date_until: string;
     order_by: string;
 };
+
+export type FiltersSourceType = "p-latest" | "p-class" | "p-party";

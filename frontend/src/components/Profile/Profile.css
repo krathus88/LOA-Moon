@@ -56,7 +56,6 @@
 #CharacterManager table tbody tr td {
     padding: 0.4rem 0.5rem;
     overflow: hidden;
-    vertical-align: middle;
 }
 
 #CharacterManager table tbody {

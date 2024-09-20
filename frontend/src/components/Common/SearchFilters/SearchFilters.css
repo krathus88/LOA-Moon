@@ -100,12 +100,12 @@
     background-color: rgb(221, 128, 80, 0.8);
 }
 
-@media (min-width: 1501px) {
+/* @media (min-width: 1501px) {
     #FilterContainer {
         flex: 1 0 auto;
         width: 20%;
     }
-}
+} */
 
 @media (max-width: 1500px) {
     #FilterContainer {

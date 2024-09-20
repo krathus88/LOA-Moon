@@ -2,10 +2,11 @@ import { PlayerDataType } from "@type/HomePageType";
 import { MAP_TO_IMAGE_RAIDS } from "@utils/constants/general";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { PartyInfo } from "./PartyInfo";
-import { PartyPlayerData } from "./PartyPlayerData";
+import { ClassInfo } from "./ClassInfo";
+import { ClassPlayerData } from "./ClassPlayerData";
 
-type PartySummaryProps = {
+type ClassSummaryProps = {
+    position: number;
     encounter_id: number;
     instance_name: string;
     gate: string;
@@ -16,10 +17,11 @@ type PartySummaryProps = {
     avg_ilvl: number;
     highest_ilvl: number;
     death_count: number;
-    player_data: PlayerDataType[];
+    player_data: PlayerDataType;
 };
 
-export function PartySummary({
+export function ClassSummary({
+    position,
     encounter_id,
     instance_name,
     gate,
@@ -31,19 +33,16 @@ export function PartySummary({
     highest_ilvl,
     death_count,
     player_data,
-}: PartySummaryProps) {
-    const [isHeightLarge, setIsHeightLarge] = useState(false);
+}: ClassSummaryProps) {
+    const isHeightLarge = false;
     const [isWidthLarge, setIsWidthLarge] = useState(true);
     const raidSummaryRef = useRef<HTMLAnchorElement | null>(null);
 
     useEffect(() => {
         const checkHeight = () => {
             if (raidSummaryRef.current) {
-                const height = raidSummaryRef.current.clientHeight;
-                setIsHeightLarge(height > 250);
-
                 const width = raidSummaryRef.current.clientWidth;
-                setIsWidthLarge(width >= 647);
+                setIsWidthLarge(width >= 569);
             }
         };
 
@@ -58,7 +57,7 @@ export function PartySummary({
 
     return (
         <Link
-            className="raid-summary pb-1 shadow rounded-3 no-link"
+            className="c-raid-summary pb-1 shadow rounded-3 no-link"
             to={`/encounter/${encounter_id}`}
             ref={raidSummaryRef}>
             {/* Raid Wallpaper */}
@@ -67,7 +66,7 @@ export function PartySummary({
                 alt=""
                 className="raid-summary-background"
             />
-            <PartyInfo
+            <ClassInfo
                 isHeightLarge={isHeightLarge}
                 isWidthLarge={isWidthLarge}
                 instance_name={instance_name}
@@ -80,7 +79,8 @@ export function PartySummary({
                 highest_ilvl={highest_ilvl}
                 max_boss_hp={max_boss_hp}
             />
-            <PartyPlayerData
+            <ClassPlayerData
+                position={position}
                 isHeightLarge={isHeightLarge}
                 max_boss_hp={max_boss_hp}
                 avg_ilvl={avg_ilvl}

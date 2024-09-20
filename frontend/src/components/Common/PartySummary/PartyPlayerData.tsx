@@ -1,4 +1,4 @@
-import { Player } from "./Player";
+import { PartyPlayer } from "./PartyPlayer";
 import { chunkArrayIntoParties } from "@utils/functions";
 import { getPlayerType } from "@utils/functions";
 import { PlayerDataType } from "@type/HomePageType";
@@ -6,7 +6,7 @@ import { BossHpIcon } from "@components/Common/Icons/BossHpIcon";
 import { GearIcon } from "@components/Common/Icons/GearIcon";
 import { DeathIcon } from "@components/Common/Icons/DeathIcon";
 
-type PlayerDataProps = {
+type PartyPlayerDataProps = {
     isHeightLarge: boolean;
     max_boss_hp: string;
     avg_ilvl: number;
@@ -15,14 +15,14 @@ type PlayerDataProps = {
     player_data: PlayerDataType[];
 };
 
-export function PlayerData({
+export function PartyPlayerData({
     isHeightLarge,
     max_boss_hp,
     avg_ilvl,
     highest_ilvl,
     death_count,
     player_data,
-}: PlayerDataProps) {
+}: PartyPlayerDataProps) {
     const playerChunks = chunkArrayIntoParties(player_data, 4);
 
     return (
@@ -52,10 +52,11 @@ export function PlayerData({
                 {playerChunks.map((chunk, index) => (
                     <ul key={index}>
                         {chunk.map((player, playerIndex) => (
-                            <Player
+                            <PartyPlayer
                                 key={playerIndex}
                                 iconId={player.class_id}
                                 subclass={player.subclass}
+                                s_subclass={player.s_subclass}
                                 name={player.name}
                                 dps={player.dps}
                                 dps_percentage={player.damage_percentage}

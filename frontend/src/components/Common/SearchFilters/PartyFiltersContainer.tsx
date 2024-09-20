@@ -7,14 +7,17 @@ import { Difficulty } from "./Difficulty";
 import { Encounter } from "./Encounter";
 import { ExpandToggle } from "./ExpandToggle";
 import { OrderBy } from "./OrderBy";
+import { FiltersSourceType } from "@type/HomePageType";
 
 type PartyFiltersContainerProps = {
+    source: FiltersSourceType;
     formFilters: FiltersType;
     SelectStyle: StylesConfig;
     handleFilterChange: (fieldName: string, newValue: string | number) => void;
 };
 
 export function PartyFiltersContainer({
+    source,
     formFilters,
     SelectStyle,
     handleFilterChange,
@@ -23,11 +26,13 @@ export function PartyFiltersContainer({
         <div id="PartyFilters">
             <div id="FilterEncounters">
                 <Encounter
+                    source={source}
                     selectStyle={SelectStyle}
                     value={formFilters.encounter}
                     onChange={handleFilterChange}
                 />
                 <Difficulty
+                    source={source}
                     selectStyle={SelectStyle}
                     value={formFilters.difficulty}
                     onChange={handleFilterChange}

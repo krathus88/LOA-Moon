@@ -229,17 +229,17 @@ encounter_map = {
     },
     ### Guardian Raids
     "Achates": {
-        "gate": None,
+        "gate": "",
         "instance": "Achates",
         "difficulty": ["Trial"],
     },
     "Caliligos": {
-        "gate": None,
+        "gate": "",
         "instance": "Caliligos",
         "difficulty": ["Trial"],
     },
     "Hanumatan": {
-        "gate": None,
+        "gate": "",
         "instance": "Hanumatan",
         "difficulty": ["Trial"],
     },

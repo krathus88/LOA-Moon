@@ -9,14 +9,14 @@ import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ENCOUNTER_GROUPS } from "@utils/constants/encounters";
 
+const source = "p-party";
+const defaultEncounter = ENCOUNTER_GROUPS[0].options[0].value;
+const defaultDifficulty = "Normal";
+const defaultOrderBy = "fast";
+
 export function Component() {
     const navigate = useNavigate();
     const location = useLocation();
-
-    const source = "p-party";
-    const defaultEncounter = ENCOUNTER_GROUPS[0].options[0].value;
-    const defaultDifficulty = "Normal";
-    const defaultOrderBy = "fast";
 
     const [data, setData] = useState<RaidSummaryType[]>([]); // Fetched Data
     const [dataLength, setDataLength] = useState<number>(0); // Fetched Data Length (handles reloads)
@@ -65,7 +65,7 @@ export function Component() {
         };
 
         fetchData();
-    }, [location.search, defaultEncounter]);
+    }, [location.search]);
 
     // Handles Filter Submission
     const onFilterSubmit = useCallback(

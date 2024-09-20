@@ -3,10 +3,10 @@ import { api } from "@config/axios";
 import { FiltersType, RaidSummaryType } from "@type/HomePageType";
 import { toQueryString } from "@utils/functions";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { PartySummary } from "./PartySummary";
-import "./PartySummary.css";
+import { ClassSummary } from "./ClassSummary";
+import "./ClassSummary.css";
 
-type PartySummaryContainerProps = {
+type ClassSummaryContainerProps = {
     source: string;
     filters: Partial<FiltersType>;
     isLoading: boolean;
@@ -26,7 +26,7 @@ type PartySummaryContainerProps = {
     setNoResults: (noResults: boolean) => void;
 };
 
-export function PartySummaryContainer({
+export function ClassSummaryContainer({
     source,
     filters,
     isLoading,
@@ -40,7 +40,7 @@ export function PartySummaryContainer({
     setDataLength,
     setDisplayedData,
     setNoResults,
-}: PartySummaryContainerProps) {
+}: ClassSummaryContainerProps) {
     const [page, setPage] = useState(2);
     const observer = useRef<IntersectionObserver | null>(null);
 
@@ -125,23 +125,36 @@ export function PartySummaryContainer({
 
     return (
         <>
-            {displayedData.map((entry, index) => (
-                <li key={`g${index + 1}_${entry.encounter_id}`}>
-                    <PartySummary
-                        encounter_id={entry.encounter_id}
-                        instance_name={entry.instance_name}
-                        gate={entry.gate}
-                        difficulty={entry.difficulty}
-                        clear_time={entry.clear_time}
-                        fight_end_time={entry.fight_end}
-                        max_boss_hp={entry.max_boss_hp}
-                        avg_ilvl={entry.avg_ilvl}
-                        highest_ilvl={entry.highest_ilvl}
-                        death_count={entry.death_count}
-                        player_data={entry.player_data}
-                    />
-                </li>
-            ))}
+            {displayedData.map((entry, index) => {
+                const flaggedPlayer = entry.player_data.find(
+                    (player) => player.flagged
+                );
+                return (
+                    flaggedPlayer && (
+                        <li
+                            key={`c${index + 1}_${entry.encounter_id}_${
+                                flaggedPlayer.dps
+                            }_${flaggedPlayer.class_id}_${flaggedPlayer.subclass}_${
+                                flaggedPlayer.name
+                            }`}>
+                            <ClassSummary
+                                position={index}
+                                encounter_id={entry.encounter_id}
+                                instance_name={entry.instance_name}
+                                gate={entry.gate}
+                                difficulty={entry.difficulty}
+                                clear_time={entry.clear_time}
+                                fight_end_time={entry.fight_end}
+                                max_boss_hp={entry.max_boss_hp}
+                                avg_ilvl={entry.avg_ilvl}
+                                highest_ilvl={entry.highest_ilvl}
+                                death_count={entry.death_count}
+                                player_data={flaggedPlayer}
+                            />
+                        </li>
+                    )
+                );
+            })}
             {isLoading && displayedData.length >= 0 && (
                 <li>
                     <Loading />
