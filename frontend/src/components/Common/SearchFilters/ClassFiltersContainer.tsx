@@ -10,6 +10,7 @@ import { OrderBy } from "./OrderBy";
 import { PlayerName } from "./PlayerName";
 import { Class } from "./Class";
 import { Specialization } from "./Specialization";
+import { FiltersSourceType } from "@type/HomePageType";
 
 type SpecializationGroupsType = {
     label: string;
@@ -20,6 +21,7 @@ type SpecializationGroupsType = {
 };
 
 type ClassFiltersContainerProps = {
+    source: FiltersSourceType;
     formFilters: FiltersType;
     SelectStyle: StylesConfig;
     specializationGroups: SpecializationGroupsType[];
@@ -27,6 +29,7 @@ type ClassFiltersContainerProps = {
 };
 
 export function ClassFiltersContainer({
+    source,
     formFilters,
     SelectStyle,
     specializationGroups,
@@ -51,11 +54,13 @@ export function ClassFiltersContainer({
             <div id="ExtraFilters">
                 <div id="FilterEncounters">
                     <Encounter
+                        source={source}
                         selectStyle={SelectStyle}
                         value={formFilters.encounter}
                         onChange={handleFilterChange}
                     />
                     <Difficulty
+                        source={source}
                         selectStyle={SelectStyle}
                         value={formFilters.difficulty}
                         onChange={handleFilterChange}

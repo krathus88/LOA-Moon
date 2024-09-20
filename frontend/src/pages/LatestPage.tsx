@@ -8,14 +8,14 @@ import { cleanFilters, toQueryString } from "@utils/functions";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+const source = "p-latest";
+const defaultEncounter = "";
+const defaultDifficulty = "";
+const defaultOrderBy = "";
+
 export function Component() {
     const navigate = useNavigate();
     const location = useLocation();
-
-    const source = "p-latest";
-    const defaultEncounter = "";
-    const defaultDifficulty = "";
-    const defaultOrderBy = "";
 
     const [data, setData] = useState<RaidSummaryType[]>([]); // Fetched Data
     const [dataLength, setDataLength] = useState<number>(0); // Fetched Data Length (handles reloads)

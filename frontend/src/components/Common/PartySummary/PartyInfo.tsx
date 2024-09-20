@@ -3,7 +3,7 @@ import { DeathIcon } from "@components/Common/Icons/DeathIcon";
 import { GearIcon } from "@components/Common/Icons/GearIcon";
 import { BossHpIcon } from "@components/Common/Icons/BossHpIcon";
 
-type InfoProps = {
+type PartyInfoProps = {
     isHeightLarge: boolean;
     isWidthLarge: boolean;
     instance_name: string;
@@ -17,7 +17,7 @@ type InfoProps = {
     max_boss_hp: string;
 };
 
-export function Info({
+export function PartyInfo({
     isHeightLarge,
     isWidthLarge,
     instance_name,
@@ -29,7 +29,7 @@ export function Info({
     avg_ilvl,
     highest_ilvl,
     max_boss_hp,
-}: InfoProps) {
+}: PartyInfoProps) {
     const difficultyColor =
         DIFFICULTY_COLOR_MAP.get(difficulty) || "rgb(222, 226, 230)"; // Default to white if not found
 

@@ -14,7 +14,7 @@ def build_encounter_filter_query(
     p_name=None,
     p_class_id=None,
     p_spec=None,
-    encounter=None,
+    boss_name=None,
     difficulty=None,
     date_from=None,
     date_until=None,
@@ -24,55 +24,75 @@ def build_encounter_filter_query(
     Build a Q object for filtering encounters based on provided parameters.
     """
     query = Q()
-    # Player
-    if p_name:
-        # Only include encounters where display_name=True for the player
-        query &= Q(players__name__exact=p_name, players__display_name=True)
+
+    if source == "p-class":
+        # Player
+        if p_name:
+            # Only include encounters where display_name=True for the player
+            query &= Q(name__exact=p_name, display_name=True)
+        if p_class_id >= 0:
+            query &= Q(class_id__exact=p_class_id)
+        if p_spec:
+            query &= Q(subclass__exact=p_spec)
+
+        # Encounter
+        if boss_name:
+            query &= Q(encounter__boss_name__exact=boss_name)
+        if difficulty:
+            query &= Q(encounter__difficulty__icontains=difficulty)
+
+        # Date
+        if date_from:
+            date_obj = datetime.strptime(date_from, "%Y-%m-%d")
+            timestamp = int(time.mktime(date_obj.timetuple()))
+
+            query &= Q(encounter__fight_end__gte=timestamp)
+        if date_until:
+            date_obj = datetime.strptime(date_until, "%Y-%m-%d")
+            timestamp = int(time.mktime(date_obj.timetuple()))
+
+            query &= Q(encounter__fight_end__lte=timestamp)
+
+        # Setup Ordering
+        ordering = "-max_dps"  # Highest DPS
+        if p_name:
+            ordering = "-dps"
     else:
-        # If Player Name NOT defined, apply these filters
+        # Player
+        if p_name:
+            # Only include encounters where display_name=True for the player
+            query &= Q(players__name__exact=p_name, players__display_name=True)
         if p_class_id >= 0:
             query &= Q(players__class_id__exact=p_class_id)
         if p_spec:
             query &= Q(players__subclass__exact=p_spec)
 
-    # Encounter
-    if encounter:
-        boss_key, gate = encounter.split("_", 1)
-        for boss_name, details in encounter_map.items():
-            if (
-                details["gate"].lower() == gate
-                and details["instance"].lower() == boss_key
-            ):
-                query &= Q(boss_name__exact=boss_name)
-                break
+        # Encounter
+        if boss_name:
+            query &= Q(boss_name__exact=boss_name)
+        if difficulty:
+            query &= Q(difficulty__icontains=difficulty)
 
-    if difficulty:
-        query &= Q(difficulty__icontains=difficulty)
+        # Date
+        if date_from:
+            date_obj = datetime.strptime(date_from, "%Y-%m-%d")
+            timestamp = int(time.mktime(date_obj.timetuple()))
 
-    # Date
-    if date_from:
-        date_obj = datetime.strptime(date_from, "%Y-%m-%d")
-        timestamp = int(time.mktime(date_obj.timetuple()))
+            query &= Q(fight_end__gte=timestamp)
+        if date_until:
+            date_obj = datetime.strptime(date_until, "%Y-%m-%d")
+            timestamp = int(time.mktime(date_obj.timetuple()))
 
-        query &= Q(fight_end__gte=timestamp)
-    if date_until:
-        date_obj = datetime.strptime(date_until, "%Y-%m-%d")
-        timestamp = int(time.mktime(date_obj.timetuple()))
+            query &= Q(fight_end__lte=timestamp)
 
-        query &= Q(fight_end__lte=timestamp)
+        # Setup Ordering
+        ordering = "-fight_end"  # Default ordering
 
-    # Setup Ordering
-    ordering = "-fight_end"  # Default ordering
-
-    # Adjust ordering based on source
-    if source == "p-party":
-        ordering = "fight_duration"  # Lowest Time
-        if order_by == "slow":
-            ordering = "-fight_duration"  # Highest Time
-    elif source == "p-class":
-        ordering = "-max_dps"  # Highest DPS
-        if order_by == "low":
-            ordering = "max_dps"  # Lowest DPS
+        # Adjust ordering based on source
+        if source == "p-party":
+            ordering = "fight_duration"  # Lowest Time
+            if order_by == "slow":
+                ordering = "-fight_duration"  # Highest Time
 
     return query, ordering
 
@@ -101,13 +121,6 @@ def format_raid_summary_data(data):
                 if gear_score > highest_ilvl:
                     highest_ilvl = gear_score
 
-            """ # Check if the player's name should be displayed
-            try:
-                character = Characters.objects.get(name=player_entry["name"], region=entry["region"])
-                display_name = character.display_name
-            except Characters.DoesNotExist:
-                display_name = False  # Default to False if the character doesn't exist """
-
             # Add player data to the all_players list
             all_players.append(
                 {
@@ -115,24 +128,25 @@ def format_raid_summary_data(data):
                         player_entry["name"] if player_entry["display_name"] else None
                     ),
                     "class_id": player_entry["class_id"],
-                    "subclass": (
-                        subclass_to_shortened_subclass.get(
-                            player_entry["subclass"], "N/A"
-                        )
-                        if player_entry["display_name"]
-                        else player_entry["subclass"]
+                    "subclass": player_entry["subclass"],
+                    "s_subclass": subclass_to_shortened_subclass.get(
+                        player_entry["subclass"], None
                     ),
                     "dps": format_damage(player_entry["dps"]),
+                    "dps_raw": player_entry["dps"],
                     "damage_percentage": (
                         round((player_entry["dps"] / total_damage) * 100, 1)
                         if total_damage > 0
                         else 0.0
                     ),
-                    "gear_score": player_entry["gear_score"],
+                    "gear_score": round(player_entry["gear_score"], 2),
                     "is_dead": player_entry["is_dead"],
                     "death_timer": player_entry["death_timer"],
                     "death_count": player_entry["death_count"],
                     "party_num": player_entry["party_num"],
+                    "flagged": (
+                        True if entry["player"] == player_entry["name"] else False
+                    ),  # Selected Player by p-class
                 }
             )
 

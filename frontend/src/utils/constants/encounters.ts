@@ -16,7 +16,7 @@ export const ENCOUNTER_GROUPS = [
         label: "Behemoth",
         options: [
             { value: "behemoth_g1", label: "Behemoth - G1" },
-            { value: "behemoth_g1", label: "Behemoth - G2" },
+            { value: "behemoth_g2", label: "Behemoth - G2" },
         ],
     },
     {
@@ -92,15 +92,15 @@ export const ENCOUNTER_GROUPS = [
     },
     {
         label: "Achates",
-        options: [{ value: "achates", label: "Achates - Trial" }],
+        options: [{ value: "achates_", label: "Achates - Trial" }],
     },
     {
         label: "Caliligos",
-        options: [{ value: "caliligos", label: "Caliligos - Trial" }],
+        options: [{ value: "caliligos_", label: "Caliligos - Trial" }],
     },
     {
         label: "Hanumatan",
-        options: [{ value: "hanumatan", label: "Hanumatan - Trial" }],
+        options: [{ value: "hanumatan_", label: "Hanumatan - Trial" }],
     },
 ];
 

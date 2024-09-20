@@ -1,14 +1,16 @@
 import { ENCOUNTER_GROUPS } from "@utils/constants/encounters";
 import { useCallback, useMemo } from "react";
 import Select, { StylesConfig } from "react-select";
+import { FiltersSourceType } from "@type/HomePageType";
 
 type EncounterProps = {
+    source: FiltersSourceType;
     selectStyle: StylesConfig;
     value: string | null;
     onChange: (fieldName: string, newValue: string) => void;
 };
 
-export function Encounter({ selectStyle, value, onChange }: EncounterProps) {
+export function Encounter({ source, selectStyle, value, onChange }: EncounterProps) {
     const handleEncounterChange = useCallback(
         (selectedOption: { value: string } | null) => {
             onChange("encounter", selectedOption ? selectedOption.value : "");
@@ -31,7 +33,7 @@ export function Encounter({ selectStyle, value, onChange }: EncounterProps) {
             onChange={(selectedOption) =>
                 handleEncounterChange(selectedOption as { value: string })
             }
-            isClearable
+            isClearable={source !== "p-party" && source !== "p-class"}
             value={encounterSelectValue}
             placeholder="Encounter"
             styles={selectStyle}

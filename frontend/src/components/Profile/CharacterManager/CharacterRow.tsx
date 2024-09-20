@@ -28,8 +28,13 @@ export function CharacterRow({ character, onUpdateCharacter }: CharacterRowProps
             <td className="text-center">{region}</td>
             <td className="text-center">{name}</td>
             <td className="text-center">
-                <img src={MAP_TO_IMAGE_CLASSES[class_id]} alt={`Class ${class_id}`} />{" "}
-                {CLASS_ID_TO_CLASS_NAME.get(class_id)}
+                <div className="d-flex justify-content-center align-items-center">
+                    <img
+                        src={MAP_TO_IMAGE_CLASSES[class_id]}
+                        alt={`Class ${class_id}`}
+                    />
+                    <p className="mb-0">&nbsp;{CLASS_ID_TO_CLASS_NAME.get(class_id)}</p>
+                </div>
             </td>
             <td className="text-center">
                 <input

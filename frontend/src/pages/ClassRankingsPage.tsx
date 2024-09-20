@@ -8,15 +8,28 @@ import { cleanFilters, toQueryString } from "@utils/functions";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { ENCOUNTER_GROUPS } from "@utils/constants/encounters";
+import { ClassSummaryContainer } from "@components/Common/ClassSummary/ClassSummaryContainer";
+
+const source = "p-class";
+const defaultEncounter = ENCOUNTER_GROUPS[0].options[0].value;
+const defaultDifficulty = "Normal";
+const defaultOrderBy = "high";
+
+const SvgOne = () => (
+    <svg width="24" height="24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="12" cy="12" r="10" />
+    </svg>
+);
+
+const SvgTwo = () => (
+    <svg width="24" height="24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+        <rect width="20" height="20" x="2" y="2" rx="2" />
+    </svg>
+);
 
 export function Component() {
     const navigate = useNavigate();
     const location = useLocation();
-
-    const source = "p-class";
-    const defaultEncounter = ENCOUNTER_GROUPS[0].options[0].value;
-    const defaultDifficulty = "Normal";
-    const defaultOrderBy = "high";
 
     const [data, setData] = useState<RaidSummaryType[]>([]); // Fetched Data
     const [dataLength, setDataLength] = useState<number>(0); // Fetched Data Length (handles reloads)
@@ -25,6 +38,7 @@ export function Component() {
     const [isLoading, setIsLoading] = useState(true); // If data is loading, fetching or not
     const [noResults, setNoResults] = useState(false); // If no results found after fetch
     const [hasError, setHasError] = useState(false);
+    const [isActiveSwitch, setIsActiveSwitch] = useState(false);
 
     // Refreshing Page or navigating to page
     // OR When refreshing page
@@ -67,7 +81,7 @@ export function Component() {
         };
 
         fetchData();
-    }, [location.search, defaultEncounter]);
+    }, [location.search]);
 
     // Handles Filter Submission
     const onFilterSubmit = useCallback(
@@ -99,35 +113,74 @@ export function Component() {
     return (
         <main>
             <div className="my-4 mx-3 mx-md-4" id="RaidClassContainer">
-                <SearchFiltersContainer
-                    source={source}
-                    defaultEncounter={defaultEncounter}
-                    defaultDifficulty={defaultDifficulty}
-                    defaultOrderBy={defaultOrderBy}
-                    isLoading={isLoading}
-                    onSubmit={onFilterSubmit}
-                />
-                <ul id="PartySummaryContainer">
+                <div>
+                    <div
+                        className="toggle-switch"
+                        onClick={() => setIsActiveSwitch(!isActiveSwitch)}>
+                        <div
+                            className={`toggle-option ${
+                                !isActiveSwitch ? "active" : ""
+                            }`}>
+                            <SvgOne />
+                        </div>
+                        <div
+                            className={`toggle-option ${
+                                isActiveSwitch ? "active" : ""
+                            }`}>
+                            <SvgTwo />
+                        </div>
+                    </div>
+                    <SearchFiltersContainer
+                        source={source}
+                        defaultEncounter={defaultEncounter}
+                        defaultDifficulty={defaultDifficulty}
+                        defaultOrderBy={defaultOrderBy}
+                        isLoading={isLoading}
+                        onSubmit={onFilterSubmit}
+                    />
+                </div>
+
+                <div>
                     {isLoading && data.length <= 0 ? (
                         <Loading />
+                    ) : isActiveSwitch ? (
+                        <ul id="PartySummaryContainer">
+                            <PartySummaryContainer
+                                source={source}
+                                filters={filters}
+                                isLoading={isLoading}
+                                hasError={hasError}
+                                data={data}
+                                dataLength={dataLength}
+                                displayedData={displayedData}
+                                noResults={noResults}
+                                setIsLoading={setIsLoading}
+                                setData={setData}
+                                setDataLength={setDataLength}
+                                setDisplayedData={setDisplayedData}
+                                setNoResults={setNoResults}
+                            />
+                        </ul>
                     ) : (
-                        <PartySummaryContainer
-                            source={source}
-                            filters={filters}
-                            isLoading={isLoading}
-                            hasError={hasError}
-                            data={data}
-                            dataLength={dataLength}
-                            displayedData={displayedData}
-                            noResults={noResults}
-                            setIsLoading={setIsLoading}
-                            setData={setData}
-                            setDataLength={setDataLength}
-                            setDisplayedData={setDisplayedData}
-                            setNoResults={setNoResults}
-                        />
+                        <ul id="ClassSummaryContainer">
+                            <ClassSummaryContainer
+                                source={source}
+                                filters={filters}
+                                isLoading={isLoading}
+                                hasError={hasError}
+                                data={data}
+                                dataLength={dataLength}
+                                displayedData={displayedData}
+                                noResults={noResults}
+                                setIsLoading={setIsLoading}
+                                setData={setData}
+                                setDataLength={setDataLength}
+                                setDisplayedData={setDisplayedData}
+                                setNoResults={setNoResults}
+                            />
+                        </ul>
                     )}
-                </ul>
+                </div>
             </div>
         </main>
     );

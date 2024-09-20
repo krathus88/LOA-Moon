@@ -2,8 +2,8 @@ import { PlayerDataType } from "@type/HomePageType";
 import { MAP_TO_IMAGE_RAIDS } from "@utils/constants/general";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { Info } from "./Info";
-import { PlayerData } from "./PlayerData";
+import { PartyInfo } from "./PartyInfo";
+import { PartyPlayerData } from "./PartyPlayerData";
 
 type PartySummaryProps = {
     encounter_id: number;
@@ -67,7 +67,7 @@ export function PartySummary({
                 alt=""
                 className="raid-summary-background"
             />
-            <Info
+            <PartyInfo
                 isHeightLarge={isHeightLarge}
                 isWidthLarge={isWidthLarge}
                 instance_name={instance_name}
@@ -80,7 +80,7 @@ export function PartySummary({
                 highest_ilvl={highest_ilvl}
                 max_boss_hp={max_boss_hp}
             />
-            <PlayerData
+            <PartyPlayerData
                 isHeightLarge={isHeightLarge}
                 max_boss_hp={max_boss_hp}
                 avg_ilvl={avg_ilvl}

@@ -5,9 +5,63 @@
     gap: 2.25rem;
 }
 
+#RaidClassContainer > div:first-child {
+    flex: 1 0 auto;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+}
+
+#RaidClassContainer > div:last-child {
+    flex: 1 1 1200px;
+}
+
 @media (max-width: 1500px) {
     #RaidClassContainer {
         flex-direction: column;
         gap: 0.5rem;
     }
+
+    #RaidClassContainer > div:first-child {
+        width: 100%;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        flex-direction: column-reverse;
+    }
+}
+
+/* ToggleSwitch.css */
+.toggle-switch {
+    display: flex;
+    align-self: end;
+    align-items: center;
+    justify-content: space-between;
+    width: 100px;
+    padding: 5px;
+    border: 2px solid #ccc;
+    border-radius: 25px;
+    cursor: pointer;
+    user-select: none;
+    background-color: #f0f0f0;
+}
+
+.toggle-option {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    transition: background-color 0.3s;
+}
+
+.toggle-option.active {
+    background-color: #007bff; /* Active background color */
+    color: white;
+    border-radius: 20px;
+}
+
+.toggle-option svg {
+    width: 24px;
+    height: 24px;
 }

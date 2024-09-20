@@ -125,8 +125,8 @@ export function PartySummaryContainer({
 
     return (
         <>
-            {displayedData.map((entry) => (
-                <li key={entry.encounter_id}>
+            {displayedData.map((entry, index) => (
+                <li key={`g${index + 1}_${entry.encounter_id}`}>
                     <PartySummary
                         encounter_id={entry.encounter_id}
                         instance_name={entry.instance_name}

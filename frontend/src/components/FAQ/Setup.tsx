@@ -11,7 +11,7 @@ export function Setup() {
             <h3 className="ms-2">Logs</h3>
             <Accordion>
                 <Accordion.Item eventKey="0">
-                    <Accordion.Header>How do i upload logs?</Accordion.Header>
+                    <Accordion.Header>How do I upload logs?</Accordion.Header>
                     <Accordion.Body className="fw-light">
                         <p>
                             <span className="fw-bold">Note: </span>You have the option
@@ -129,7 +129,7 @@ export function Setup() {
                 <Accordion.Item eventKey="1">
                     <Accordion.Header>
                         I don't want to Auto Upload nor Sync all past Logs but I still
-                        want to upload SOME logs. What do i do?
+                        want to upload SOME logs. What do I do?
                     </Accordion.Header>
                     <Accordion.Body className="fw-light">
                         You can manually upload individual logs.

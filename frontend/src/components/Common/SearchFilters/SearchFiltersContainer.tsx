@@ -1,5 +1,5 @@
 import { Button } from "@mui/material";
-import { FiltersType } from "@type/HomePageType";
+import { FiltersSourceType, FiltersType } from "@type/HomePageType";
 import { CLASS_ID_TO_CLASS_NAME, SUBCLASS_GROUPS } from "@utils/constants/classes";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -67,7 +67,7 @@ const SelectStyle: StylesConfig = {
 };
 
 type SearchFiltersContainerProps = {
-    source: "p-latest" | "p-party" | "p-class";
+    source: FiltersSourceType;
     defaultEncounter: string;
     defaultDifficulty: string;
     defaultOrderBy: string;
@@ -157,6 +157,7 @@ export function SearchFiltersContainer({
             onSubmit={handleSubmit}>
             {source === "p-latest" && (
                 <LatestFiltersContainer
+                    source={source}
                     formFilters={formFilters}
                     SelectStyle={SelectStyle}
                     specializationGroups={specializationGroups}
@@ -165,6 +166,7 @@ export function SearchFiltersContainer({
             )}
             {source === "p-class" && (
                 <ClassFiltersContainer
+                    source={source}
                     formFilters={formFilters}
                     SelectStyle={SelectStyle}
                     specializationGroups={specializationGroups}
@@ -173,6 +175,7 @@ export function SearchFiltersContainer({
             )}
             {source === "p-party" && (
                 <PartyFiltersContainer
+                    source={source}
                     formFilters={formFilters}
                     SelectStyle={SelectStyle}
                     handleFilterChange={handleFilterChange}
