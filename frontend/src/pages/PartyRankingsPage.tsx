@@ -1,13 +1,15 @@
 import { Loading } from "@components/Common/Loading";
+import { PageHeader } from "@components/Common/PageHeader/PageHeader";
 import { PartySummaryContainer } from "@components/Common/PartySummary/PartySummaryContainer";
 import { SearchFiltersContainer } from "@components/Common/SearchFilters/SearchFiltersContainer";
 import "@components/PartyRankings/PartyRankings.css";
 import { api } from "@config/axios";
-import { FiltersType, RaidSummaryType } from "@type/HomePageType";
+import { FiltersType, RaidSummaryType } from "@type/EncounterPreviewType";
+import { ENCOUNTER_GROUPS } from "@utils/constants/encounters";
+import { MAP_TO_IMAGE_PAGES } from "@utils/constants/general";
 import { cleanFilters, toQueryString } from "@utils/functions";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ENCOUNTER_GROUPS } from "@utils/constants/encounters";
 
 const source = "p-party";
 const defaultEncounter = ENCOUNTER_GROUPS[0].options[0].value;
@@ -96,36 +98,41 @@ export function Component() {
 
     return (
         <main>
-            <div className="my-4 mx-3 mx-md-4" id="RaidPartyContainer">
-                <SearchFiltersContainer
-                    source={source}
-                    defaultEncounter={defaultEncounter}
-                    defaultDifficulty={defaultDifficulty}
-                    defaultOrderBy={defaultOrderBy}
-                    isLoading={isLoading}
-                    onSubmit={onFilterSubmit}
-                />
-                <ul id="PartySummaryContainer">
-                    {isLoading && data.length <= 0 ? (
-                        <Loading />
-                    ) : (
-                        <PartySummaryContainer
-                            source={source}
-                            filters={filters}
-                            isLoading={isLoading}
-                            hasError={hasError}
-                            data={data}
-                            dataLength={dataLength}
-                            displayedData={displayedData}
-                            noResults={noResults}
-                            setIsLoading={setIsLoading}
-                            setData={setData}
-                            setDataLength={setDataLength}
-                            setDisplayedData={setDisplayedData}
-                            setNoResults={setNoResults}
-                        />
-                    )}
-                </ul>
+            <PageHeader title="Party Rankings" imgSrc={MAP_TO_IMAGE_PAGES["party"]} />
+            <div className="my-3 mx-3 mx-md-4" id="RaidPartyContainer">
+                <div>
+                    <SearchFiltersContainer
+                        source={source}
+                        defaultEncounter={defaultEncounter}
+                        defaultDifficulty={defaultDifficulty}
+                        defaultOrderBy={defaultOrderBy}
+                        isLoading={isLoading}
+                        onSubmit={onFilterSubmit}
+                    />
+                </div>
+                <div>
+                    <ul id="PartySummaryContainer">
+                        {isLoading && data.length <= 0 ? (
+                            <Loading />
+                        ) : (
+                            <PartySummaryContainer
+                                source={source}
+                                filters={filters}
+                                isLoading={isLoading}
+                                hasError={hasError}
+                                data={data}
+                                dataLength={dataLength}
+                                displayedData={displayedData}
+                                noResults={noResults}
+                                setIsLoading={setIsLoading}
+                                setData={setData}
+                                setDataLength={setDataLength}
+                                setDisplayedData={setDisplayedData}
+                                setNoResults={setNoResults}
+                            />
+                        )}
+                    </ul>
+                </div>
             </div>
         </main>
     );

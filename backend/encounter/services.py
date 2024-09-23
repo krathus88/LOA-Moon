@@ -5,7 +5,7 @@ from datetime import datetime
 
 from constants.classes import class_name_to_class_id, subclass_to_shortened_subclass
 from constants.encounters import encounter_map
-from user.models import Characters
+from .models import Encounter
 
 
 # region Raid Summary
@@ -153,13 +153,13 @@ def format_raid_summary_data(data):
         avg_ilvl = round(total_ilvl / len(all_players), 2)
 
         encounter_info = encounter_map.get(entry["boss_name"], {})
-        gate = encounter_info.get("gate")
 
         formatted_data.append(
             {
+                "region": entry["region"],
                 "encounter_id": entry["encounter_id"],
                 "instance_name": encounter_info.get("instance", None),
-                "gate": gate,
+                "gate": encounter_info.get("gate", None),
                 "difficulty": entry["difficulty"],
                 "clear_time": convert_clear_time_to_minutes(entry["fight_duration"]),
                 "fight_end": time_since_fight_ended(entry["fight_end"]),
@@ -172,6 +172,116 @@ def format_raid_summary_data(data):
         )
 
     return formatted_data
+
+
+# endregion
+
+
+# region Encounter
+def format_encounter_data(encounter: Encounter, players_data):
+    formatted_players_data = []
+    total_ilvl = 0
+    death_count = 0
+    total_damage = 0
+    total_dps = 0
+    highest_ilvl = 0
+
+    # Sort players_data by 'dps' in descending order
+    players_data_sorted = sorted(players_data, key=lambda x: x["dps"], reverse=True)
+
+    for player in players_data_sorted:
+        total_dps += player["dps"]
+
+    for player in players_data_sorted:
+        player_info = player["player_data"]
+
+        gear_score = player["gear_score"]
+        if gear_score:
+            total_ilvl += gear_score
+            if gear_score > highest_ilvl:
+                highest_ilvl = gear_score
+
+        total_damage += player_info["dmg_total"]
+
+        formatted_players_data.append(
+            {
+                "name": (player["name"] if player["display_name"] else None),
+                "class_id": player["class_id"],
+                "subclass": player["subclass"],
+                "s_subclass": subclass_to_shortened_subclass.get(
+                    player["subclass"], None
+                ),
+                "gear_score": round(
+                    player["gear_score"]
+                ),  # Keep rounded to full number
+                "counters": player_info["counters"],
+                "dps": format_damage(player["dps"]),
+                "dmg_total": format_damage(player_info["dmg_total"]),
+                "dmg_percentage": (
+                    round((player["dps"] / total_dps) * 100, 1)
+                    if total_dps > 0
+                    else 0.0
+                ),
+                "crit_percentage": round(
+                    (player_info["crits"] / player_info["hits"]) * 100, 1
+                ),
+                "dmg_front_attacks_percentage": round(
+                    (player_info["dmg_front_attacks"] / player_info["dmg_total"]) * 100,
+                    1,
+                ),
+                "dmg_back_attacks_percentage": round(
+                    (player_info["dmg_back_attacks"] / player_info["dmg_total"]) * 100,
+                    1,
+                ),
+                "dmg_supp_brand_percentage": round(
+                    (player_info["dmg_debuffed_supp_brand"] / player_info["dmg_total"])
+                    * 100,
+                    1,
+                ),
+                "dmg_supp_ap_percentage": round(
+                    (player_info["dmg_buffed_supp_ap"] / player_info["dmg_total"])
+                    * 100,
+                    1,
+                ),
+                "dmg_supp_identity_percentage": round(
+                    (player_info["dmg_buffed_supp_identity"] / player_info["dmg_total"])
+                    * 100,
+                    1,
+                ),
+                "is_dead": player["is_dead"],
+                "death_timer": player["death_timer"],
+                "death_count": player["death_count"],
+                "party_num": player["party_num"],
+                "skill_data": [],
+                "buffs_data": [],
+                "debuffs_data": [],
+                "shields_data": [],
+                "absorbs_data": [],
+            }
+        )
+
+    avg_ilvl = round(total_ilvl / len(formatted_players_data), 2)
+
+    encounter_info = encounter_map.get(encounter.boss_name, {})
+
+    encounter_data = {
+        "region": encounter.region,
+        "encounter_id": encounter.id,
+        "instance_name": encounter_info.get("instance", None),
+        "gate": encounter_info.get("gate", None),
+        "difficulty": encounter.difficulty,
+        "clear_time": convert_clear_time_to_minutes(encounter.fight_duration),
+        "fight_end": date_raid_clear(encounter.fight_end),
+        "total_damage": format_damage(total_damage),
+        "total_dps": format_damage(total_dps),
+        "max_boss_hp": format_damage(encounter.max_hp),
+        "avg_ilvl": avg_ilvl,
+        "highest_ilvl": round(highest_ilvl, 1),
+        "death_count": death_count,
+        "player_data": formatted_players_data,
+    }
+
+    return encounter_data
 
 
 # endregion
@@ -231,6 +341,16 @@ def time_since_fight_ended(timestamp):
     else:
         years = elapsed_seconds // 31536000
         return f"{years} year{'s' if years > 1 else ''} ago"
+
+
+def date_raid_clear(timestamp):
+    # Create a datetime object from the timestamp
+    dt = datetime.fromtimestamp(timestamp)
+
+    # Format the date in the desired format
+    formatted_date = dt.strftime("%d/%m/%Y %H:%M")
+
+    return formatted_date
 
 
 def format_damage(damage_value):

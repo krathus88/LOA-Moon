@@ -15,6 +15,7 @@ export type PlayerDataType = {
 };
 
 export type RaidSummaryType = {
+    region: string;
     encounter_id: number;
     instance_name: string;
     gate: string;
@@ -38,5 +39,3 @@ export type FiltersType = {
     date_until: string;
     order_by: string;
 };
-
-export type FiltersSourceType = "p-latest" | "p-class" | "p-party";

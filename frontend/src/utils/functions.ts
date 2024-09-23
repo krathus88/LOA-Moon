@@ -1,6 +1,7 @@
-import { FiltersType } from "@type/HomePageType";
+import { FiltersType } from "@type/EncounterPreviewType";
 import { SUPP_MAP } from "@utils/constants/classes";
 import { api } from "@config/axios";
+import { PlayerRoleType } from "@type/GeneralType";
 
 export const getCookie = (name: string): string | undefined => {
     let cookieValue: string | undefined = undefined; // Start with undefined
@@ -120,6 +121,6 @@ export function chunkArrayIntoParties<T>(array: T[], chunkSize: number): T[][] {
     return result;
 }
 
-export const getPlayerType = (classId: number): string => {
-    return SUPP_MAP.get(classId) || "dps";
+export const getPlayerType = (classId: number): PlayerRoleType => {
+    return (SUPP_MAP.get(classId) as PlayerRoleType) || "dps";
 };

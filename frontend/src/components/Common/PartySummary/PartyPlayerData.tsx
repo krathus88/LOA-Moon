@@ -1,7 +1,7 @@
 import { PartyPlayer } from "./PartyPlayer";
 import { chunkArrayIntoParties } from "@utils/functions";
 import { getPlayerType } from "@utils/functions";
-import { PlayerDataType } from "@type/HomePageType";
+import { PlayerDataType } from "@type/EncounterPreviewType";
 import { BossHpIcon } from "@components/Common/Icons/BossHpIcon";
 import { GearIcon } from "@components/Common/Icons/GearIcon";
 import { DeathIcon } from "@components/Common/Icons/DeathIcon";
@@ -31,7 +31,7 @@ export function PartyPlayerData({
             style={{ marginTop: isHeightLarge ? "0.5rem" : undefined }}>
             {/* Header Bar */}
             <div className={`head ${isHeightLarge ? "hidden-i" : ""}`}>
-                <small style={{ color: "#ff9797" }}>
+                <small style={{ color: "var(--boss-hp-color)" }}>
                     <BossHpIcon />
                     <small className="fw-light"> {max_boss_hp}</small>
                 </small>

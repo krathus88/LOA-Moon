@@ -1,4 +1,4 @@
-import { PlayerDataType } from "@type/HomePageType";
+import { PlayerDataType } from "@type/EncounterPreviewType";
 import { MAP_TO_IMAGE_RAIDS } from "@utils/constants/general";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";

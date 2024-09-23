@@ -1,9 +1,11 @@
 import { Loading } from "@components/Common/Loading";
+import { PageHeader } from "@components/Common/PageHeader/PageHeader";
+import { PartySummaryContainer } from "@components/Common/PartySummary/PartySummaryContainer";
 import { SearchFiltersContainer } from "@components/Common/SearchFilters/SearchFiltersContainer";
 import "@components/Latest/Latest.css";
-import { PartySummaryContainer } from "@components/Common/PartySummary/PartySummaryContainer";
 import { api } from "@config/axios";
-import { FiltersType, RaidSummaryType } from "@type/HomePageType";
+import { FiltersType, RaidSummaryType } from "@type/EncounterPreviewType";
+import { MAP_TO_IMAGE_PAGES } from "@utils/constants/general";
 import { cleanFilters, toQueryString } from "@utils/functions";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -26,7 +28,6 @@ export function Component() {
     const [hasError, setHasError] = useState(false);
 
     // Refreshing Page or navigating to page
-    // OR When refreshing page
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
@@ -97,36 +98,41 @@ export function Component() {
 
     return (
         <main>
-            <div className="my-4 mx-3 mx-md-4" id="RaidLatestContainer">
-                <SearchFiltersContainer
-                    source={source}
-                    defaultEncounter={defaultEncounter}
-                    defaultDifficulty={defaultDifficulty}
-                    defaultOrderBy={defaultOrderBy}
-                    isLoading={isLoading}
-                    onSubmit={onFilterSubmit}
-                />
-                <ul id="PartySummaryContainer">
-                    {isLoading && data.length <= 0 ? (
-                        <Loading />
-                    ) : (
-                        <PartySummaryContainer
-                            source={source}
-                            filters={filters}
-                            isLoading={isLoading}
-                            hasError={hasError}
-                            data={data}
-                            dataLength={dataLength}
-                            displayedData={displayedData}
-                            noResults={noResults}
-                            setIsLoading={setIsLoading}
-                            setData={setData}
-                            setDataLength={setDataLength}
-                            setDisplayedData={setDisplayedData}
-                            setNoResults={setNoResults}
-                        />
-                    )}
-                </ul>
+            <PageHeader title="Latest Uploads" imgSrc={MAP_TO_IMAGE_PAGES["latest"]} />
+            <div className="my-3 mx-3 mx-md-4" id="RaidLatestContainer">
+                <div>
+                    <SearchFiltersContainer
+                        source={source}
+                        defaultEncounter={defaultEncounter}
+                        defaultDifficulty={defaultDifficulty}
+                        defaultOrderBy={defaultOrderBy}
+                        isLoading={isLoading}
+                        onSubmit={onFilterSubmit}
+                    />
+                </div>
+                <div>
+                    <ul id="PartySummaryContainer">
+                        {isLoading && data.length <= 0 ? (
+                            <Loading />
+                        ) : (
+                            <PartySummaryContainer
+                                source={source}
+                                filters={filters}
+                                isLoading={isLoading}
+                                hasError={hasError}
+                                data={data}
+                                dataLength={dataLength}
+                                displayedData={displayedData}
+                                noResults={noResults}
+                                setIsLoading={setIsLoading}
+                                setData={setData}
+                                setDataLength={setDataLength}
+                                setDisplayedData={setDisplayedData}
+                                setNoResults={setNoResults}
+                            />
+                        )}
+                    </ul>
+                </div>
             </div>
         </main>
     );

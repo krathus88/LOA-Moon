@@ -1,7 +1,7 @@
 import { BossHpIcon } from "@components/Common/Icons/BossHpIcon";
 import { DeathIcon } from "@components/Common/Icons/DeathIcon";
 import { GearIcon } from "@components/Common/Icons/GearIcon";
-import { PlayerDataType } from "@type/HomePageType";
+import { PlayerDataType } from "@type/EncounterPreviewType";
 import { ClassPlayer } from "./ClassPlayer";
 
 type ClassPlayerDataProps = {

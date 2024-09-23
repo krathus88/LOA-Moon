@@ -1,50 +1,84 @@
-import { useState } from "react";
+import { Loading } from "@components/Common/Loading";
 import "@components/Encounter/Encounter.css";
-import { EncounterHeader } from "@components/Encounter/EncounterHeader";
-import { EncounterTableDamage } from "@components/Encounter/EncounterTableDamage";
-import { EncounterTablePartyBuffs } from "@components/Encounter/EncounterTablePartyBuffs";
-import { EncounterTableSelfBuffs } from "@components/Encounter/EncounterTableSelfBuffs";
-import { EncounterTableShields } from "@components/Encounter/EncounterTableShields";
+import { EncounterInfo } from "@components/Encounter/EncounterInfo";
 import { TableControllers } from "@components/Encounter/TableControllers";
-
-/* import { fetchData } from "@utils/functions";
-import type { LoaderFunctionArgs } from "react-router-dom"; */
-
-async function loader() {
-    return "yes";
-}
+import { TableDamage } from "@components/Encounter/TableDamage/TableDamage";
+import { TablePartyBuffs } from "@components/Encounter/TablePartyBuffs/TablePartyBuffs";
+import { TableSelfBuffs } from "@components/Encounter/TableSelfBuffs/TableSelfBuffs";
+import { TableShields } from "@components/Encounter/TableShields/TableShields";
+import { api } from "@config/axios";
+import { EncounterTableType, EncounterType } from "@type/EncounterType";
+import { useEffect, useState } from "react";
+import { useLocation, useParams } from "react-router-dom";
 
 export function Component() {
-    // State to track the active table view
-    const [activeTable, setActiveTable] = useState("damage");
+    const { encounter_id } = useParams();
+    const location = useLocation();
 
-    // Function to handle the table change
-    const handleTableChange = (tableType: string) => {
-        setActiveTable(tableType); // Update the state with the selected table type
+    // State to track the active table view
+    const [activeTable, setActiveTable] = useState<EncounterTableType>("damage");
+    const [encounterData, setEncounterData] = useState<EncounterType | undefined>(
+        undefined
+    );
+
+    // Refreshing Page or navigating to page
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const result = await api.get(`/encounter/id/${encounter_id}`);
+                const fetchedData = result.data;
+
+                setEncounterData(fetchedData);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchData();
+    }, [location.search, encounter_id]);
+
+    // Handle the table change
+    const handleTableChange = (tableType: EncounterTableType) => {
+        setActiveTable(tableType);
     };
 
     return (
-        <main>
-            <div className="container my-5">
-                <div>
-                    <EncounterHeader
-                        encounterId={666}
-                        encounterTitle={"[Normal] Akkan Akkan Akkan Akkan"}
-                        timestamp={"10/12"}
-                    />
-                    <hr />
-                    <TableControllers onChange={handleTableChange} />
-                    {activeTable === "damage" && <EncounterTableDamage />}
-                    {activeTable === "partyBuffs" && <EncounterTablePartyBuffs />}
-                    {activeTable === "partyBuffs" && <EncounterTablePartyBuffs />}
-                    {activeTable === "selfBuffs" && <EncounterTableSelfBuffs />}
-                    {activeTable === "shields" && <EncounterTableShields />}
-                </div>
+        <main id="EncounterPage">
+            <div className="container-xl container-fluid-md my-4">
+                {encounterData ? (
+                    <div>
+                        <EncounterInfo
+                            difficulty={encounterData.difficulty}
+                            instance_name={encounterData.instance_name}
+                            gate={encounterData.gate}
+                            fight_end={encounterData.fight_end}
+                        />
+                        <TableControllers
+                            clearTime={encounterData.clear_time}
+                            totalDmg={encounterData.total_damage}
+                            totalDps={encounterData.total_dps}
+                            onChange={handleTableChange}
+                        />
+                        <div className="table-wrapper">
+                            {activeTable === "damage" && (
+                                <TableDamage playersData={encounterData.player_data} />
+                            )}
+                            {activeTable === "partyBuffs" && (
+                                <>
+                                    <TablePartyBuffs />
+                                    <TablePartyBuffs />
+                                </>
+                            )}
+                            {activeTable === "selfBuffs" && <TableSelfBuffs />}
+                            {activeTable === "shields" && <TableShields />}
+                        </div>
+                    </div>
+                ) : (
+                    <Loading />
+                )}
             </div>
         </main>
     );
 }
 
 Component.displayName = "EncounterPage";
-
-Component.loader = loader;

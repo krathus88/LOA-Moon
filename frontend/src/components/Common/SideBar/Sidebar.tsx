@@ -8,6 +8,8 @@ import { PartyRankingsIcon } from "../Icons/PartyRankingsIcon";
 import { FaqIcon } from "../Icons/FaqIcon";
 import { UserProfileContainer } from "./UserProfileContainer";
 import { RecentIcon } from "../Icons/RecentIcon";
+import { DoubleArrowLeft } from "../Icons/DoubleArrowLeft";
+import { DoubleArrowRight } from "../Icons/DoubleArrowRight";
 
 export function SideBar() {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -27,7 +29,7 @@ export function SideBar() {
                 className="toggle-button"
                 aria-controls="SideNavigationBar"
                 aria-expanded={isExpanded}>
-                {isExpanded ? "<" : ">"}
+                {isExpanded ? <DoubleArrowLeft /> : <DoubleArrowRight />}
             </Button>
             <ul className="nav nav-flush flex-column text-center">
                 <li>

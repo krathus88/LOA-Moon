@@ -22,15 +22,11 @@ export function PartyPlayer({
     is_dead,
     type,
 }: PartyPlayerProps) {
-    /*   let color = "#5b2128";
+    let color = "var(--dps-bg-color)";
+    let borderColor = "var(--dps-border-color)";
     if (type === "supp") {
-        color = "#184332";
-    } */
-    let color = "rgba(91, 33, 40, 0.85)";
-    let borderColor = "rgba(91, 33, 40, 0.75)";
-    if (type === "supp") {
-        color = "rgba(255, 227, 201, 0.5)";
-        borderColor = "rgba(255,227,201,0.2)";
+        color = "var(--supp-bg-color)";
+        borderColor = "var(--supp-border-color)";
     }
 
     return (
@@ -46,10 +42,10 @@ export function PartyPlayer({
             <small className="name fw-light">
                 {name ? (
                     <>
-                        <span className="">{s_subclass}</span> {name}
+                        <span className="subclass">{s_subclass}</span> {name}
                     </>
                 ) : (
-                    <span>{subclass}</span>
+                    <span className="subclass">{subclass}</span>
                 )}
             </small>
             <div className="ms-auto">

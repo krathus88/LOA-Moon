@@ -1,11 +1,17 @@
 from ninja import Router
 from ninja.decorators import decorate_view
 from django.views.decorators.cache import cache_page
-from django.db.models import Q, Max
+from django.db.models import Max
+from django.shortcuts import get_object_or_404
 
 from encounter.models import Encounter, EncounterPlayers
 from constants.encounters import encounter_map
-from .services import format_raid_summary_data, build_encounter_filter_query
+from .services import (
+    format_raid_summary_data,
+    build_encounter_filter_query,
+    format_encounter_data,
+)
+from .schemas import EncounterSchema, EncounterPlayerDataSchema
 
 
 router = Router()
@@ -13,7 +19,7 @@ router = Router()
 
 @router.get("/")
 @decorate_view(cache_page(2 * 60))
-def get_encounter_data(
+def get_overview_data(
     request,
     page: int = 1,
     p_name: str = "",
@@ -149,5 +155,40 @@ def get_encounter_data(
             data.append(encounter_data)
 
     formatted_data = format_raid_summary_data(data)
+
+    return formatted_data
+
+
+@router.get("/id/{encounter_id}")
+def get_encounter_data(request, encounter_id: int):
+    # Get the encounter object
+    encounter = get_object_or_404(Encounter, id=encounter_id)
+
+    # Prepare the players list
+    players_data = []
+    players = encounter.players.all()  # Get all players related to this encounter
+    for player in players:
+        # Get the player data
+        player_data_dict = player.player_data.values().first()
+        if not player_data_dict:
+            player_data_dict = {}
+
+        player_entry = {
+            "name": player.name,
+            "character_id": player.character_id,
+            "class_id": player.class_id,
+            "subclass": player.subclass,
+            "dps": player.dps,
+            "gear_score": player.gear_score,
+            "is_dead": player.is_dead,
+            "death_timer": player.death_timer,
+            "death_count": player.death_count,
+            "party_num": player.party_num,
+            "display_name": player.display_name,
+            "player_data": player_data_dict,
+        }
+        players_data.append(player_entry)
+
+    formatted_data = format_encounter_data(encounter, players_data)
 
     return formatted_data

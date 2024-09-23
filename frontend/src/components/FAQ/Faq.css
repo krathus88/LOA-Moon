@@ -1,3 +1,7 @@
+#FAQ #PageHeader > div {
+    max-width: 1400px !important;
+}
+
 #FAQ .accordion-button {
     font-weight: 500;
 }

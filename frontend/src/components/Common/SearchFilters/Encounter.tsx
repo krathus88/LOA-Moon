@@ -1,10 +1,10 @@
+import { SourceType } from "@type/GeneralType";
 import { ENCOUNTER_GROUPS } from "@utils/constants/encounters";
 import { useCallback, useMemo } from "react";
 import Select, { StylesConfig } from "react-select";
-import { FiltersSourceType } from "@type/HomePageType";
 
 type EncounterProps = {
-    source: FiltersSourceType;
+    source: SourceType;
     selectStyle: StylesConfig;
     value: string | null;
     onChange: (fieldName: string, newValue: string) => void;

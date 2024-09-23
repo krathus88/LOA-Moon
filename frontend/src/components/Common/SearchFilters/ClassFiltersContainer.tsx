@@ -1,5 +1,5 @@
 import { DoubleArrowDown } from "@icons/DoubleArrowDown";
-import { FiltersType } from "@type/HomePageType";
+import { FiltersType } from "@type/EncounterPreviewType";
 import Accordion from "react-bootstrap/Accordion";
 import { StylesConfig } from "react-select";
 import { Date } from "./Date";
@@ -10,7 +10,7 @@ import { OrderBy } from "./OrderBy";
 import { PlayerName } from "./PlayerName";
 import { Class } from "./Class";
 import { Specialization } from "./Specialization";
-import { FiltersSourceType } from "@type/HomePageType";
+import { SourceType } from "@type/GeneralType";
 
 type SpecializationGroupsType = {
     label: string;
@@ -21,7 +21,7 @@ type SpecializationGroupsType = {
 };
 
 type ClassFiltersContainerProps = {
-    source: FiltersSourceType;
+    source: SourceType;
     formFilters: FiltersType;
     SelectStyle: StylesConfig;
     specializationGroups: SpecializationGroupsType[];

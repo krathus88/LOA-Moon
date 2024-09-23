@@ -8,6 +8,10 @@ from authentication.services import TokenAuth
 from encounter.models import Encounter, EncounterPlayers, EncounterPlayerData
 from .services import decompress_data, format_db_data, associate_characters_with_user
 
+import json
+import os
+
+
 router = Router()
 
 
@@ -102,13 +106,16 @@ def upload_log(request):
             try:
                 EncounterPlayerData.objects.create(
                     player=encounter_player,
-                    total_damage=player_entry["total_damage"],
+                    counters=player_entry["counters"],
                     casts=player_entry["casts"],
                     hits=player_entry["hits"],
                     crits=player_entry["crits"],
-                    back_attacks=player_entry["back_attacks"],
-                    front_attacks=player_entry["front_attacks"],
-                    counters=player_entry["counters"],
+                    dmg_total=player_entry["dmg_total"],
+                    dmg_back_attacks=player_entry["dmg_back_attacks"],
+                    dmg_front_attacks=player_entry["dmg_front_attacks"],
+                    dmg_debuffed_supp_brand=player_entry["dmg_debuffed_supp_brand"],
+                    dmg_buffed_supp_ap=player_entry["dmg_buffed_supp_ap"],
+                    dmg_buffed_supp_identity=player_entry["dmg_buffed_supp_identity"],
                     buffs=player_entry["buffs"],
                     debuffs=player_entry["debuffs"],
                     skills=player_entry["skills"],

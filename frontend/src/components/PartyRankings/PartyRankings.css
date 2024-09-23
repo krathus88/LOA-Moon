@@ -5,9 +5,28 @@
     gap: 2.25rem;
 }
 
+#RaidPartyContainer > div:first-child {
+    flex: 1 0 auto;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+}
+
+#RaidPartyContainer > div:last-child {
+    flex: 1 1 1200px;
+}
+
 @media (max-width: 1500px) {
     #RaidPartyContainer {
         flex-direction: column;
         gap: 0.5rem;
+    }
+
+    #RaidPartyContainer > div:first-child {
+        width: 100%;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        flex-direction: column-reverse;
     }
 }

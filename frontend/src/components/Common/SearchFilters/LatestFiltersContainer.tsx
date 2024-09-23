@@ -1,5 +1,6 @@
 import { DoubleArrowDown } from "@icons/DoubleArrowDown";
-import { FiltersSourceType, FiltersType } from "@type/HomePageType";
+import { FiltersType } from "@type/EncounterPreviewType";
+import { SourceType } from "@type/GeneralType";
 import Accordion from "react-bootstrap/Accordion";
 import { StylesConfig } from "react-select";
 import { Class } from "./Class";
@@ -19,7 +20,7 @@ type SpecializationGroupsType = {
 };
 
 type LatestFiltersContainerProps = {
-    source: FiltersSourceType;
+    source: SourceType;
     formFilters: FiltersType;
     SelectStyle: StylesConfig;
     specializationGroups: SpecializationGroupsType[];

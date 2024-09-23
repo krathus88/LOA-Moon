@@ -1,22 +1,22 @@
-import { TableRowDamage } from "@components/Encounter/TableRowDamage";
+import { RowDamage } from "../TableDamage/RowDamage";
 
-export function EncounterTableDamage() {
+export function TableShields() {
     return (
-        <table id="EncounterTable" className="table">
+        <table id="TableShields" className="table">
             <thead>
                 <tr>
-                    <th className="col-5"> Players</th>
-                    <th className="col-1">Dead</th>
-                    <th className="col-1">DMG</th>
-                    <th className="col-1">DPS</th>
-                    <th className="col-1">D%</th>
-                    <th className="col-1">CRIT</th>
-                    <th className="col-1">F.A</th>
-                    <th className="col-1">B.A</th>
+                    <th className="col-5 ps-3"> Players</th>
+                    <th className="col-1 text-center">Dead</th>
+                    <th className="col-1 text-center">DMG</th>
+                    <th className="col-1 text-center">DPS</th>
+                    <th className="col-1 text-center">D%</th>
+                    <th className="col-1 text-center">CRIT</th>
+                    <th className="col-1 text-center">F.A</th>
+                    <th className="col-1 text-center">B.A</th>
                 </tr>
             </thead>
             <tbody>
-                <TableRowDamage
+                <RowDamage
                     iconId={101}
                     Type={"dps"}
                     DpsPercentage={25}
@@ -30,7 +30,7 @@ export function EncounterTableDamage() {
                     FrontAttack={30.1}
                     BackAttack={45.9}
                 />
-                <TableRowDamage
+                <RowDamage
                     iconId={101}
                     Type={"dps"}
                     DpsPercentage={40}
@@ -44,7 +44,7 @@ export function EncounterTableDamage() {
                     FrontAttack={30.1}
                     BackAttack={45.9}
                 />
-                <TableRowDamage
+                <RowDamage
                     iconId={101}
                     Type={"supp"}
                     DpsPercentage={60}
