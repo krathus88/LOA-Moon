@@ -1,31 +1,21 @@
 import "@components/ClassRankings/ClassRankings.css";
+import { ClassSummaryContainer } from "@components/Common/ClassSummary/ClassSummaryContainer";
 import { Loading } from "@components/Common/Loading";
+import { PageHeader } from "@components/Common/PageHeader/PageHeader";
 import { PartySummaryContainer } from "@components/Common/PartySummary/PartySummaryContainer";
 import { SearchFiltersContainer } from "@components/Common/SearchFilters/SearchFiltersContainer";
 import { api } from "@config/axios";
-import { FiltersType, RaidSummaryType } from "@type/HomePageType";
+import { FiltersType, RaidSummaryType } from "@type/EncounterPreviewType";
+import { ENCOUNTER_GROUPS } from "@utils/constants/encounters";
+import { MAP_TO_IMAGE_PAGES } from "@utils/constants/general";
 import { cleanFilters, toQueryString } from "@utils/functions";
 import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ENCOUNTER_GROUPS } from "@utils/constants/encounters";
-import { ClassSummaryContainer } from "@components/Common/ClassSummary/ClassSummaryContainer";
 
 const source = "p-class";
 const defaultEncounter = ENCOUNTER_GROUPS[0].options[0].value;
 const defaultDifficulty = "Normal";
 const defaultOrderBy = "high";
-
-const SvgOne = () => (
-    <svg width="24" height="24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10" />
-    </svg>
-);
-
-const SvgTwo = () => (
-    <svg width="24" height="24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <rect width="20" height="20" x="2" y="2" rx="2" />
-    </svg>
-);
 
 export function Component() {
     const navigate = useNavigate();
@@ -41,7 +31,6 @@ export function Component() {
     const [isActiveSwitch, setIsActiveSwitch] = useState(false);
 
     // Refreshing Page or navigating to page
-    // OR When refreshing page
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
@@ -112,24 +101,15 @@ export function Component() {
 
     return (
         <main>
-            <div className="my-4 mx-3 mx-md-4" id="RaidClassContainer">
+            <PageHeader
+                source="p-class"
+                title="Class Rankings"
+                imgSrc={MAP_TO_IMAGE_PAGES["class"]}
+                isActiveSwitch={isActiveSwitch}
+                setIsActiveSwitch={setIsActiveSwitch}
+            />
+            <div className="my-3 mx-3 mx-md-4" id="RaidClassContainer">
                 <div>
-                    <div
-                        className="toggle-switch"
-                        onClick={() => setIsActiveSwitch(!isActiveSwitch)}>
-                        <div
-                            className={`toggle-option ${
-                                !isActiveSwitch ? "active" : ""
-                            }`}>
-                            <SvgOne />
-                        </div>
-                        <div
-                            className={`toggle-option ${
-                                isActiveSwitch ? "active" : ""
-                            }`}>
-                            <SvgTwo />
-                        </div>
-                    </div>
                     <SearchFiltersContainer
                         source={source}
                         defaultEncounter={defaultEncounter}
@@ -139,7 +119,6 @@ export function Component() {
                         onSubmit={onFilterSubmit}
                     />
                 </div>
-
                 <div>
                     {isLoading && data.length <= 0 ? (
                         <Loading />

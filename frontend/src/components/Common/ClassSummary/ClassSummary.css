@@ -35,7 +35,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 305px;
+    width: 300px;
     height: 100%;
     object-fit: cover;
     z-index: -1;
@@ -69,8 +69,21 @@
     width: fit-content;
     background-color: rgba(0, 0, 0, 0.5);
     padding-left: 0.25rem;
-    padding-right: 0.5rem;
+    padding-right: 0.3rem;
     border-radius: 0.35rem;
+}
+
+#ClassSummaryContainer .c-raid-summary .info > .position {
+    display: none;
+    margin-left: auto;
+    background-color: inherit;
+}
+
+#ClassSummaryContainer .c-raid-summary .info > .position > * {
+    margin-bottom: 0;
+    padding: 0.1rem 0.5rem;
+    border-radius: 0.35rem;
+    background-color: rgba(0, 0, 0, 0.5);
 }
 
 #ClassSummaryContainer .c-raid-summary .info > h5 {
@@ -79,7 +92,7 @@
     text-overflow: ellipsis;
 }
 
-#ClassSummaryContainer .c-raid-summary .info > h5 > span {
+#ClassSummaryContainer .c-raid-summary .info > h5 > span:first-child {
     padding: 0.15rem;
     margin-right: 0.25rem;
     background-color: rgba(214, 0, 0, 0.5);
@@ -121,8 +134,7 @@
 
 #ClassSummaryContainer .c-raid-summary .player-data .c-container {
     width: 100%;
-
-    margin-top: 0.75rem;
+    margin-top: 0.15rem;
     padding-right: 0.5rem;
 }
 
@@ -179,8 +191,8 @@
 }
 
 #ClassSummaryContainer .c-raid-summary .player-data .c-player-start img {
-    width: 48px;
-    height: 48px;
+    width: 42px;
+    height: 42px;
 }
 
 #ClassSummaryContainer .c-raid-summary .player-data .c-player-start .name-container {
@@ -202,7 +214,7 @@
     top: 50%;
     transform: translateY(-50%);
     width: 100%;
-    margin-bottom: 0;
+    margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -215,11 +227,7 @@
     .name-container
     > div
     > * {
-    margin-bottom: 0;
-}
-
-#ClassSummaryContainer .c-raid-summary .player-data .c-player-start .name-container .p {
-    color: #e6b18b;
+    margin: 0;
 }
 
 #ClassSummaryContainer
@@ -228,7 +236,7 @@
     .c-player-start
     .name-container
     .subclass {
-    color: #e6b18b;
+    color: var(--spec-color);
     font-weight: 500;
 }
 
@@ -263,8 +271,8 @@
     .c-player-end-container
     .c-player-mid
     > svg {
-    width: 22px;
-    height: 22px;
+    width: 20px;
+    height: 20px;
 }
 
 #ClassSummaryContainer .c-raid-summary .player-data .c-player-end-container > * {
@@ -307,13 +315,13 @@
 
 @media (max-width: 1150px) {
     #ClassSummaryContainer .c-raid-summary .raid-summary-background {
-        width: 279px;
+        width: 274px;
     }
 }
 
 @media (max-width: 1075px) {
     #ClassSummaryContainer .c-raid-summary .raid-summary-background {
-        width: 260px;
+        width: 255px;
     }
 }
 
@@ -324,7 +332,12 @@
     }
 
     #ClassSummaryContainer .c-raid-summary .raid-summary-background {
-        width: 241px;
+        width: 236px;
+    }
+
+    #ClassSummaryContainer .c-raid-summary .player-data .c-player-start img {
+        width: 36px;
+        height: 36px;
     }
 
     #ClassSummaryContainer .c-raid-summary .player-data .c-player-end-container {
@@ -375,11 +388,6 @@
         display: flex;
         align-self: center;
     }
-
-    #ClassSummaryContainer .c-raid-summary .player-data .c-player-start img {
-        width: 36px;
-        height: 36px;
-    }
 }
 
 @media (max-width: 767px) {
@@ -389,27 +397,96 @@
 }
 
 @media (max-width: 600px) {
-    #ClassSummaryContainer .c-raid-summary .player-data {
+    #ClassSummaryContainer .c-raid-summary {
+        flex-direction: column;
+    }
+
+    #ClassSummaryContainer .c-raid-summary .info .header-bar {
         display: none !important;
+    }
+
+    #ClassSummaryContainer .c-raid-summary .player-data .head {
+        display: none !important;
+    }
+
+    #ClassSummaryContainer
+        .c-raid-summary
+        .player-data
+        .c-container
+        .c-player-row
+        .c-player-start
+        h5 {
+        display: none !important;
+    }
+
+    #ClassSummaryContainer .c-raid-summary .raid-summary-background {
+        width: 350px;
     }
 
     #ClassSummaryContainer .c-raid-summary .info {
         max-width: none;
+        flex-direction: row;
     }
 
-    #ClassSummaryContainer .c-raid-summary .info > div {
-        flex-direction: row-reverse;
-        justify-content: start;
-        align-items: end;
-        gap: 3rem;
+    #ClassSummaryContainer .c-raid-summary .info > .position {
+        display: block;
     }
 
-    #ClassSummaryContainer .c-raid-summary .raid-summary-background {
-        top: 0;
-        right: 0;
-        left: auto;
-        clip-path: polygon(21% 0, 100% 0, 100% 100%, 0 100%);
-        width: 350px;
+    #ClassSummaryContainer .c-raid-summary .player-data .c-container {
+        margin-top: 0;
+    }
+
+    #ClassSummaryContainer .c-raid-summary .player-data .c-container .c-player-row {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+
+    #ClassSummaryContainer
+        .c-raid-summary
+        .player-data
+        .c-container
+        .c-player-row
+        .c-player-start
+        img {
+        width: 28px;
+        height: 28px;
+    }
+
+    #ClassSummaryContainer
+        .c-raid-summary
+        .player-data
+        .c-container
+        .c-player-row
+        .c-player-end-container {
+        padding-left: 0.5rem;
+        min-width: 130px;
+        max-width: 130px;
+        grid-template-columns: auto 18px;
+        margin-left: auto;
+    }
+
+    #ClassSummaryContainer .c-raid-summary .player-data .c-player-end-container .dps {
+        min-width: 100px;
+        max-width: 100px;
+    }
+
+    #ClassSummaryContainer
+        .c-raid-summary
+        .player-data
+        .c-player-end-container
+        .death-container {
+        width: 18px;
+    }
+
+    #ClassSummaryContainer
+        .c-raid-summary
+        .player-data
+        .c-player-end-container
+        .death-container
+        > svg {
+        width: 18px;
+        height: 18px;
     }
 }
 

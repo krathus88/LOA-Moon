@@ -4,6 +4,7 @@ const MAP_TO_IMAGE: Readonly<{
     classes: Readonly<Record<number, string>>;
     raids: Readonly<Record<string, string>>;
     faq: Readonly<Record<string, string>>;
+    pages: Readonly<Record<string, string>>;
     other: Readonly<Record<string, string>>;
 }> = {
     classes: {
@@ -78,6 +79,12 @@ const MAP_TO_IMAGE: Readonly<{
         sync_encounter: "https://i.postimg.cc/xdNn4fb5/FAQ-Sync-Encounter.webp",
         character_manager: "https://i.postimg.cc/5ynhtTCj/FAQ-Character-Manager.webp",
     },
+    pages: {
+        latest: "https://i.postimg.cc/90yLFw9f/Page-Latest.webp",
+        class: "https://i.postimg.cc/FKnsF7b3/Page-Class.png",
+        party: "https://i.postimg.cc/9f4tQq5j/Page-Party.webp",
+        faq: "https://i.postimg.cc/gJnj3vcg/Page-FAQ.webp",
+    },
     other: {
         "default-avatar": "https://i.postimg.cc/WzWmmB02/default-avatar.webp",
         logo: "https://i.postimg.cc/Pf2Mkw9B/logo.png",
@@ -94,5 +101,7 @@ export const MAP_TO_IMAGE_CLASSES = MAP_TO_IMAGE.classes;
 export const MAP_TO_IMAGE_RAIDS = MAP_TO_IMAGE.raids;
 
 export const MAP_TO_IMAGE_FAQ = MAP_TO_IMAGE.faq;
+
+export const MAP_TO_IMAGE_PAGES = MAP_TO_IMAGE.pages;
 
 export const MAP_TO_IMAGE_OTHER = MAP_TO_IMAGE.other;

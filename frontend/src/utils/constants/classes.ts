@@ -1,4 +1,6 @@
-export const SUPP_MAP: ReadonlyMap<number, string> = new Map<number, string>([
+import { PlayerRoleType } from "@type/GeneralType";
+
+export const SUPP_MAP: ReadonlyMap<number, string> = new Map<number, PlayerRoleType>([
     [105, "supp"],
     [204, "supp"],
     [602, "supp"],

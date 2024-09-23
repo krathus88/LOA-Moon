@@ -27,6 +27,12 @@ const PartyRankingsPage = lazy(() =>
     }))
 );
 
+const EncounterPage = lazy(() =>
+    import("@pages/EncounterPage").then((module) => ({
+        default: module.Component,
+    }))
+);
+
 const FaqPage = lazy(() =>
     import("@pages/FaqPage").then((module) => ({
         default: module.Component,
@@ -75,10 +81,7 @@ const router = createBrowserRouter([
             },
             {
                 path: "/encounter/:encounter_id",
-                async lazy() {
-                    const { Component } = await import("@pages/EncounterPage");
-                    return { loader: Component.loader, Component };
-                },
+                element: <EncounterPage />,
             },
             {
                 path: "/profile",

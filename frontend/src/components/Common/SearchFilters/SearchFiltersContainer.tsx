@@ -1,5 +1,6 @@
 import { Button } from "@mui/material";
-import { FiltersSourceType, FiltersType } from "@type/HomePageType";
+import { FiltersType } from "@type/EncounterPreviewType";
+import { SourceType } from "@type/GeneralType";
 import { CLASS_ID_TO_CLASS_NAME, SUBCLASS_GROUPS } from "@utils/constants/classes";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
@@ -67,7 +68,7 @@ const SelectStyle: StylesConfig = {
 };
 
 type SearchFiltersContainerProps = {
-    source: FiltersSourceType;
+    source: SourceType;
     defaultEncounter: string;
     defaultDifficulty: string;
     defaultOrderBy: string;

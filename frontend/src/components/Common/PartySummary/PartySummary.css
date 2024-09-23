@@ -83,7 +83,7 @@
 #PartySummaryContainer .raid-summary .info > h5 > span {
     padding: 0.15rem;
     margin-right: 0.25rem;
-    background-color: rgba(214, 0, 0, 0.5);
+    background-color: var(--gate-bg-color);
 }
 
 #PartySummaryContainer .raid-summary .info svg {
@@ -157,7 +157,7 @@
 }
 
 #PartySummaryContainer .raid-summary .player-data .player-row .name span {
-    color: #e6b18b;
+    color: var(--spec-color);
     font-weight: 500;
 }
 

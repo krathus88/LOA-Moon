@@ -9,6 +9,22 @@
 
 [data-bs-theme="dark"] {
     --bs-body-bg: #1c1c1f; /* Dark theme color */
+
+    --general-btn-bg-color: #dd8050;
+    --general-btn-bg-hover-color: rgb(221, 128, 80, 0.8);
+
+    --boss-hp-color: #ff9797;
+    --clear-time-color: #bbffbb;
+    --clear-date-color: #97dfff;
+    --gate-bg-color: rgba(214, 0, 0, 0.5);
+    --spec-color: #e6b18b;
+
+    --dps-bg-color: rgba(91, 33, 40, 0.75);
+    --dps-hover-color: rgba(91, 33, 40, 0.55);
+    --dps-border-color: rgba(91, 33, 40, 0.85);
+    --supp-bg-color: rgba(255, 227, 201, 0.5);
+    --supp-hover-color: rgba(255, 227, 201, 0.4);
+    --supp-border-color: rgba(255, 227, 201, 0.2);
 }
 
 #root {

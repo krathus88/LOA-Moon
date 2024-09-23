@@ -84,6 +84,7 @@ def format_db_data(data: List[UploadLogBody]):
         max_boss_hp = None
         player_count = 0
         player_data = []
+
         for _, entity in log_entry["entities"].items():
             # Check if it's a Boss
             if entity["npcId"] > 0:
@@ -163,13 +164,20 @@ def format_db_data(data: List[UploadLogBody]):
                     "party_num": party_num,
                     "display_name": should_display_name,
                     "local_player": is_local_player,
-                    "total_damage": entity["damageStats"]["damageDealt"],
+                    "counters": entity["skillStats"]["counters"],
                     "casts": entity["skillStats"]["casts"],
                     "hits": entity["skillStats"]["hits"],
                     "crits": entity["skillStats"]["crits"],
-                    "back_attacks": entity["skillStats"]["backAttacks"],
-                    "front_attacks": entity["skillStats"]["frontAttacks"],
-                    "counters": entity["skillStats"]["counters"],
+                    "dmg_total": entity["damageStats"]["damageDealt"],
+                    "dmg_back_attacks": entity["damageStats"]["backAttackDamage"],
+                    "dmg_front_attacks": entity["damageStats"]["frontAttackDamage"],
+                    "dmg_debuffed_supp_brand": entity["damageStats"][
+                        "debuffedBySupport"
+                    ],
+                    "dmg_buffed_supp_ap": entity["damageStats"]["buffedBySupport"],
+                    "dmg_buffed_supp_identity": entity["damageStats"][
+                        "buffedByIdentity"
+                    ],
                     "buffs": entity["damageStats"]["buffedBy"],
                     "debuffs": entity["damageStats"]["debuffedBy"],
                     "skills": entity["skills"],
@@ -184,11 +192,13 @@ def format_db_data(data: List[UploadLogBody]):
         if player_count > 0 and player_count != 12 and player_count % 4 != 0:
             continue
 
-        all_player_data.append(player_data)
-
         # Check if Boss is in encounter_map
         if not npc_id or not max_boss_hp:
             continue
+
+        # WARNING:
+        # MAKE SURE TO DO ALL DATA INVALIDATION ABOVE THIS POINT
+        all_player_data.append(player_data)
 
         formatted_data = {
             "region": log_entry["encounterDamageStats"]["misc"]["region"],

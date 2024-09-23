@@ -5,9 +5,28 @@
     gap: 2.25rem;
 }
 
+#RaidLatestContainer > div:first-child {
+    flex: 1 0 auto;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+}
+
+#RaidLatestContainer > div:last-child {
+    flex: 1 1 1200px;
+}
+
 @media (max-width: 1500px) {
     #RaidLatestContainer {
         flex-direction: column;
         gap: 0.5rem;
+    }
+
+    #RaidLatestContainer > div:first-child {
+        width: 100%;
+        max-width: 1200px;
+        margin-left: auto;
+        margin-right: auto;
+        flex-direction: column-reverse;
     }
 }

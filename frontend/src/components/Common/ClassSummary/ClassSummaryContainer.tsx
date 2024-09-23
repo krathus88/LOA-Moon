@@ -1,13 +1,14 @@
 import { Loading } from "@components/Common/Loading";
 import { api } from "@config/axios";
-import { FiltersType, RaidSummaryType } from "@type/HomePageType";
+import { FiltersType, RaidSummaryType } from "@type/EncounterPreviewType";
+import { SourceType } from "@type/GeneralType";
 import { toQueryString } from "@utils/functions";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ClassSummary } from "./ClassSummary";
 import "./ClassSummary.css";
 
 type ClassSummaryContainerProps = {
-    source: string;
+    source: SourceType;
     filters: Partial<FiltersType>;
     isLoading: boolean;
     hasError: boolean;

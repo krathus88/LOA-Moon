@@ -1,25 +1,230 @@
-#ControllersContainer {
+/* EncounterInfo */
+#EncounterPage #EncounterInfo {
     display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
 }
 
-#EncounterHeader .encounter-info > button,
-#EncounterHeader .encounter-info > h4 {
+#EncounterPage #EncounterInfo > div > * {
+    margin-bottom: 0;
+}
+
+#EncounterPage #EncounterInfo > div:first-child h4 {
+    white-space: nowrap;
     margin-left: 0.5rem;
-    margin-right: 0.5rem;
-    margin-bottom: 0rem;
-    margin-top: 0rem;
-}
-#EncounterTable {
-    --bs-table-bg: none;
-    margin-top: 5px;
 }
 
-#EncounterTable > thead {
+#EncounterPage #EncounterInfo > div:first-child h4 .gate {
+    padding: 0.15rem 0.25rem;
+    margin-right: 0.25rem;
+    background-color: var(--gate-bg-color);
+}
+
+#EncounterPage #EncounterInfo > div:last-child {
+    display: flex;
+    flex-direction: row;
+    align-self: end;
+    align-items: center;
+    gap: 0.5rem;
+    margin-right: 0.5rem;
+    margin-left: auto;
+}
+
+#EncounterPage #EncounterInfo > div:last-child svg {
+    width: 16px;
+    height: 16px;
+    color: var(--clear-date-color);
+}
+
+/* TableControllers */
+#EncounterPage #TableControllers {
+    display: flex;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+}
+
+#EncounterPage #TableControllers > div:first-child {
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: 0.75rem;
+    margin-right: 0.75rem;
+    width: 100%;
+}
+
+#EncounterPage #TableControllers > div:first-child > div:first-child svg {
+    color: var(--clear-time-color);
+    width: 16px;
+    height: 16px;
+}
+
+#EncounterPage #TableControllers > div:first-child > div span {
+    color: rgb(255, 255, 255, 0.8);
+}
+
+#EncounterPage #TableControllers > div:last-child {
+    margin-left: auto;
+    gap: 0.5rem;
+}
+
+#EncounterPage #TableControllers button {
+    background-color: #dd8050;
+}
+
+#EncounterPage #TableControllers button:hover {
+    background-color: var(--general-btn-bg-hover-color);
+}
+
+/* Table */
+#EncounterPage .table-wrapper {
+    margin-top: 1rem;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    width: 100%; /* Ensure the wrapper takes up the full width */
+}
+
+#EncounterPage .table-damage-container {
+    min-width: max-content; /* Ensure the table's minimum width is its content width */
+    overflow-x: auto;
     background-color: #282830;
 }
 
-#EncounterTable tr img {
+#EncounterPage table {
+    width: 100%;
+}
+
+#EncounterPage table tr {
+    border-bottom-width: 1px;
+}
+
+/* Table Head */
+#EncounterPage table thead tr {
+    border-color: #495057;
+}
+
+#EncounterPage table thead tr th {
+    padding: 0.5rem 0.5rem;
+}
+
+/* Table Body */
+#EncounterPage table tbody {
+    background-color: var(--bs-body-bg);
+}
+
+#EncounterPage table tbody tr:hover {
+    background-color: rgba(50, 50, 50, 0.1);
+}
+
+#EncounterPage table tbody tr td {
+    padding: 0.5rem 0.5rem;
+}
+
+#EncounterPage table tbody tr td p {
+    margin-bottom: 0;
+}
+
+#EncounterPage table tbody tr td:first-child {
+    position: relative;
+}
+
+#EncounterPage table tbody tr td .name-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    position: absolute;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    left: 0.5rem;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+#EncounterPage table tbody tr td .name-container img {
     width: 25px;
     height: 25px;
-    margin-right: 0.5rem;
+    margin-right: 0.25rem;
+}
+
+#EncounterPage table tbody tr td .name-container .name {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 0.25rem;
+}
+
+#EncounterPage table tbody tr td .name-container .subclass {
+    color: var(--spec-color);
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#EncounterPage table tbody tr td .name-container .ms-auto {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: end;
+    width: 16px;
+}
+
+#EncounterPage table tbody tr td .name-container .ms-auto svg {
+    width: 16px;
+    height: 16px;
+}
+
+@media (max-width: 900px) {
+    #EncounterPage #TableControllers {
+        flex-direction: column-reverse;
+        align-items: start;
+    }
+
+    #EncounterPage #TableControllers > div:first-child {
+        justify-content: space-around;
+        width: 100%;
+        padding-right: 1.5rem;
+        margin-top: 0.5rem;
+    }
+
+    #EncounterPage #TableControllers > div:last-child {
+        flex-wrap: wrap;
+        margin-left: 0;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    #EncounterPage #TableControllers > div:last-child button {
+        flex: 1 1 calc(25% - 0.5rem);
+    }
+}
+
+@media (max-width: 600px) {
+    #EncounterPage #EncounterInfo {
+        flex-direction: column;
+        align-items: start;
+        padding-bottom: 0.5rem;
+        margin-bottom: 0.5rem;
+        gap: 1rem;
+    }
+
+    #EncounterPage #EncounterInfo > div:last-child {
+        align-self: auto;
+        margin-left: 1rem;
+    }
+}
+
+@media (max-width: 475px) {
+    #EncounterPage #EncounterInfo > div:last-child {
+        flex-wrap: wrap;
+    }
+
+    #EncounterPage #TableControllers > div:last-child button {
+        flex: 1 1 calc(50% - 0.25rem);
+    }
 }

@@ -1,12 +1,13 @@
 import { CLASS_GROUPS } from "@utils/constants/classes";
 import { MAP_TO_IMAGE_CLASSES } from "@utils/constants/general";
 import { useCallback, useMemo } from "react";
-import Select, { StylesConfig } from "react-select";
+import Select, { GroupBase, StylesConfig } from "react-select";
+import { ClassOptionsType } from "@type/GeneralType";
 
 type ClassProps = {
     value: number | null;
     onChange: (fieldName: string, newValue: number | string) => void;
-    selectStyle: StylesConfig;
+    selectStyle: StylesConfig<ClassOptionsType, false, GroupBase<ClassOptionsType>>;
 };
 
 export function Class({ value, onChange, selectStyle }: ClassProps) {
@@ -23,26 +24,13 @@ export function Class({ value, onChange, selectStyle }: ClassProps) {
         [onChange]
     );
 
-    // Map class options with images
+    // Map class options without JSX in label
     const classOptions = useMemo(() => {
         return CLASS_GROUPS.map((group) => ({
             ...group,
             options: group.options.map((option) => ({
                 ...option,
-                label: (
-                    <div style={{ display: "flex", alignItems: "center" }}>
-                        <img
-                            src={MAP_TO_IMAGE_CLASSES[option.value]} // Class Id
-                            alt={`${option.label} icon`} // Class Name
-                            style={{
-                                width: "24px",
-                                height: "24px",
-                                marginRight: "8px",
-                            }}
-                        />
-                        {option.label}
-                    </div>
-                ),
+                label: option.label,
             })),
         }));
     }, []);
@@ -67,6 +55,20 @@ export function Class({ value, onChange, selectStyle }: ClassProps) {
             value={classSelectValue}
             placeholder="Class"
             styles={selectStyle}
+            formatOptionLabel={(option) => (
+                <div style={{ display: "flex", alignItems: "center" }}>
+                    <img
+                        src={MAP_TO_IMAGE_CLASSES[option.value]} // Class Id
+                        alt={`${option.label} icon`} // Class Name
+                        style={{
+                            width: "24px",
+                            height: "24px",
+                            marginRight: "8px",
+                        }}
+                    />
+                    {option.label}
+                </div>
+            )}
             theme={(theme) => ({
                 ...theme,
                 colors: {

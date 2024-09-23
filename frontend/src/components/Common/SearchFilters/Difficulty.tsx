@@ -1,10 +1,10 @@
-import { FiltersSourceType } from "@type/HomePageType";
+import { SourceType } from "@type/GeneralType";
 import { DIFFICULTY_LEVELS } from "@utils/constants/encounters";
 import { useCallback, useMemo } from "react";
 import Select, { StylesConfig } from "react-select";
 
 type DifficultyProps = {
-    source: FiltersSourceType;
+    source: SourceType;
     selectStyle: StylesConfig;
     value: string | null;
     onChange: (fieldName: string, newValue: string) => void;

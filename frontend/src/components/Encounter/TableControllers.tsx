@@ -1,36 +1,47 @@
+import { ClearTimeIcon } from "@components/Common/Icons/ClearTimeIcon";
+import { Button } from "@mui/material";
+import { EncounterTableType } from "@type/EncounterType";
+
 type TableControllersProps = {
-    onChange: (tableType: string) => void;
+    clearTime: string;
+    totalDmg: string;
+    totalDps: string;
+    onChange: (tableType: EncounterTableType) => void;
 };
 
-export function TableControllers({ onChange }: TableControllersProps) {
+export function TableControllers({
+    clearTime,
+    totalDmg,
+    totalDps,
+    onChange,
+}: TableControllersProps) {
     return (
-        <div id="ControllersContainer">
-            <div className="d-flex align-items-center">
-                <div className="ms-2">Time:{}</div>
-                <div className="ms-2">Total DMG:{}</div>
-                <div className="ms-2">Total DPS:{}</div>
+        <div id="TableControllers">
+            <div className="d-flex ">
+                <div className="d-flex align-items-center">
+                    <ClearTimeIcon />
+                    &nbsp;{clearTime}
+                </div>
+                <div>
+                    <span className="fw-light">Total DMG:</span> {totalDmg}
+                </div>
+                <div>
+                    <span className="fw-light">Total DPS:</span> {totalDps}
+                </div>
             </div>
-            <div className="d-flex ms-auto gap-2">
-                <div
-                    className="btn btn-secondary button-controller"
-                    onClick={() => onChange("damage")}>
+            <div className="d-flex">
+                <Button variant="contained" onClick={() => onChange("damage")}>
                     Damage
-                </div>
-                <div
-                    className="btn btn-secondary button-controller"
-                    onClick={() => onChange("partyBuffs")}>
+                </Button>
+                <Button variant="contained" onClick={() => onChange("partyBuffs")}>
                     Party Buffs
-                </div>
-                <div
-                    className="btn btn-secondary button-controller"
-                    onClick={() => onChange("selfBuffs")}>
+                </Button>
+                <Button variant="contained" onClick={() => onChange("selfBuffs")}>
                     Self Buffs
-                </div>
-                <div
-                    className="btn btn-secondary button-controller"
-                    onClick={() => onChange("shields")}>
+                </Button>
+                <Button variant="contained" onClick={() => onChange("shields")}>
                     Shields
-                </div>
+                </Button>
             </div>
         </div>
     );

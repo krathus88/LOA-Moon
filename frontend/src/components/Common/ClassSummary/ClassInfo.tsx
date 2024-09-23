@@ -1,34 +1,21 @@
 import { DIFFICULTY_COLOR_MAP } from "@utils/constants/encounters";
-import { DeathIcon } from "@components/Common/Icons/DeathIcon";
-import { GearIcon } from "@components/Common/Icons/GearIcon";
-import { BossHpIcon } from "@components/Common/Icons/BossHpIcon";
 
 type ClassInfoProps = {
-    isHeightLarge: boolean;
-    isWidthLarge: boolean;
+    position: number;
     instance_name: string;
     gate: string;
     difficulty: string;
     clear_time: string;
     fight_end_time: string;
-    death_count: number;
-    avg_ilvl: number | null;
-    highest_ilvl: number;
-    max_boss_hp: string;
 };
 
 export function ClassInfo({
-    isHeightLarge,
-    isWidthLarge,
+    position,
     instance_name,
     gate,
     difficulty,
     clear_time,
     fight_end_time,
-    death_count,
-    avg_ilvl,
-    highest_ilvl,
-    max_boss_hp,
 }: ClassInfoProps) {
     const difficultyColor =
         DIFFICULTY_COLOR_MAP.get(difficulty) || "rgb(222, 226, 230)"; // Default to white if not found
@@ -38,32 +25,11 @@ export function ClassInfo({
             <h5>
                 <span className="rounded-3">{gate}</span>
                 {instance_name}
+                <small className="fw-light" style={{ color: difficultyColor }}>
+                    &nbsp;[{difficulty}]
+                </small>
             </h5>
-            <small className="fw-light mb-1" style={{ color: difficultyColor }}>
-                {difficulty}
-            </small>
-            <div className="mt-auto mb-1">
-                {(isHeightLarge || !isWidthLarge) && (
-                    <div>
-                        <ul>
-                            <li>
-                                <DeathIcon />{" "}
-                                <small className="fw-light">{death_count}</small>
-                            </li>
-                            <li>
-                                <GearIcon />{" "}
-                                <small className="fw-light">
-                                    {avg_ilvl !== null ? avg_ilvl : "N/A"} (
-                                    {highest_ilvl})
-                                </small>
-                            </li>
-                            <li style={{ color: "#ff9797" }}>
-                                <BossHpIcon />{" "}
-                                <small className="fw-light">{max_boss_hp}</small>
-                            </li>
-                        </ul>
-                    </div>
-                )}
+            <div className="header-bar mt-auto mb-1">
                 <div>
                     <div style={{ color: "#bbffbb" }}>
                         <svg
@@ -100,6 +66,9 @@ export function ClassInfo({
                         <small className="fw-light">{fight_end_time}</small>
                     </div>
                 </div>
+            </div>
+            <div className="position">
+                <p># {position}</p>
             </div>
         </div>
     );
