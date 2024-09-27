@@ -138,7 +138,7 @@ encounter_map = {
     "Thaemine, Conqueror of Stars": {
         "gate": "G4",
         "instance": "Thaemine",
-        "difficulty": ["The First"],
+        "difficulty": ["Hard", "The First"],
     },
     ## Echidna
     # G1
