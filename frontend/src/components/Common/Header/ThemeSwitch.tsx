@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import { MoonIcon } from "@icons/MoonIcon";
-import { SunIcon } from "@icons/SunIcon";
 
 export function ThemeSwitch() {
     const [theme, setTheme] = useState(() => {
@@ -19,19 +17,23 @@ export function ThemeSwitch() {
 
     return (
         <div className="d-flex align-items-center me-3" id="themeSwitch">
-            <SunIcon />
-            <span style={{ marginRight: "7px" }}></span>
-            <div className="form-check form-switch">
-                <input
-                    className="form-check-input"
-                    type="checkbox"
-                    id="flexSwitchCheck"
-                    checked={theme === "dark"}
-                    onChange={toggleTheme}
-                />
-                <label className="form-check-label" htmlFor="flexSwitchCheck"></label>
-            </div>
-            <MoonIcon />
+            <input
+                type="checkbox"
+                id="toggle_checkbox"
+                checked={theme === "dark"}
+                onChange={toggleTheme}
+            />
+            <label htmlFor="toggle_checkbox">
+                <div id="star">
+                    <div className="star" id="star-1">
+                        ★
+                    </div>
+                    <div className="star" id="star-2">
+                        ★
+                    </div>
+                </div>
+                <div id="moon"></div>
+            </label>
         </div>
     );
 }

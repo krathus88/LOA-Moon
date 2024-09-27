@@ -17,7 +17,7 @@
 }
 
 #ClassSummaryContainer > li:hover {
-    opacity: 0.75;
+    opacity: 0.85;
 }
 
 #ClassSummaryContainer .c-raid-summary {
@@ -35,7 +35,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    width: 300px;
+    width: 363px;
     height: 100%;
     object-fit: cover;
     z-index: -1;
@@ -73,17 +73,38 @@
     border-radius: 0.35rem;
 }
 
-#ClassSummaryContainer .c-raid-summary .info > .position {
+#ClassSummaryContainer .c-raid-summary .info > .small-region-position {
     display: none;
-    margin-left: auto;
     background-color: inherit;
+    margin-left: auto;
 }
 
-#ClassSummaryContainer .c-raid-summary .info > .position > * {
-    margin-bottom: 0;
-    padding: 0.1rem 0.5rem;
+#ClassSummaryContainer .c-raid-summary .info .small-region-position .region,
+#ClassSummaryContainer .c-raid-summary .info .small-region-position .position {
+    display: flex;
+    flex-direction: row;
+    align-self: start;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
     border-radius: 0.35rem;
-    background-color: rgba(0, 0, 0, 0.5);
+    padding: 0 0.5rem;
+    height: 27px;
+}
+
+#ClassSummaryContainer .c-raid-summary .info .small-region-position .region {
+    color: var(--region-color);
+}
+
+#ClassSummaryContainer .c-raid-summary .info .small-region-position .region > * {
+    margin-bottom: 0;
+}
+
+#ClassSummaryContainer .c-raid-summary .info .small-region-position .region > p {
+    margin-left: 0.35rem;
+}
+
+#ClassSummaryContainer .c-raid-summary .info .small-region-position .position > * {
+    margin-bottom: 0;
 }
 
 #ClassSummaryContainer .c-raid-summary .info > h5 {
@@ -124,12 +145,14 @@
 #ClassSummaryContainer .c-raid-summary .player-data > .head {
     background-color: #000000;
     border-top-right-radius: 0.5rem;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 1% 100%);
-    padding-left: 5rem;
-    padding-right: 5rem;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 1.5% 100%);
+    padding-left: 2rem;
+    padding-right: 2rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    width: 95%;
+    align-self: end;
 }
 
 #ClassSummaryContainer .c-raid-summary .player-data .c-container {
@@ -313,15 +336,21 @@
     }
 }
 
+@media (max-width: 1250px) {
+    #ClassSummaryContainer .c-raid-summary .raid-summary-background {
+        width: 355px;
+    }
+}
+
 @media (max-width: 1150px) {
     #ClassSummaryContainer .c-raid-summary .raid-summary-background {
-        width: 274px;
+        width: 327px;
     }
 }
 
 @media (max-width: 1075px) {
     #ClassSummaryContainer .c-raid-summary .raid-summary-background {
-        width: 255px;
+        width: 304px;
     }
 }
 
@@ -332,7 +361,7 @@
     }
 
     #ClassSummaryContainer .c-raid-summary .raid-summary-background {
-        width: 236px;
+        width: 282px;
     }
 
     #ClassSummaryContainer .c-raid-summary .player-data .c-player-start img {
@@ -394,6 +423,10 @@
     #ClassSummaryContainer .c-raid-summary .player-data .c-container {
         padding-left: 0.25rem;
     }
+
+    #ClassSummaryContainer .c-raid-summary .raid-summary-background {
+        width: 272px;
+    }
 }
 
 @media (max-width: 600px) {
@@ -428,8 +461,10 @@
         flex-direction: row;
     }
 
-    #ClassSummaryContainer .c-raid-summary .info > .position {
-        display: block;
+    #ClassSummaryContainer .c-raid-summary .info > .small-region-position {
+        display: flex;
+        flex-direction: row;
+        gap: 0.5rem;
     }
 
     #ClassSummaryContainer .c-raid-summary .player-data .c-container {

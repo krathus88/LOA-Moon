@@ -29,4 +29,8 @@
         margin-right: auto;
         flex-direction: column-reverse;
     }
+
+    #RaidLatestContainer > div:last-child {
+        flex: 1 1 auto;
+    }
 }

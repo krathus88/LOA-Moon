@@ -1,7 +1,9 @@
-import { FiltersType } from "@type/EncounterPreviewType";
-import { SUPP_MAP } from "@utils/constants/classes";
 import { api } from "@config/axios";
+import { FiltersType } from "@type/EncounterPreviewType";
+import { EncounterPlayerDataType } from "@type/EncounterType";
 import { PlayerRoleType } from "@type/GeneralType";
+import { SUPP_MAP } from "@utils/constants/classes";
+import { MAP_TO_IMAGE_OTHER, SKILL_ICON_BASE_URL } from "./constants/general";
 
 export const getCookie = (name: string): string | undefined => {
     let cookieValue: string | undefined = undefined; // Start with undefined
@@ -121,6 +123,63 @@ export function chunkArrayIntoParties<T>(array: T[], chunkSize: number): T[][] {
     return result;
 }
 
+export function groupPlayersByParty(
+    playersData: EncounterPlayerDataType[]
+): Record<number, EncounterPlayerDataType[]> {
+    return playersData.reduce((parties, player) => {
+        // Ensure that the party_num is a number
+        const partyNum = player.party_num;
+
+        // Check if the party doesn't already exist, if not, initialize it
+        if (!parties[partyNum]) {
+            parties[partyNum] = []; // Initialize with an empty array
+        }
+
+        // Add the player to the appropriate party
+        parties[partyNum].push(player);
+
+        return parties; // Return the accumulated parties
+    }, {} as Record<number, EncounterPlayerDataType[]>); // Explicitly specify the return type
+}
+
 export const getPlayerType = (classId: number): PlayerRoleType => {
     return (SUPP_MAP.get(classId) as PlayerRoleType) || "dps";
+};
+
+export const getIconVariants = (icon_path: string) => {
+    // Check if icon_path == 'default'
+    if (icon_path == "default" || !icon_path) {
+        return [MAP_TO_IMAGE_OTHER["default-skill"]];
+    }
+
+    // Look for Arcana Cards
+    if (icon_path.startsWith("ar_carddeck_tooltip_")) {
+        // Change to "AR_CardDeck_ToolTip_" + number part of the original icon_path
+        const numberPart = icon_path.slice(19); // Extract the part after "ar_carddeck_tooltip_"
+        const transformedPath = `AR_CardDeck_ToolTip${numberPart}`;
+        return [`${SKILL_ICON_BASE_URL}${transformedPath}`];
+    }
+
+    // Generate different possible formats for the icon
+    const baseVariants = [
+        icon_path, // Direct replacement if it matches
+        icon_path
+            .split("_")
+            .map((part, index) =>
+                index === 0
+                    ? part.toUpperCase()
+                    : part.charAt(0).toUpperCase() + part.slice(1).toLowerCase()
+            )
+            .join("_"), // Fully capitalize first word into Snake Case following words
+        icon_path
+            .split("_")
+            .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+            .join("_"), // Capitalize first letter of each word in Snake Case
+        icon_path.charAt(0).toUpperCase() + icon_path.slice(1).toLowerCase(), // Capitalize first letter
+        icon_path.toUpperCase(), // All uppercase
+        icon_path.toLowerCase(), // All lowercase
+        MAP_TO_IMAGE_OTHER["default-skill"],
+    ];
+
+    return baseVariants.map((name) => `${SKILL_ICON_BASE_URL}${name}`);
 };

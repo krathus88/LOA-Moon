@@ -17,7 +17,7 @@ header > nav #Logo:hover {
 
 header > nav #Logo h1 {
     font-size: 40px;
-    vertical-align: middle;
+    align-self: center;
 }
 
 header > nav #Logo {
@@ -35,17 +35,111 @@ header h1 {
     margin-bottom: 0;
 }
 
-header #themeSwitch {
-    margin-top: 5px;
-    position: absolute;
-    top: 50%;
-    right: 0;
-    transform: translateY(-60%);
-}
-
 header nav .navbar-collapse ul hr {
     margin: 0.25rem auto;
     width: 80%;
+}
+
+header #themeSwitch {
+    position: absolute;
+    right: 0;
+    user-select: none;
+}
+
+header #themeSwitch #toggle_checkbox {
+    display: none;
+    overflow: hidden;
+}
+
+header #themeSwitch label {
+    display: block;
+    position: absolute;
+    width: 70px; /* Updated width */
+    height: 36px; /* Updated height */
+    background-color: #9fccff;
+    border-radius: 56px;
+    cursor: pointer;
+    transition: 0.3s ease background-color;
+    overflow: hidden;
+    transform: translateX(-100%);
+}
+
+header #themeSwitch #star {
+    position: absolute;
+    top: 13px; /* Adjusted if necessary for new size */
+    left: 13px; /* Adjusted if necessary for new size */
+    width: 30px; /* Adjusted if necessary for new size */
+    height: 30px; /* Adjusted if necessary for new size */
+    background-color: #fafd0f;
+    transform: scale(1);
+    border-radius: 50%;
+    transition: 0.3s ease top, 0.3s ease left, 0.3s ease transform,
+        0.3s ease background-color;
+    z-index: 1;
+}
+
+header #themeSwitch #star-1 {
+    position: relative;
+}
+
+header #themeSwitch #star-2 {
+    position: absolute;
+    transform: rotateZ(36deg);
+}
+
+header #themeSwitch .star {
+    top: 0;
+    left: -7px;
+    font-size: 54px; /* Adjusted if necessary for new size */
+    line-height: 28px; /* Adjusted if necessary for new size */
+    color: #fafd0f;
+    transition: 0.3s ease color;
+}
+
+header #themeSwitch #moon {
+    position: absolute;
+    bottom: -24px; /* Adjust bottom positioning as needed */
+    right: 10px; /* Keep this as is or adjust */
+    width: 22px; /* Decrease width */
+    height: 22px; /* Decrease height */
+    background-color: #fff;
+    border-radius: 50%;
+    transition: 0.3s ease bottom;
+}
+
+header #themeSwitch #moon:before {
+    content: "";
+    position: absolute;
+    top: -5px; /* Adjust as necessary */
+    left: -8px; /* Adjust as necessary */
+    width: 22px; /* Match the moon's width */
+    height: 22px; /* Match the moon's height */
+    background-color: #9fccff;
+    border-radius: 50%;
+    transition: 0.3s ease background-color;
+}
+
+header #themeSwitch #toggle_checkbox:checked + label {
+    background-color: #000;
+}
+
+header #themeSwitch #toggle_checkbox:checked + label #star {
+    top: -2px; /* Adjusted based on new size */
+    left: 26px; /* Adjusted based on new size */
+    transform: scale(0.15);
+    background-color: yellow;
+}
+
+header #themeSwitch #toggle_checkbox:checked + label .star {
+    color: yellow;
+}
+
+header #themeSwitch #toggle_checkbox:checked + label #moon {
+    bottom: 6px; /* Adjusted based on new size */
+}
+
+header #themeSwitch #toggle_checkbox:checked + label #moon:before {
+    background-color: #000;
 }
 
 @media (min-width: 768px) {
@@ -65,13 +159,9 @@ header nav .navbar-collapse ul hr {
     }
 }
 
-@media (max-width: 450px) {
+@media (max-width: 525px) {
     header > nav > div.mx-auto {
         margin-left: 0 !important;
-    }
-
-    header > nav #Logo img {
-        display: none;
     }
 
     header > nav #Logo h1 {
@@ -80,5 +170,11 @@ header nav .navbar-collapse ul hr {
 
     header #themeSwitch {
         margin-right: 0.5rem !important;
+    }
+}
+
+@media (max-width: 399px) {
+    header > nav #Logo img {
+        display: none;
     }
 }

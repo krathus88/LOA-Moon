@@ -81,6 +81,7 @@ export const ENCOUNTER_GROUPS = [
         options: [
             { value: "vykas_g1", label: "Vykas - G1" },
             { value: "vykas_g2", label: "Vykas - G2" },
+            { value: "vykas_g3", label: "Vykas - G3 | Inferno" },
         ],
     },
     {

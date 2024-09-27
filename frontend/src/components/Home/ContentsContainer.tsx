@@ -8,9 +8,9 @@ export function ContentsContainer() {
     return (
         <div id="ContentsContainer">
             <Contents
-                label="Recent Uploads"
+                label="Latest Uploads"
                 url="/latest"
-                imgUrl={MAP_TO_IMAGE_OTHER["latest2"]}>
+                imgUrl={MAP_TO_IMAGE_OTHER["latest"]}>
                 <LatestBackground2 />
             </Contents>
             <Contents

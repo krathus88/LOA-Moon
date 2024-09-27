@@ -5,8 +5,10 @@ import { ClassInfo } from "./ClassInfo";
 import { ClassPlayerData } from "./ClassPlayerData";
 
 type ClassSummaryProps = {
+    liKey: string;
     position: number;
     encounter_id: number;
+    region: string;
     instance_name: string;
     gate: string;
     difficulty: string;
@@ -20,8 +22,10 @@ type ClassSummaryProps = {
 };
 
 export function ClassSummary({
+    liKey,
     position,
     encounter_id,
+    region,
     instance_name,
     gate,
     difficulty,
@@ -37,7 +41,7 @@ export function ClassSummary({
 
     return (
         <Link
-            className="c-raid-summary pb-1 shadow rounded-3 no-link"
+            className={`c-raid-summary pb-1 shadow rounded-3 no-link ${liKey}`}
             to={`/encounter/${encounter_id}`}>
             {/* Raid Wallpaper */}
             <img
@@ -47,6 +51,7 @@ export function ClassSummary({
             />
             <ClassInfo
                 position={position}
+                region={region}
                 instance_name={instance_name}
                 gate={gate}
                 difficulty={difficulty}
@@ -54,6 +59,8 @@ export function ClassSummary({
                 fight_end_time={fight_end_time}
             />
             <ClassPlayerData
+                liKey={liKey}
+                region={region}
                 position={position}
                 isHeightLarge={isHeightLarge}
                 max_boss_hp={max_boss_hp}

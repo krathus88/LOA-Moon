@@ -8,9 +8,6 @@ from authentication.services import TokenAuth
 from encounter.models import Encounter, EncounterPlayers, EncounterPlayerData
 from .services import decompress_data, format_db_data, associate_characters_with_user
 
-import json
-import os
-
 
 router = Router()
 
@@ -119,8 +116,6 @@ def upload_log(request):
                     buffs=player_entry["buffs"],
                     debuffs=player_entry["debuffs"],
                     skills=player_entry["skills"],
-                    shields=player_entry["shields"],
-                    absorbs=player_entry["absorbs"],
                 )
             except IntegrityError:
                 return HttpResponse(f"Error saving Encounter Player Data.", status=500)

@@ -26,8 +26,7 @@ export function Header() {
                         <h1 className="font-special">{SITE_NAME}</h1>
                     </Navbar.Brand>
                 </div>
-
-                <ThemeSwitch />
+                {/* <ThemeSwitch /> */}
                 <Navbar.Toggle
                     aria-controls="responsive-navbar-nav"
                     onClick={() => setExpanded(expanded ? false : true)}

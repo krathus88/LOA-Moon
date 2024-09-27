@@ -1,18 +1,6 @@
 import "./PageHeader.css";
 import { SourceType } from "@type/GeneralType";
 
-const SvgOne = () => (
-    <svg width="24" height="24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="12" cy="12" r="10" />
-    </svg>
-);
-
-const SvgTwo = () => (
-    <svg width="24" height="24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-        <rect width="20" height="20" x="2" y="2" rx="2" />
-    </svg>
-);
-
 type PageHeaderType = {
     source?: SourceType;
     title: string;
@@ -35,26 +23,17 @@ export function PageHeader({
                     <img src={imgSrc} />
                     <h3>{title}</h3>
                 </div>
-                <div>
-                    {source == "p-class" && setIsActiveSwitch && (
-                        <div
-                            className="toggle-switch"
-                            onClick={() => setIsActiveSwitch(!isActiveSwitch)}>
-                            <div
-                                className={`toggle-option ${
-                                    !isActiveSwitch ? "active" : ""
-                                }`}>
-                                <SvgOne />
-                            </div>
-                            <div
-                                className={`toggle-option ${
-                                    isActiveSwitch ? "active" : ""
-                                }`}>
-                                <SvgTwo />
+                {source == "p-class" && setIsActiveSwitch && (
+                    <div
+                        className="wrapper"
+                        onClick={() => setIsActiveSwitch(!isActiveSwitch)}>
+                        <div className="box">
+                            <div className="container">
+                                <input type="checkbox" />
                             </div>
                         </div>
-                    )}
-                </div>
+                    </div>
+                )}
             </div>
         </div>
     );

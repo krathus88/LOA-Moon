@@ -1,12 +1,15 @@
-import { PartyPlayer } from "./PartyPlayer";
-import { chunkArrayIntoParties } from "@utils/functions";
-import { getPlayerType } from "@utils/functions";
-import { PlayerDataType } from "@type/EncounterPreviewType";
 import { BossHpIcon } from "@components/Common/Icons/BossHpIcon";
-import { GearIcon } from "@components/Common/Icons/GearIcon";
 import { DeathIcon } from "@components/Common/Icons/DeathIcon";
+import { GearIcon } from "@components/Common/Icons/GearIcon";
+import { PlayerDataType } from "@type/EncounterPreviewType";
+import { chunkArrayIntoParties, getPlayerType } from "@utils/functions";
+import { ItemTooltip } from "../ItemTooltip";
+import { PartyPlayer } from "./PartyPlayer";
+import { WorldIcon } from "../Icons/WorldIcon";
 
 type PartyPlayerDataProps = {
+    liKey: string;
+    region: string;
     isHeightLarge: boolean;
     max_boss_hp: string;
     avg_ilvl: number;
@@ -16,6 +19,8 @@ type PartyPlayerDataProps = {
 };
 
 export function PartyPlayerData({
+    liKey,
+    region,
     isHeightLarge,
     max_boss_hp,
     avg_ilvl,
@@ -31,13 +36,17 @@ export function PartyPlayerData({
             style={{ marginTop: isHeightLarge ? "0.5rem" : undefined }}>
             {/* Header Bar */}
             <div className={`head ${isHeightLarge ? "hidden-i" : ""}`}>
+                <small style={{ color: "var(--region-color)" }}>
+                    <WorldIcon />
+                    <small className="fw-light tt-region"> {region}</small>
+                </small>
                 <small style={{ color: "var(--boss-hp-color)" }}>
                     <BossHpIcon />
-                    <small className="fw-light"> {max_boss_hp}</small>
+                    <small className="fw-light tt-boss-hp"> {max_boss_hp}</small>
                 </small>
                 <small>
                     <GearIcon />
-                    <small className="fw-light">
+                    <small className="fw-light tt-ilvl">
                         {" "}
                         {avg_ilvl !== null ? avg_ilvl : "N/A"} ({highest_ilvl})
                     </small>
@@ -67,6 +76,11 @@ export function PartyPlayerData({
                     </ul>
                 ))}
             </div>
+            <ItemTooltip anchorTo={`.${liKey} .tt-region`}>Region</ItemTooltip>
+            <ItemTooltip anchorTo={`.${liKey} .tt-boss-hp`}>Boss Total HP</ItemTooltip>
+            <ItemTooltip anchorTo={`.${liKey} .tt-ilvl`}>
+                Average iLvl (Max iLvl)
+            </ItemTooltip>
         </div>
     );
 }

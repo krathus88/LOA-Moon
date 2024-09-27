@@ -18,12 +18,11 @@
 }
 
 #PartySummaryContainer > li:hover {
-    opacity: 0.75;
+    opacity: 0.85;
 }
 
 #PartySummaryContainer .raid-summary {
-    min-height: 145px;
-    /* background-color: #282830; */
+    min-height: 120px;
     background-color: #222229;
     position: relative;
     display: flex;
@@ -66,6 +65,10 @@
     margin-left: 0.5rem;
 }
 
+#PartySummaryContainer .raid-summary .info .difficulty-s {
+    display: none;
+}
+
 #PartySummaryContainer .raid-summary .info > * {
     width: fit-content;
     background-color: rgba(0, 0, 0, 0.5);
@@ -80,7 +83,7 @@
     text-overflow: ellipsis;
 }
 
-#PartySummaryContainer .raid-summary .info > h5 > span {
+#PartySummaryContainer .raid-summary .info > h5 > .gate {
     padding: 0.15rem;
     margin-right: 0.25rem;
     background-color: var(--gate-bg-color);
@@ -113,8 +116,8 @@
     background-color: #000000;
     border-top-right-radius: 0.5rem;
     clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%, 0 100%, 1% 100%);
-    padding-left: 5rem;
-    padding-right: 5rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -218,6 +221,14 @@
 
     #PartySummaryContainer .raid-summary .info {
         max-width: none;
+    }
+
+    #PartySummaryContainer .raid-summary .info .difficulty-l {
+        display: none;
+    }
+
+    #PartySummaryContainer .raid-summary .info .difficulty-s {
+        display: inline;
     }
 
     #PartySummaryContainer .raid-summary .info > div {

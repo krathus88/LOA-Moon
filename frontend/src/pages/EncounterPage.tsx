@@ -2,10 +2,7 @@ import { Loading } from "@components/Common/Loading";
 import "@components/Encounter/Encounter.css";
 import { EncounterInfo } from "@components/Encounter/EncounterInfo";
 import { TableControllers } from "@components/Encounter/TableControllers";
-import { TableDamage } from "@components/Encounter/TableDamage/TableDamage";
-import { TablePartyBuffs } from "@components/Encounter/TablePartyBuffs/TablePartyBuffs";
-import { TableSelfBuffs } from "@components/Encounter/TableSelfBuffs/TableSelfBuffs";
-import { TableShields } from "@components/Encounter/TableShields/TableShields";
+import { TablesContainer } from "@components/Encounter/TablesContainer";
 import { api } from "@config/axios";
 import { EncounterTableType, EncounterType } from "@type/EncounterType";
 import { useEffect, useState } from "react";
@@ -20,6 +17,8 @@ export function Component() {
     const [encounterData, setEncounterData] = useState<EncounterType | undefined>(
         undefined
     );
+    const [isPartyView, setIsPartyView] = useState(false); // Toggle between "party view" and "all players view"
+    const [hasFailed, setHasFailed] = useState(false);
 
     // Refreshing Page or navigating to page
     useEffect(() => {
@@ -29,8 +28,8 @@ export function Component() {
                 const fetchedData = result.data;
 
                 setEncounterData(fetchedData);
-            } catch (error) {
-                console.error(error);
+            } catch {
+                setHasFailed(true);
             }
         };
 
@@ -42,10 +41,19 @@ export function Component() {
         setActiveTable(tableType);
     };
 
+    // Toggle between the views
+    const toggleView = () => {
+        setIsPartyView((prevView) => !prevView);
+    };
+
     return (
         <main id="EncounterPage">
-            <div className="container-xl container-fluid-md my-4">
-                {encounterData ? (
+            <div className="container-xl container-fluid-md my-3">
+                {hasFailed ? (
+                    <div className="text-center mt-5">
+                        <p>Something went wrong. Please try again later. </p>
+                    </div>
+                ) : encounterData ? (
                     <div>
                         <EncounterInfo
                             difficulty={encounterData.difficulty}
@@ -57,21 +65,17 @@ export function Component() {
                             clearTime={encounterData.clear_time}
                             totalDmg={encounterData.total_damage}
                             totalDps={encounterData.total_dps}
+                            numParties={encounterData.num_parties}
+                            activeTable={activeTable}
+                            isPartyView={isPartyView}
                             onChange={handleTableChange}
+                            toggleView={toggleView}
                         />
-                        <div className="table-wrapper">
-                            {activeTable === "damage" && (
-                                <TableDamage playersData={encounterData.player_data} />
-                            )}
-                            {activeTable === "partyBuffs" && (
-                                <>
-                                    <TablePartyBuffs />
-                                    <TablePartyBuffs />
-                                </>
-                            )}
-                            {activeTable === "selfBuffs" && <TableSelfBuffs />}
-                            {activeTable === "shields" && <TableShields />}
-                        </div>
+                        <TablesContainer
+                            activeTable={activeTable}
+                            encounterData={encounterData}
+                            isPartyView={isPartyView}
+                        />
                     </div>
                 ) : (
                     <Loading />

@@ -22,10 +22,10 @@ export function PartyPlayer({
     is_dead,
     type,
 }: PartyPlayerProps) {
-    let color = "var(--dps-bg-color)";
+    let color = "var(--dps-bg-image-color)";
     let borderColor = "var(--dps-border-color)";
     if (type === "supp") {
-        color = "var(--supp-bg-color)";
+        color = "var(--supp-bg-image-color)";
         borderColor = "var(--supp-border-color)";
     }
 

@@ -1,64 +1,53 @@
-import { RowDamage } from "../TableDamage/RowDamage";
+import { EncounterPlayerDataType, EncounterSynergyDataType } from "@type/EncounterType";
+import { getPlayerType } from "@utils/functions";
+import { RowHeaderPartyBuffs } from "./RowHeaderPartyBuffs";
+import { RowPartyBuffs } from "./RowPartyBuffs";
 
-export function TablePartyBuffs() {
+type TablePartyBuffsProps = {
+    partyNum: number;
+    synergyData: EncounterSynergyDataType[];
+    playersData: EncounterPlayerDataType[];
+};
+
+export function TablePartyBuffs({
+    partyNum,
+    synergyData,
+    playersData,
+}: TablePartyBuffsProps) {
     return (
-        <table id="TablePartyBuffs" className="table">
-            <thead>
-                <tr>
-                    <th className="col-5 ps-3"> Partyx</th>
-                    <th className="col-1 text-center">XD</th>
-                    <th className="col-1 text-center">DMG</th>
-                    <th className="col-1 text-center">DPS</th>
-                    <th className="col-1 text-center">D%</th>
-                    <th className="col-1 text-center">CRIT</th>
-                    <th className="col-1 text-center">F.A</th>
-                    <th className="col-1 text-center">B.A</th>
-                </tr>
-            </thead>
-            <tbody>
-                <RowDamage
-                    iconId={101}
-                    Type={"dps"}
-                    DpsPercentage={25}
-                    PlayerClass={"Rogue"}
-                    PlayerName={"Zeezee"}
-                    Dead={""}
-                    Damage={"234k"}
-                    DPS={"12k"}
-                    DamageShare={12}
-                    CritRate={26.3}
-                    FrontAttack={30.1}
-                    BackAttack={45.9}
-                />
-                <RowDamage
-                    iconId={101}
-                    Type={"dps"}
-                    DpsPercentage={40}
-                    PlayerClass={"Rogue"}
-                    PlayerName={"Zeezee"}
-                    Dead={""}
-                    Damage={"234k"}
-                    DPS={"12k"}
-                    DamageShare={12}
-                    CritRate={26.3}
-                    FrontAttack={30.1}
-                    BackAttack={45.9}
-                />
-                <RowDamage
-                    iconId={101}
-                    Type={"supp"}
-                    DpsPercentage={60}
-                    PlayerClass={"Rogue"}
-                    PlayerName={"Zeezee"}
-                    Dead={""}
-                    Damage={"234k"}
-                    DPS={"12k"}
-                    DamageShare={12}
-                    CritRate={26.3}
-                    FrontAttack={30.1}
-                    BackAttack={45.9}
-                />
-            </tbody>
-        </table>
+        <div className="table-party-buffs-container rounded shadow">
+            <table id="TablePartyBuffs">
+                <colgroup>
+                    <col style={{ minWidth: "175px" }}></col>
+                    {synergyData.map((_, index) => (
+                        <col width="70" key={index}></col>
+                    ))}
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th className="ps-3">Players</th>
+                        {synergyData.map((synergy, index) => (
+                            <RowHeaderPartyBuffs
+                                key={index}
+                                keyValue={`p${partyNum}-${index}`}
+                                synergy={synergy}
+                            />
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {playersData.map((player, index) => (
+                        <RowPartyBuffs
+                            key={index}
+                            keyValue={`p${player.party_num}-${index}`}
+                            type={getPlayerType(player.class_id)}
+                            playerData={player}
+                            synergyData={synergyData}
+                            partyNum={partyNum}
+                        />
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 }
