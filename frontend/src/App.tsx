@@ -3,6 +3,12 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { Layout } from "@components/Common/Layout";
 import { AuthProvider } from "@components/Authentication/AuthContext";
 
+const ErrorPage = lazy(() =>
+    import("@pages/ErrorPage").then((module) => ({
+        default: module.Component,
+    }))
+);
+
 const HomePage = lazy(() =>
     import("@pages/HomePage").then((module) => ({
         default: module.Component,
@@ -58,6 +64,7 @@ const router = createBrowserRouter([
                 <Layout />
             </AuthProvider>
         ),
+        errorElement: <ErrorPage />,
         children: [
             {
                 path: "/",

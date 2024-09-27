@@ -1,13 +1,17 @@
-import { DIFFICULTY_COLOR_MAP } from "@utils/constants/encounters";
+import { BossHpIcon } from "@components/Common/Icons/BossHpIcon";
 import { DeathIcon } from "@components/Common/Icons/DeathIcon";
 import { GearIcon } from "@components/Common/Icons/GearIcon";
-import { BossHpIcon } from "@components/Common/Icons/BossHpIcon";
-import { ClearTimeIcon } from "../Icons/ClearTimeIcon";
+import { DIFFICULTY_COLOR_MAP } from "@utils/constants/encounters";
 import { ClearDateIcon } from "../Icons/ClearDateIcon";
+import { ClearTimeIcon } from "../Icons/ClearTimeIcon";
+import { ItemTooltip } from "../ItemTooltip";
+import { WorldIcon } from "../Icons/WorldIcon";
 
 type PartyInfoProps = {
+    liKey: string;
     isHeightLarge: boolean;
     isWidthLarge: boolean;
+    region: string;
     instance_name: string;
     gate: string;
     difficulty: string;
@@ -20,8 +24,10 @@ type PartyInfoProps = {
 };
 
 export function PartyInfo({
+    liKey,
     isHeightLarge,
     isWidthLarge,
+    region,
     instance_name,
     gate,
     difficulty,
@@ -38,10 +44,18 @@ export function PartyInfo({
     return (
         <div className="info">
             <h5>
-                <span className="rounded-3">{gate}</span>
+                <span className="gate rounded-3">{gate}</span>
                 {instance_name}
+                <span
+                    className="difficulty-s fw-light"
+                    style={{ color: difficultyColor }}>
+                    {" "}
+                    [{difficulty}]
+                </span>
             </h5>
-            <small className="fw-light mb-1" style={{ color: difficultyColor }}>
+            <small
+                className="difficulty-l fw-light mb-1"
+                style={{ color: difficultyColor }}>
                 {difficulty}
             </small>
             <div className="mt-auto mb-1">
@@ -54,19 +68,25 @@ export function PartyInfo({
                             </li>
                             <li>
                                 <GearIcon />{" "}
-                                <small className="fw-light">
+                                <small className="fw-light tt-s-ilvl">
                                     {avg_ilvl !== null ? avg_ilvl : "N/A"} (
                                     {highest_ilvl})
                                 </small>
                             </li>
                             <li style={{ color: "var(--boss-hp-color)" }}>
                                 <BossHpIcon />{" "}
-                                <small className="fw-light">{max_boss_hp}</small>
+                                <small className="fw-light tt-s-boss-hp">
+                                    {max_boss_hp}
+                                </small>
                             </li>
                         </ul>
                     </div>
                 )}
                 <div>
+                    <div className="region" style={{ color: "var(--region-color)" }}>
+                        <WorldIcon />
+                        <small className="fw-light"> {region}</small>
+                    </div>
                     <div style={{ color: "var(--clear-time-color)" }}>
                         <ClearTimeIcon />
                         <small className="fw-light"> {clear_time}</small>
@@ -77,6 +97,12 @@ export function PartyInfo({
                     </div>
                 </div>
             </div>
+            <ItemTooltip anchorTo={`.${liKey} .tt-s-boss-hp`}>
+                Boss Total HP
+            </ItemTooltip>
+            <ItemTooltip anchorTo={`.${liKey} .tt-s-ilvl`}>
+                Average iLvl (Max iLvl)
+            </ItemTooltip>
         </div>
     );
 }

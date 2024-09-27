@@ -92,3 +92,38 @@ def discord_logout(request):
         return JsonResponse({"error": "No social token found for user"}, status=400)
     except Exception as e:
         return JsonResponse({"error": str(e)}, status=400)
+
+
+""" import gzip
+import binascii
+import json
+import io
+
+
+@router.post("/read-gzip")
+def read_gzip(request, hex_str: str):
+    # Remove newlines and extra spaces
+    hex_string = hex_str.replace("\n", "").replace(" ", "")
+
+    try:
+        # Convert hex string to binary data
+        binary_data = binascii.unhexlify(hex_string)
+
+        # Decompress the binary data using gzip
+        with gzip.GzipFile(fileobj=io.BytesIO(binary_data), mode="rb") as gzip_file:
+            decompressed_data = gzip_file.read()
+
+        # Attempt to parse JSON from the decompressed data
+        body = json.loads(decompressed_data)
+
+        # Ensure the body is a dictionary (not a list)
+        if not isinstance(body, dict):
+            return {"error": "Invalid JSON format, expected a dictionary"}
+
+        # Return the decompressed dictionary
+        return body
+
+    except (binascii.Error, gzip.BadGzipFile, json.JSONDecodeError) as e:
+        # Return a proper error response if decompression or parsing fails
+        return {"error": f"Error processing request: {str(e)}"}
+ """

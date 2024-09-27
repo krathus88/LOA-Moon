@@ -1,8 +1,8 @@
+import { ContentsContainer } from "@components/Home/ContentsContainer";
 import "@components/Home/Home.css";
 import { Button } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { ContentsContainer } from "@components/Home/ContentsContainer";
 import { MAP_TO_IMAGE_OTHER } from "@utils/constants/general";
+import { useNavigate } from "react-router-dom";
 
 export function Component() {
     const navigate = useNavigate();

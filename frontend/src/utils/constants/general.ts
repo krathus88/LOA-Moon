@@ -1,7 +1,11 @@
 export const SITE_NAME = "LOA Moon";
 
+export const SKILL_ICON_BASE_URL =
+    "https://raw.githubusercontent.com/krathus88/meter-data/refs/heads/main/images/";
+
 const MAP_TO_IMAGE: Readonly<{
     classes: Readonly<Record<number, string>>;
+    "classes-bg": Readonly<Record<number, string>>;
     raids: Readonly<Record<string, string>>;
     faq: Readonly<Record<string, string>>;
     pages: Readonly<Record<string, string>>;
@@ -51,6 +55,9 @@ const MAP_TO_IMAGE: Readonly<{
         603: "https://i.postimg.cc/vB73n2PB/603.png",
         604: "https://i.postimg.cc/8c1wmd3b/604.png",
     },
+    "classes-bg": {
+        404: "https://i.postimg.cc/1tpvMh7Y/BG-Reaper-Icon.webp",
+    },
     raids: {
         // Legion Raids
         Valtan: "https://i.postimg.cc/PJrzwXp3/Valtan.webp",
@@ -87,16 +94,18 @@ const MAP_TO_IMAGE: Readonly<{
     },
     other: {
         "default-avatar": "https://i.postimg.cc/WzWmmB02/default-avatar.webp",
+        "default-skill": "https://i.postimg.cc/fLxLpyxs/default-skill.webp",
         logo: "https://i.postimg.cc/Pf2Mkw9B/logo.png",
         wallpaper: "https://i.postimg.cc/nzQPDjfB/BG-Wallpaper.jpg",
-        latest: "https://i.postimg.cc/NjWVfjmV/BG-Aegir.webp",
-        latest2: "https://i.postimg.cc/C1XyddJf/BG-Echidna.webp",
+        latest: "https://i.postimg.cc/C1XyddJf/BG-Echidna.webp",
         "class-rankings": "https://i.postimg.cc/wTFgvLjr/BG-Aeromancer.webp",
         "party-rankings": "https://i.postimg.cc/d0w2BMY3/BG-Berserker.webp",
     },
 };
 
 export const MAP_TO_IMAGE_CLASSES = MAP_TO_IMAGE.classes;
+
+export const MAP_TO_IMAGE_CLASSES_BG = MAP_TO_IMAGE["classes-bg"];
 
 export const MAP_TO_IMAGE_RAIDS = MAP_TO_IMAGE.raids;
 

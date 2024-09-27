@@ -27,7 +27,7 @@ export function Component() {
     const [filters, setFilters] = useState<Partial<FiltersType>>({});
     const [isLoading, setIsLoading] = useState(true); // If data is loading, fetching or not
     const [noResults, setNoResults] = useState(false); // If no results found after fetch
-    const [hasError, setHasError] = useState(false);
+    const [hasFailed, setHasFailed] = useState(false);
     const [isActiveSwitch, setIsActiveSwitch] = useState(false);
 
     // Refreshing Page or navigating to page
@@ -62,7 +62,7 @@ export function Component() {
                 setDisplayedData(fetchedData.slice(0, 10));
                 setNoResults(fetchedData.length === 0);
             } catch {
-                setHasError(true);
+                setHasFailed(true);
             } finally {
                 // Reset loading state once data is set
                 setIsLoading(false);
@@ -76,7 +76,7 @@ export function Component() {
     const onFilterSubmit = useCallback(
         (filters: Partial<FiltersType>) => {
             setIsLoading(true);
-            setHasError(false); // Reset error state back to none for new data fetch
+            setHasFailed(false); // Reset error state back to none for new data fetch
 
             const cleanedFilters = cleanFilters(filters);
             const queryString = filters ? `?${toQueryString(cleanedFilters)}` : "";
@@ -128,7 +128,7 @@ export function Component() {
                                 source={source}
                                 filters={filters}
                                 isLoading={isLoading}
-                                hasError={hasError}
+                                hasFailed={hasFailed}
                                 data={data}
                                 dataLength={dataLength}
                                 displayedData={displayedData}
@@ -146,7 +146,7 @@ export function Component() {
                                 source={source}
                                 filters={filters}
                                 isLoading={isLoading}
-                                hasError={hasError}
+                                hasFailed={hasFailed}
                                 data={data}
                                 dataLength={dataLength}
                                 displayedData={displayedData}

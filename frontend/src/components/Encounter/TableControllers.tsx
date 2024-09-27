@@ -6,14 +6,22 @@ type TableControllersProps = {
     clearTime: string;
     totalDmg: string;
     totalDps: string;
+    numParties: number;
+    activeTable: EncounterTableType;
+    isPartyView: boolean;
     onChange: (tableType: EncounterTableType) => void;
+    toggleView: () => void;
 };
 
 export function TableControllers({
     clearTime,
     totalDmg,
     totalDps,
+    numParties,
+    activeTable,
+    isPartyView,
     onChange,
+    toggleView,
 }: TableControllersProps) {
     return (
         <div id="TableControllers">
@@ -30,18 +38,21 @@ export function TableControllers({
                 </div>
             </div>
             <div className="d-flex">
-                <Button variant="contained" onClick={() => onChange("damage")}>
-                    Damage
-                </Button>
-                <Button variant="contained" onClick={() => onChange("partyBuffs")}>
-                    Party Buffs
-                </Button>
-                <Button variant="contained" onClick={() => onChange("selfBuffs")}>
-                    Self Buffs
-                </Button>
-                <Button variant="contained" onClick={() => onChange("shields")}>
-                    Shields
-                </Button>
+                {numParties > 1 && activeTable === "damage" && (
+                    <div className="view-toggle-container">
+                        <Button variant="contained" onClick={toggleView}>
+                            {isPartyView ? "Players View" : "Party View"}
+                        </Button>
+                    </div>
+                )}
+                <div className="contents-container">
+                    <Button variant="contained" onClick={() => onChange("damage")}>
+                        Damage
+                    </Button>
+                    <Button variant="contained" onClick={() => onChange("partyBuffs")}>
+                        Party Buffs
+                    </Button>
+                </div>
             </div>
         </div>
     );

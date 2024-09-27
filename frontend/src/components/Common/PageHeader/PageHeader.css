@@ -14,10 +14,6 @@
     align-items: end;
 }
 
-#PageHeader > div > div:last-child {
-    margin-left: auto;
-}
-
 #PageHeader > div > div:first-child img {
     height: 75px;
 }
@@ -26,23 +22,91 @@
     margin-left: 0.5rem;
 }
 
+/* Toggle Switch */
+#PageHeader .wrapper {
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: end;
+}
+
+#PageHeader .wrapper .container {
+    border-radius: 0.3em;
+    position: relative;
+}
+
+#PageHeader .wrapper input[type="checkbox"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    cursor: pointer;
+    outline: none;
+    height: 40px;
+    width: 150px;
+    background-color: #000000;
+    -webkit-transform: skewX(-7deg);
+    -ms-transform: skewX(-7deg);
+    transform: skewX(-7deg);
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+}
+#PageHeader .wrapper input[type="checkbox"]:before {
+    content: "Player";
+    position: absolute;
+    width: 5em;
+    height: 30px;
+    background-color: #2d2936;
+    color: #a0a0a0;
+    top: 0.3em;
+    left: 0.3em;
+    -webkit-transition: 0.3s;
+    -o-transition: 0.3s;
+    transition: 0.3s;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    font-family: "Poppins", sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+#PageHeader .wrapper input[type="checkbox"]:checked {
+    background: -o-linear-gradient(315deg, #8175fe, #89befe);
+    background: linear-gradient(135deg, #8175fe, #89befe);
+}
+#PageHeader .wrapper input[type="checkbox"]:checked:before {
+    content: "Party";
+    left: 4.1em;
+    color: #89befe;
+}
+
 @media (max-width: 1500px) {
     #PageHeader {
         max-width: 1200px;
     }
 }
 
-@media (max-width: 475px) {
+@media (max-width: 525px) {
     #PageHeader > div {
         flex-direction: column;
-        align-items: start;
-    }
-
-    #PageHeader > div > div:last-child {
-        margin-left: 0;
+        align-items: center;
     }
 
     #PageHeader > div > div:last-child > div {
         margin-top: 1rem;
+    }
+
+    #PageHeader .wrapper {
+        margin-right: auto;
     }
 }

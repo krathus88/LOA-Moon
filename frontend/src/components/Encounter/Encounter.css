@@ -69,8 +69,28 @@
     gap: 0.5rem;
 }
 
+#EncounterPage #TableControllers > div:last-child .view-toggle-container {
+    align-self: center;
+}
+
+#EncounterPage #TableControllers > div:last-child .view-toggle-container button {
+    align-self: center;
+    background-color: var(--supp-bg-image-color);
+}
+
+#EncounterPage #TableControllers > div:last-child .contents-container {
+    display: flex;
+    gap: 0.5rem;
+}
+
+#EncounterPage #TableControllers > div:last-child .contents-container {
+    display: flex;
+    gap: 0.5rem;
+}
+
 #EncounterPage #TableControllers button {
     background-color: #dd8050;
+    width: 135px;
 }
 
 #EncounterPage #TableControllers button:hover {
@@ -84,7 +104,7 @@
     width: 100%; /* Ensure the wrapper takes up the full width */
 }
 
-#EncounterPage .table-damage-container {
+#EncounterPage .table-wrapper > div {
     min-width: max-content; /* Ensure the table's minimum width is its content width */
     overflow-x: auto;
     background-color: #282830;
@@ -110,6 +130,10 @@
 /* Table Body */
 #EncounterPage table tbody {
     background-color: var(--bs-body-bg);
+}
+
+#EncounterPage table tbody tr {
+    cursor: pointer;
 }
 
 #EncounterPage table tbody tr:hover {
@@ -179,6 +203,71 @@
     height: 16px;
 }
 
+/* Table Breakdown */
+#EncounterPage .table-damage-breakdown-row {
+    cursor: auto;
+    background-color: rgba(50, 50, 50, 0.1);
+}
+
+#EncounterPage .table-damage-breakdown-row > td {
+    padding-top: 0.25rem;
+}
+
+#EncounterPage .table-damage-breakdown-row > td .info-breakdown {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+#EncounterPage .table-damage-breakdown-row > td .arcana-info-breakdown {
+    margin: 0.5rem 0.5rem 0.25rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+}
+
+#EncounterPage .table-damage-breakdown-container,
+#EncounterPage .table-arcana-cards-container {
+    min-width: max-content;
+    overflow-x: auto;
+    background-color: #282830;
+}
+
+#EncounterPage .table-damage-breakdown-container table tr,
+#EncounterPage .table-arcana-cards-container table tr {
+    cursor: auto;
+}
+
+#EncounterPage .table-damage-breakdown-container table tbody tr {
+    background-color: var(--skill-bg-color);
+}
+
+#EncounterPage .table-damage-breakdown-container table tbody tr:hover {
+    background-color: var(--skill-bg-hover-color);
+}
+
+#EncounterPage table tbody tr td .skill-name-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#EncounterPage table tbody tr td .skill-name-container img {
+    width: 25px;
+    height: 25px;
+    margin-right: 0.25rem;
+}
+
+/* Table Arcana Cards */
+#EncounterPage #TableArcanaCards tbody tr td {
+    padding: 0.25rem 0.5rem;
+}
+
+/* Table Party Buffs */
+#EncounterPage #TablePartyBuffs thead tr th img {
+    width: 21px;
+    height: 21px;
+}
+
 @media (max-width: 900px) {
     #EncounterPage #TableControllers {
         flex-direction: column-reverse;
@@ -196,11 +285,23 @@
         flex-wrap: wrap;
         margin-left: 0;
         justify-content: space-between;
+        flex-direction: column-reverse;
         width: 100%;
+        margin-bottom: 0.5rem;
     }
 
     #EncounterPage #TableControllers > div:last-child button {
         flex: 1 1 calc(25% - 0.5rem);
+    }
+
+    #EncounterPage #TableControllers > div:last-child .view-toggle-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+
+    #EncounterPage #TableControllers > div:last-child .view-toggle-container button {
+        max-width: 500px;
     }
 }
 

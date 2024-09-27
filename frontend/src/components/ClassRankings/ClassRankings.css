@@ -29,6 +29,10 @@
         margin-right: auto;
         flex-direction: column-reverse;
     }
+
+    #RaidClassContainer > div:last-child {
+        flex: 1 1 auto;
+    }
 }
 
 /* ToggleSwitch.css */

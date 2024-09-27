@@ -16,15 +16,27 @@
     --boss-hp-color: #ff9797;
     --clear-time-color: #bbffbb;
     --clear-date-color: #97dfff;
+    --region-color: #97dfff;
     --gate-bg-color: rgba(214, 0, 0, 0.5);
     --spec-color: #e6b18b;
 
-    --dps-bg-color: rgba(91, 33, 40, 0.75);
+    --dps-bg-image-color: rgba(91, 33, 40, 0.75);
     --dps-hover-color: rgba(91, 33, 40, 0.55);
     --dps-border-color: rgba(91, 33, 40, 0.85);
-    --supp-bg-color: rgba(255, 227, 201, 0.5);
+
+    --supp-bg-image-color: rgba(255, 227, 201, 0.5);
     --supp-hover-color: rgba(255, 227, 201, 0.4);
     --supp-border-color: rgba(255, 227, 201, 0.2);
+
+    --skill-bg-color: rgba(34, 33, 31, 0.25);
+    --skill-bg-hover-color: rgba(34, 33, 31, 0.4);
+    --skill-bg-image-color: rgba(0, 110, 161, 0.75);
+    --skill-hover-color: rgba(0, 110, 161, 0.55);
+    --skill-border-color: rgba(0, 110, 161, 0.4);
+
+    --arcana-bg-image-color: rgba(182, 123, 12, 0.5);
+    --arcana-hover-color: rgba(182, 123, 12, 0.4);
+    --arcana-border-color: rgb(141, 92, 1, 0.5);
 }
 
 #root {
@@ -36,7 +48,7 @@
 html,
 body {
     overflow-x: hidden;
-    transition: background-color 0.5s ease;
+    transition: background-color 0.4s ease;
     font-family: "Roboto", sans-serif;
     font-optical-sizing: auto;
     font-weight: 500;
@@ -64,6 +76,10 @@ header {
     font-weight: 400;
 }
 
+.fw-normal {
+    font-weight: 500;
+}
+
 .fw-bold {
     font-weight: 700;
 }
@@ -72,6 +88,9 @@ header {
     text-shadow: none;
 }
 
+.overflow-true {
+    overflow: visible;
+}
 .not-selectable {
     user-select: none;
     pointer-events: none;

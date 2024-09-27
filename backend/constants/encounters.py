@@ -21,172 +21,150 @@ encounter_map = {
     "Covetous Devourer Vykas": {
         "gate": "G1",
         "instance": "Vykas",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Hard"],
+    },
+    # G1 -- Inferno
+    "Nightmarish Morphe": {
+        "gate": "G1",
+        "instance": "Vykas",
+        "difficulty": ["Inferno"],
     },
     # G2
     "Covetous Legion Commander Vykas": {
         "gate": "G2",
         "instance": "Vykas",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Hard"],
+    },
+    # G2 -- Inferno
+    "Covetous Devourer Vykas": {
+        "gate": "G2",
+        "instance": "Vykas",
+        "difficulty": ["Inferno"],
+    },
+    # G3 -- Inferno
+    "Covetous Legion Commander Vykas": {
+        "gate": "G2",
+        "instance": "Vykas",
+        "difficulty": ["Inferno"],
     },
     ## Clown
     # G1
     "Saydon": {
         "gate": "G1",
         "instance": "Kakul-Saydon",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Inferno"],
     },
     # G2
     "Kakul": {
         "gate": "G2",
         "instance": "Kakul-Saydon",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Inferno"],
     },
     # G3
     "Encore-Desiring Kakul-Saydon": {
         "gate": "G3",
         "instance": "Kakul-Saydon",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Inferno"],
     },
     ## Brelshaza
     # G1
     "Gehenna Helkasirs": {
         "gate": "G1",
         "instance": "Brelshaza",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Hard"],
     },
     # G2
     "Ashtarot": {
         "gate": "G2",
         "instance": "Brelshaza",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Hard"],
     },
     # G3
     "Primordial Nightmare": {
         "gate": "G3",
         "instance": "Brelshaza",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Hard"],
     },
     # G4
     "Phantom Legion Commander Brelshaza": {
         "gate": "G4",
         "instance": "Brelshaza",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Hard", "Inferno"],
     },
     ## Akkan
     # G1
     "Evolved Maurug": {
         "gate": "G1",
         "instance": "Akkan",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Hard"],
     },
     # G2
     "Lord of Degradation Akkan": {
         "gate": "G2",
         "instance": "Akkan",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Hard"],
     },
     # G3
     "Plague Legion Commander Akkan": {
         "gate": "G3",
         "instance": "Akkan",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal"],
     },
     "Lord of Kartheon Akkan": {
         "gate": "G3",
         "instance": "Akkan",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Hard"],
     },
     ## Thaemine
     # G1
     "Killineza the Dark Worshipper": {
         "gate": "G1",
         "instance": "Thaemine",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Hard"],
     },
     # G2
     "Valinak, Herald of the End": {
         "gate": "G2",
         "instance": "Thaemine",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Hard"],
     },
     # G3
     "Thaemine the Lightqueller": {
         "gate": "G3",
         "instance": "Thaemine",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno", "The First"],
-    },
-    "Dark Greatsword": {
-        "gate": "G3",
-        "instance": "Thaemine",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno", "The First"],
+        "difficulty": ["Normal", "Hard"],
     },
     # G4
-    "Darkness Legion Commander Thaemine": {
-        "gate": "G4",
-        "instance": "Thaemine",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno", "The First"],
-    },
-    "Thaemine Prokel": {
-        "gate": "G4",
-        "instance": "Thaemine",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno", "The First"],
-    },
     "Thaemine, Conqueror of Stars": {
         "gate": "G4",
         "instance": "Thaemine",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno", "The First"],
+        "difficulty": ["The First"],
     },
     ## Echidna
     # G1
     "Red Doom Narkiel": {
         "gate": "G1",
         "instance": "Echidna",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
-    },
-    "Agris": {
-        "gate": "G1",
-        "instance": "Echidna",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Hard"],
     },
     # G2
-    "Echidna": {
-        "gate": "G2",
-        "instance": "Echidna",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
-    },
     "Covetous Master Echidna": {
         "gate": "G2",
         "instance": "Echidna",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
-    },
-    "Desire in Full Bloom, Echidna": {
-        "gate": "G2",
-        "instance": "Echidna",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
-    },
-    "Alcaone, the Twisted Venom": {
-        "gate": "G2",
-        "instance": "Echidna",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
-    },
-    "Agris, the Devouring Bog": {
-        "gate": "G2",
-        "instance": "Echidna",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal", "Hard"],
     },
     ## Behemoth
     # G1
     "Behemoth, the Storm Commander": {
         "gate": "G1",
         "instance": "Behemoth",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal"],
     },
     # G2
     "Behemoth, Cruel Storm Slayer": {
         "gate": "G2",
         "instance": "Behemoth",
-        "difficulty": ["Normal", "Hard", "Extreme", "Inferno"],
+        "difficulty": ["Normal"],
     },
     ### Abyssal Dungeons
     ## Kayangel

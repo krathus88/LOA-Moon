@@ -11,7 +11,7 @@ type PartySummaryContainerProps = {
     source: SourceType;
     filters: Partial<FiltersType>;
     isLoading: boolean;
-    hasError: boolean;
+    hasFailed: boolean;
     data: RaidSummaryType[];
     dataLength: number;
     displayedData: RaidSummaryType[];
@@ -31,7 +31,7 @@ export function PartySummaryContainer({
     source,
     filters,
     isLoading,
-    hasError,
+    hasFailed,
     data,
     dataLength,
     displayedData,
@@ -95,7 +95,7 @@ export function PartySummaryContainer({
 
     /* Intersection Observer */
     useEffect(() => {
-        if (isLoading || noResults) return;
+        if (isLoading || noResults || hasFailed) return;
 
         if (observer.current) observer.current.disconnect();
 
@@ -117,38 +117,44 @@ export function PartySummaryContainer({
                 observer.current.disconnect();
             }
         };
-    }, [isLoading, noResults, setIsLoading, setNoResults, loadMoreData]);
+    }, [isLoading, hasFailed, noResults, setIsLoading, setNoResults, loadMoreData]);
 
-    if (isLoading && data.length <= 0 && displayedData.length <= 0) return <Loading />;
+    if (isLoading && data.length <= 0 && displayedData.length <= 0 && !hasFailed)
+        return <Loading />;
 
-    if (noResults && data.length <= 0 && displayedData.length <= 0)
+    if (noResults && data.length <= 0 && displayedData.length <= 0 && !hasFailed)
         return <li className="text-center">No data to show.</li>;
 
     return (
         <>
-            {displayedData.map((entry, index) => (
-                <li key={`g${index + 1}_${entry.encounter_id}`}>
-                    <PartySummary
-                        encounter_id={entry.encounter_id}
-                        instance_name={entry.instance_name}
-                        gate={entry.gate}
-                        difficulty={entry.difficulty}
-                        clear_time={entry.clear_time}
-                        fight_end_time={entry.fight_end}
-                        max_boss_hp={entry.max_boss_hp}
-                        avg_ilvl={entry.avg_ilvl}
-                        highest_ilvl={entry.highest_ilvl}
-                        death_count={entry.death_count}
-                        player_data={entry.player_data}
-                    />
-                </li>
-            ))}
-            {isLoading && displayedData.length >= 0 && (
+            {displayedData.map((entry, index) => {
+                const liKey = `g${index + 1}_${entry.encounter_id}`;
+                return (
+                    <li key={liKey}>
+                        <PartySummary
+                            liKey={liKey}
+                            encounter_id={entry.encounter_id}
+                            region={entry.region}
+                            instance_name={entry.instance_name}
+                            gate={entry.gate}
+                            difficulty={entry.difficulty}
+                            clear_time={entry.clear_time}
+                            fight_end_time={entry.fight_end}
+                            max_boss_hp={entry.max_boss_hp}
+                            avg_ilvl={entry.avg_ilvl}
+                            highest_ilvl={entry.highest_ilvl}
+                            death_count={entry.death_count}
+                            player_data={entry.player_data}
+                        />
+                    </li>
+                );
+            })}
+            {isLoading && displayedData.length >= 0 && !hasFailed && (
                 <li>
                     <Loading />
                 </li>
             )}
-            {hasError ? (
+            {hasFailed ? (
                 <li className="text-center">
                     Oops! An error occurred while fetching data.
                 </li>

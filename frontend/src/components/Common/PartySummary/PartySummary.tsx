@@ -6,7 +6,9 @@ import { PartyInfo } from "./PartyInfo";
 import { PartyPlayerData } from "./PartyPlayerData";
 
 type PartySummaryProps = {
+    liKey: string;
     encounter_id: number;
+    region: string;
     instance_name: string;
     gate: string;
     difficulty: string;
@@ -20,7 +22,9 @@ type PartySummaryProps = {
 };
 
 export function PartySummary({
+    liKey,
     encounter_id,
+    region,
     instance_name,
     gate,
     difficulty,
@@ -58,7 +62,7 @@ export function PartySummary({
 
     return (
         <Link
-            className="raid-summary pb-1 shadow rounded-3 no-link"
+            className={`raid-summary pb-1 shadow rounded-3 no-link ${liKey}`}
             to={`/encounter/${encounter_id}`}
             ref={raidSummaryRef}>
             {/* Raid Wallpaper */}
@@ -68,8 +72,10 @@ export function PartySummary({
                 className="raid-summary-background"
             />
             <PartyInfo
+                liKey={liKey}
                 isHeightLarge={isHeightLarge}
                 isWidthLarge={isWidthLarge}
+                region={region}
                 instance_name={instance_name}
                 gate={gate}
                 difficulty={difficulty}
@@ -81,6 +87,8 @@ export function PartySummary({
                 max_boss_hp={max_boss_hp}
             />
             <PartyPlayerData
+                liKey={liKey}
+                region={region}
                 isHeightLarge={isHeightLarge}
                 max_boss_hp={max_boss_hp}
                 avg_ilvl={avg_ilvl}

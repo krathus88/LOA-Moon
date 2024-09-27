@@ -3,7 +3,6 @@ from ninja.decorators import decorate_view
 from django.views.decorators.cache import cache_page
 from django.db.models import Max
 from django.shortcuts import get_object_or_404
-
 from encounter.models import Encounter, EncounterPlayers
 from constants.encounters import encounter_map
 from .services import (
@@ -11,7 +10,6 @@ from .services import (
     build_encounter_filter_query,
     format_encounter_data,
 )
-from .schemas import EncounterSchema, EncounterPlayerDataSchema
 
 
 router = Router()

@@ -53,8 +53,6 @@ class EncounterPlayerData(models.Model):
     buffs = JSONField(default=dict)
     debuffs = JSONField(default=dict)
     skills = JSONField(default=dict)
-    shields = JSONField(default=dict)
-    absorbs = JSONField(default=dict)
 
     def __str__(self):
         return f"Encounter: {self.player.encounter.id} - Player: {self.player.name} - Damage: {self.total_damage}"

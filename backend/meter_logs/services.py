@@ -9,7 +9,12 @@ from typing import List
 
 from constants.encounters import encounter_map
 from constants.game import patches
-from constants.skill_info import skills_dict, buffs_dict
+from constants.skill_info import (
+    skills_dict,
+    status_effect_dict,
+    items_dict,
+    special_skills_dict,
+)
 from constants.classes import classes_map
 from user.models import Characters
 from .schemas import UploadLogBody, EntitiesType
@@ -180,11 +185,7 @@ def format_db_data(data: List[UploadLogBody]):
                     ],
                     "buffs": entity["damageStats"]["buffedBy"],
                     "debuffs": entity["damageStats"]["debuffedBy"],
-                    "skills": entity["skills"],
-                    "shields": entity["damageStats"].get("shieldsGivenBy", None),
-                    "absorbs": entity["damageStats"].get(
-                        "damageAbsorbedOnOthersBy", None
-                    ),
+                    "skills": filter_valid_skills(entity["skills"]),
                 }
             )
 
@@ -215,6 +216,26 @@ def format_db_data(data: List[UploadLogBody]):
         all_formatted_data.append(formatted_data)
 
     return all_formatted_data, all_player_data, local_players, encounters_info
+
+
+def filter_valid_skills(player_skills):
+    """Filters Player Skills for valid ones that will be stored in the Database"""
+
+    # Combine all valid keys from the dictionaries into a single set
+    valid_keys = (
+        set(skills_dict.keys())
+        .union(items_dict.keys())
+        .union(special_skills_dict.keys())
+    )
+
+    # Initialize a new dictionary for the filtered skills
+    filtered_skills = {}
+
+    for skill_key, skill_value in player_skills.items():
+        if skill_key in valid_keys:
+            filtered_skills[skill_key] = skill_value
+
+    return filtered_skills
 
 
 def associate_characters_with_user(user, character_names_regions):
@@ -253,7 +274,8 @@ def classify_subclass(
 
     def _check_buff(buff_name: str) -> bool:
         buff_names = [
-            buffs_dict.get(buff, {"name": ""})["name"] for buff in player_buffs.keys()
+            status_effect_dict.get(buff, {"name": ""})["name"]
+            for buff in player_buffs.keys()
         ]
         return any([buff_name in name for name in buff_names])
 

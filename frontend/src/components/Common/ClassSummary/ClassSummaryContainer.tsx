@@ -11,7 +11,7 @@ type ClassSummaryContainerProps = {
     source: SourceType;
     filters: Partial<FiltersType>;
     isLoading: boolean;
-    hasError: boolean;
+    hasFailed: boolean;
     data: RaidSummaryType[];
     dataLength: number;
     displayedData: RaidSummaryType[];
@@ -31,7 +31,7 @@ export function ClassSummaryContainer({
     source,
     filters,
     isLoading,
-    hasError,
+    hasFailed,
     data,
     dataLength,
     displayedData,
@@ -95,7 +95,7 @@ export function ClassSummaryContainer({
 
     /* Intersection Observer */
     useEffect(() => {
-        if (isLoading || noResults) return;
+        if (isLoading || noResults || hasFailed) return;
 
         if (observer.current) observer.current.disconnect();
 
@@ -117,11 +117,12 @@ export function ClassSummaryContainer({
                 observer.current.disconnect();
             }
         };
-    }, [isLoading, noResults, setIsLoading, setNoResults, loadMoreData]);
+    }, [isLoading, noResults, hasFailed, setIsLoading, setNoResults, loadMoreData]);
 
-    if (isLoading && data.length <= 0 && displayedData.length <= 0) return <Loading />;
+    if (isLoading && data.length <= 0 && displayedData.length <= 0 && !hasFailed)
+        return <Loading />;
 
-    if (noResults && data.length <= 0 && displayedData.length <= 0)
+    if (noResults && data.length <= 0 && displayedData.length <= 0 && !hasFailed)
         return <li className="text-center">No data to show.</li>;
 
     return (
@@ -139,8 +140,12 @@ export function ClassSummaryContainer({
                                 flaggedPlayer.name
                             }`}>
                             <ClassSummary
+                                liKey={`c${index + 1}_${entry.encounter_id}_${
+                                    flaggedPlayer.class_id
+                                }_${flaggedPlayer.name}`}
                                 position={index}
                                 encounter_id={entry.encounter_id}
+                                region={entry.region}
                                 instance_name={entry.instance_name}
                                 gate={entry.gate}
                                 difficulty={entry.difficulty}
@@ -156,12 +161,12 @@ export function ClassSummaryContainer({
                     )
                 );
             })}
-            {isLoading && displayedData.length >= 0 && (
+            {isLoading && displayedData.length >= 0 && !hasFailed && (
                 <li>
                     <Loading />
                 </li>
             )}
-            {hasError ? (
+            {hasFailed ? (
                 <li className="text-center">
                     Oops! An error occurred while fetching data.
                 </li>

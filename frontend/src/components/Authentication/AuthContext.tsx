@@ -36,6 +36,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             localStorage.setItem("user", JSON.stringify(userData));
         } catch {
             setUser(null);
+            localStorage.removeItem("user");
         } finally {
             setLoading(false);
         }
