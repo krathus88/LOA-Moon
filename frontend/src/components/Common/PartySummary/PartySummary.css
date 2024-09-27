@@ -69,6 +69,10 @@
     display: none;
 }
 
+#PartySummaryContainer .raid-summary .info .region {
+    display: none;
+}
+
 #PartySummaryContainer .raid-summary .info > * {
     width: fit-content;
     background-color: rgba(0, 0, 0, 0.5);
@@ -225,6 +229,10 @@
 
     #PartySummaryContainer .raid-summary .info .difficulty-l {
         display: none;
+    }
+
+    #PartySummaryContainer .raid-summary .info .region {
+        display: block;
     }
 
     #PartySummaryContainer .raid-summary .info .difficulty-s {
