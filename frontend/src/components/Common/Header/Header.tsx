@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { MAP_TO_IMAGE_OTHER, SITE_NAME } from "@utils/constants/general";
 import "./Header.css";
 import { PageTab } from "./PageTab";
-import { ThemeSwitch } from "./ThemeSwitch";
 import { useAuth } from "@components/Authentication/useAuth";
 
 export function Header() {

@@ -1,8 +1,8 @@
 import { DoubleArrowDown } from "@icons/DoubleArrowDown";
 import { FiltersType } from "@type/EncounterPreviewType";
-import { SourceType } from "@type/GeneralType";
+import { ClassOptionsType, SourceType } from "@type/GeneralType";
 import Accordion from "react-bootstrap/Accordion";
-import { StylesConfig } from "react-select";
+import { GroupBase, StylesConfig } from "react-select";
 import { Date } from "./Date";
 import { Difficulty } from "./Difficulty";
 import { Encounter } from "./Encounter";
@@ -12,7 +12,7 @@ import { OrderBy } from "./OrderBy";
 type PartyFiltersContainerProps = {
     source: SourceType;
     formFilters: FiltersType;
-    SelectStyle: StylesConfig;
+    SelectStyle: StylesConfig<ClassOptionsType, boolean, GroupBase<ClassOptionsType>>;
     handleFilterChange: (fieldName: string, newValue: string | number) => void;
 };
 

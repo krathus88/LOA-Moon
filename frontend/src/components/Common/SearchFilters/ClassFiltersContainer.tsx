@@ -1,16 +1,16 @@
 import { DoubleArrowDown } from "@icons/DoubleArrowDown";
 import { FiltersType } from "@type/EncounterPreviewType";
+import { ClassOptionsType, SourceType } from "@type/GeneralType";
 import Accordion from "react-bootstrap/Accordion";
-import { StylesConfig } from "react-select";
+import { GroupBase, StylesConfig } from "react-select";
+import { Class } from "./Class";
 import { Date } from "./Date";
 import { Difficulty } from "./Difficulty";
 import { Encounter } from "./Encounter";
 import { ExpandToggle } from "./ExpandToggle";
 import { OrderBy } from "./OrderBy";
 import { PlayerName } from "./PlayerName";
-import { Class } from "./Class";
 import { Specialization } from "./Specialization";
-import { SourceType } from "@type/GeneralType";
 
 type SpecializationGroupsType = {
     label: string;
@@ -23,7 +23,7 @@ type SpecializationGroupsType = {
 type ClassFiltersContainerProps = {
     source: SourceType;
     formFilters: FiltersType;
-    SelectStyle: StylesConfig;
+    SelectStyle: StylesConfig<ClassOptionsType, boolean, GroupBase<ClassOptionsType>>;
     specializationGroups: SpecializationGroupsType[];
     handleFilterChange: (fieldName: string, newValue: string | number) => void;
 };
@@ -40,9 +40,9 @@ export function ClassFiltersContainer({
             <div id="FilterPlayers">
                 <PlayerName value={formFilters.p_name} onChange={handleFilterChange} />
                 <Class
-                    selectStyle={SelectStyle}
                     value={formFilters.p_class_id}
                     onChange={handleFilterChange}
+                    selectStyle={SelectStyle}
                 />
                 <Specialization
                     specializationGroups={specializationGroups}

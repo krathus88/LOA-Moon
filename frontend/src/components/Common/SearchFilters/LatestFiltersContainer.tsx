@@ -1,8 +1,8 @@
 import { DoubleArrowDown } from "@icons/DoubleArrowDown";
 import { FiltersType } from "@type/EncounterPreviewType";
-import { SourceType } from "@type/GeneralType";
+import { ClassOptionsType, SourceType } from "@type/GeneralType";
 import Accordion from "react-bootstrap/Accordion";
-import { StylesConfig } from "react-select";
+import { GroupBase, StylesConfig } from "react-select";
 import { Class } from "./Class";
 import { Date } from "./Date";
 import { Difficulty } from "./Difficulty";
@@ -22,7 +22,7 @@ type SpecializationGroupsType = {
 type LatestFiltersContainerProps = {
     source: SourceType;
     formFilters: FiltersType;
-    SelectStyle: StylesConfig;
+    SelectStyle: StylesConfig<ClassOptionsType, boolean, GroupBase<ClassOptionsType>>;
     specializationGroups: SpecializationGroupsType[];
     handleFilterChange: (fieldName: string, newValue: string | number) => void;
 };
