@@ -7,7 +7,6 @@ import { Date } from "./Date";
 import { Difficulty } from "./Difficulty";
 import { Encounter } from "./Encounter";
 import { ExpandToggle } from "./ExpandToggle";
-import { OrderBy } from "./OrderBy";
 
 type PartyFiltersContainerProps = {
     source: SourceType;
@@ -59,7 +58,7 @@ export function PartyFiltersContainer({
                     </ExpandToggle>
                     <Accordion.Collapse eventKey="0">
                         <div>
-                            <div id="FilterOrderBy">
+                            {/* <div id="FilterOrderBy">
                                 <OrderBy
                                     value={formFilters.order_by}
                                     onChange={handleFilterChange}
@@ -68,7 +67,7 @@ export function PartyFiltersContainer({
                                     option1_text="Fastest"
                                     option2_text="Slowest"
                                 />
-                            </div>
+                            </div> */}
                         </div>
                     </Accordion.Collapse>
                 </Accordion>

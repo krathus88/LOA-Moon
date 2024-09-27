@@ -8,7 +8,6 @@ import { Date } from "./Date";
 import { Difficulty } from "./Difficulty";
 import { Encounter } from "./Encounter";
 import { ExpandToggle } from "./ExpandToggle";
-import { OrderBy } from "./OrderBy";
 import { PlayerName } from "./PlayerName";
 import { Specialization } from "./Specialization";
 
@@ -87,7 +86,7 @@ export function ClassFiltersContainer({
                         </ExpandToggle>
                         <Accordion.Collapse eventKey="0">
                             <div>
-                                <div id="FilterOrderBy">
+                                {/* <div id="FilterOrderBy">
                                     <OrderBy
                                         value={formFilters.order_by}
                                         onChange={handleFilterChange}
@@ -96,7 +95,7 @@ export function ClassFiltersContainer({
                                         option1_text="Highest"
                                         option2_text="Lowest"
                                     />
-                                </div>
+                                </div> */}
                             </div>
                         </Accordion.Collapse>
                     </Accordion>
