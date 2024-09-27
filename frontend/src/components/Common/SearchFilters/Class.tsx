@@ -1,13 +1,13 @@
+import { ClassOptionsType } from "@type/GeneralType";
 import { CLASS_GROUPS } from "@utils/constants/classes";
 import { MAP_TO_IMAGE_CLASSES } from "@utils/constants/general";
 import { useCallback, useMemo } from "react";
 import Select, { GroupBase, StylesConfig } from "react-select";
-import { ClassOptionsType } from "@type/GeneralType";
 
 type ClassProps = {
     value: number | null;
     onChange: (fieldName: string, newValue: number | string) => void;
-    selectStyle: StylesConfig<ClassOptionsType, false, GroupBase<ClassOptionsType>>;
+    selectStyle: StylesConfig<ClassOptionsType, boolean, GroupBase<ClassOptionsType>>;
 };
 
 export function Class({ value, onChange, selectStyle }: ClassProps) {
@@ -55,10 +55,10 @@ export function Class({ value, onChange, selectStyle }: ClassProps) {
             value={classSelectValue}
             placeholder="Class"
             styles={selectStyle}
-            formatOptionLabel={(option) => (
+            formatOptionLabel={(option: ClassOptionsType) => (
                 <div style={{ display: "flex", alignItems: "center" }}>
                     <img
-                        src={MAP_TO_IMAGE_CLASSES[option.value]} // Class Id
+                        src={MAP_TO_IMAGE_CLASSES[option.value as number]} // Class Id
                         alt={`${option.label} icon`} // Class Name
                         style={{
                             width: "24px",

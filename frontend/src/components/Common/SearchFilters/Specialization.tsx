@@ -1,12 +1,13 @@
+import { ClassOptionsType } from "@type/GeneralType";
 import { useCallback, useMemo } from "react";
-import Select, { StylesConfig } from "react-select";
+import Select, { GroupBase, StylesConfig } from "react-select";
 
 type SpecializationProps = {
     specializationGroups: {
         label: string;
         options: { value: string; label: string }[];
     }[];
-    selectStyle: StylesConfig;
+    selectStyle: StylesConfig<ClassOptionsType, boolean, GroupBase<ClassOptionsType>>;
     value: string | null;
     onChange: (fieldName: string, newValue: string) => void;
 };

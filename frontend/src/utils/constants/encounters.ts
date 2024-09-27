@@ -112,4 +112,4 @@ export const DIFFICULTY_LEVELS = [
     { value: "Inferno", label: "Inferno" },
     { value: "Trial", label: "Trial" },
     { value: "The First", label: "The First" },
-];
+] as const;

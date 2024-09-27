@@ -1,11 +1,11 @@
-import { SourceType } from "@type/GeneralType";
+import { ClassOptionsType, SourceType } from "@type/GeneralType";
 import { DIFFICULTY_LEVELS } from "@utils/constants/encounters";
 import { useCallback, useMemo } from "react";
-import Select, { StylesConfig } from "react-select";
+import Select, { GroupBase, StylesConfig } from "react-select";
 
 type DifficultyProps = {
     source: SourceType;
-    selectStyle: StylesConfig;
+    selectStyle: StylesConfig<ClassOptionsType, boolean, GroupBase<ClassOptionsType>>;
     value: string | null;
     onChange: (fieldName: string, newValue: string) => void;
 };

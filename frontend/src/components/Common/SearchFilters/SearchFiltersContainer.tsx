@@ -4,13 +4,18 @@ import { SourceType } from "@type/GeneralType";
 import { CLASS_ID_TO_CLASS_NAME, SUBCLASS_GROUPS } from "@utils/constants/classes";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { StylesConfig } from "react-select";
+import { GroupBase, StylesConfig } from "react-select";
 import { ClassFiltersContainer } from "./ClassFiltersContainer";
 import { LatestFiltersContainer } from "./LatestFiltersContainer";
 import { PartyFiltersContainer } from "./PartyFiltersContainer";
 import "./SearchFilters.css";
+import { ClassOptionsType } from "@type/GeneralType";
 
-const SelectStyle: StylesConfig = {
+const SelectStyle: StylesConfig<
+    ClassOptionsType,
+    boolean,
+    GroupBase<ClassOptionsType>
+> = {
     control: (base, state) => ({
         ...base,
         color: "var(--bs-body-color)",
