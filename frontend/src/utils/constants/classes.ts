@@ -41,7 +41,7 @@ export const CLASS_ID_TO_CLASS_NAME: ReadonlyMap<number, string> = new Map<
 export const CLASS_SPECS: Readonly<Record<string, ReadonlyArray<string>>> = {
     102: ["Mayhem", "Berserker's Technique"], // Berserker
     103: ["Rage Hammer", "Gravity Training"], // Destroyer
-    104: ["Lone Knight", "Princess Maker"], // Gunlancer
+    104: ["Combat Readiness", "Lone Knight", "Princess Maker"], // Gunlancer
     105: ["Blessed Aura", "Judgment"], // Paladin
     112: ["Predator", "Punisher"], // Slayer
     202: ["Empress's Grace", "Order of the Emperor"], // Arcanist
@@ -144,6 +144,7 @@ export const SUBCLASS_GROUPS = [
     {
         label: "Gunlancer",
         options: [
+            { value: "Combat Readiness", label: "Combat Readiness" },
             { value: "Lone Knight", label: "Lone Knight" },
             { value: "Princess Maker", label: "Princess Maker" },
         ],
