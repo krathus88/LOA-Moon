@@ -152,7 +152,7 @@ encounter_map = {
     "Thaemine the Lightqueller": {
         "gate": "G3",
         "instance": "Thaemine",
-        "difficulty": ["Normal", "Hard"],
+        "difficulty": ["Normal", "Hard", "The First"],
         "num_players": 8,
     },
     # G4
