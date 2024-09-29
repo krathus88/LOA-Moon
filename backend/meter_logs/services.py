@@ -66,23 +66,34 @@ def format_db_data(data: List[UploadLogBody]):
         if not log_entry["localPlayer"] or not log_entry["difficulty"]:
             continue
 
-        # Check if Log is from a an accepted patch
+        # Check if Log is from an accepted patch
         if log_entry["lastCombatPacket"] < patches[-1]:
             continue
 
+        # Check if boss name is allowed
+        boss_info = encounter_map.get(log_entry["currentBossName"])
+        if not boss_info:
+            continue
+
+        boss_name = log_entry["currentBossName"]
+        # If there are multiple accepted boss names for a given encounter
+        if boss_info.get("refers_to"):
+            boss_name = boss_info.get("refers_to")
+            boss_info = boss_info[boss_name]
+
         # Check if the difficulty is one of the accepted difficulties
-        if log_entry["difficulty"] not in encounter_map.get(
-            log_entry["currentBossName"], {}
-        ).get("difficulty", []):
+        if log_entry["difficulty"] not in encounter_map.get(boss_name, {}).get(
+            "difficulty", []
+        ):
             continue
 
         encounter_damage_stats_data = log_entry["encounterDamageStats"]
         party_info = encounter_damage_stats_data["misc"]["partyInfo"]
 
-        # Check if DB table Encounter has multiple of 4 Players (4, 8, 12, 16, etc)
-        if not party_info or not all(
-            len(party) % 4 == 0 for party in party_info.values()
-        ):
+        # Check if it's a valid number of players
+        if not party_info or sum(
+            len(party) for party in party_info.values()
+        ) != encounter_map.get(boss_name, {}).get("num_players", -1):
             continue
 
         npc_id = None
@@ -102,13 +113,6 @@ def format_db_data(data: List[UploadLogBody]):
             # Check if it's a Player
             if entity["classId"] > 0 and entity["entityType"] == "PLAYER":
                 player_count += 1
-
-            # Determine the party_num by checking the player's name in the party_info
-            party_num = 0
-            for p_num, players in party_info.items():
-                if entity["name"] in players:
-                    party_num = int(p_num)
-                    break
 
             is_local_player = entity["name"] == log_entry["localPlayer"]
             if is_local_player:
@@ -151,6 +155,13 @@ def format_db_data(data: List[UploadLogBody]):
             except Characters.DoesNotExist:
                 should_display_name = False
 
+            # Determine the party_num by checking the player's name in the party_info
+            party_num = 0
+            for p_num, players in party_info.items():
+                if entity["name"] in players:
+                    party_num = int(p_num)
+                    break
+
             player_data.append(
                 {
                     "name": entity["name"],
@@ -189,8 +200,10 @@ def format_db_data(data: List[UploadLogBody]):
                 }
             )
 
-        # Check if DB table Entity has multiple of 4 Players (4, 8, 16, etc)
-        if player_count > 0 and player_count != 12 and player_count % 4 != 0:
+        # Check if total num of players is valid
+        if player_count > 0 and player_count != encounter_map.get(boss_name, {}).get(
+            "num_players", -1
+        ):
             continue
 
         # Check if Boss is in encounter_map
@@ -207,7 +220,7 @@ def format_db_data(data: List[UploadLogBody]):
             "fight_end": log_entry["lastCombatPacket"]
             / 1000,  # Convert from milliseconds to seconds
             "fight_duration": log_entry["duration"],
-            "boss_name": log_entry["currentBossName"],
+            "boss_name": boss_name,
             "difficulty": log_entry["difficulty"],
             "max_hp": max_boss_hp,
             "npc_id": npc_id,
