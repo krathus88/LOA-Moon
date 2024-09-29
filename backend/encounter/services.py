@@ -400,13 +400,11 @@ def format_skills_data(
         if skill_info.get("buffedBy"):
             for buff_id, buff_damage in skill_info["buffedBy"].items():
                 # Process damage
-                _, _ = process_status_effect(
-                    "buff", buff_id, buff_damage, skill_synergy_dict
-                )
+                process_status_effect("buff", buff_id, buff_damage, skill_synergy_dict)
         if skill_info.get("debuffedBy"):
             for debuff_id, debuff_damage in skill_info["debuffedBy"].items():
                 # Process damage
-                _, _ = process_status_effect(
+                process_status_effect(
                     "debuff", debuff_id, debuff_damage, skill_synergy_dict
                 )
 
@@ -466,8 +464,8 @@ def format_skills_data(
                 ),
                 "casts": skill_info.get("casts", 0),
                 "cpm": (
-                    round((skill_info.get("casts", 0) / player_total_casts) * 100, 1)
-                    if player_total_casts > 0
+                    round(skill_info.get("casts", 0) / (fight_duration / 1000 / 60), 1)
+                    if fight_duration > 0
                     else 0.0
                 ),
                 "synergy_data": skill_synergy_dict,
@@ -487,8 +485,10 @@ def format_skills_data(
 
         arcana_cards_data = {
             "total_cards_drawn": arcana_total_cards_drawn,
-            "draws_per_min": round(
-                (arcana_total_cards_drawn / (fight_duration / 1000)) * 100, 1
+            "draws_per_min": (
+                round((arcana_total_cards_drawn / (fight_duration / 1000 / 60)), 1)
+                if fight_duration > 0
+                else 0.0
             ),
             "cards_data": arcana_cards_list_sorted,
         }
