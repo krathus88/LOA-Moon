@@ -44,6 +44,7 @@ def build_encounter_filter_query(
     if source == "p-class":
         # Player
         if p_name:
+            p_name = p_name.capitalize()  # Enforce "Krathus" instead of "krAthUs"
             # Only include encounters where display_name=True for the player
             query &= Q(name__exact=p_name, display_name=True)
         if p_class_id >= 0:
