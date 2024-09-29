@@ -11,7 +11,7 @@ class RateLimitMiddleware:
         # Configuration
 
         rate_limit_5min = 125
-        rate_limit_1min = 50  # Maximum number of requests
+        rate_limit_1min = 30  # Maximum number of requests
         time_window_5min = 300
         time_window_1min = 60  # Time window in seconds
 
