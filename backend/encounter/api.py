@@ -37,12 +37,22 @@ def get_overview_data(
     if encounter:
         boss_key, gate = encounter.split("_", 1)
         for boss_n, details in encounter_map.items():
-            if (
-                details["gate"].lower() == gate
-                and details["instance"].lower() == boss_key
-            ):
-                boss_name = boss_n
-                break
+            # Ensure 'gate' and 'instance' keys exist in 'details' dictionary
+            if "gate" in details and "instance" in details:
+                # Check for G3 Akkan Hard -- has different name than normal version
+                if (
+                    details["gate"].lower() == gate == "g3"
+                    and details["instance"].lower() == boss_key == "akkan"
+                    and difficulty.lower() == "hard"
+                ):
+                    boss_name = "Lord of Kartheon Akkan"
+                    break
+                elif (
+                    details["gate"].lower() == gate
+                    and details["instance"].lower() == boss_key
+                ):
+                    boss_name = boss_n
+                    break
 
     # Apply filters based on request parameters
     encounter_query, ordering = build_encounter_filter_query(
@@ -158,6 +168,7 @@ def get_overview_data(
 
 
 @router.get("/id/{encounter_id}")
+@decorate_view(cache_page(2 * 60))
 def get_encounter_data(request, encounter_id: int):
     # Get the encounter object
     encounter = get_object_or_404(Encounter, id=encounter_id)
